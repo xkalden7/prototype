@@ -17,10 +17,10 @@ nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
 button{font:inherit;cursor:pointer;border-radius:8px}
-.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:12px;padding:12px 8px;text-align:center;position:relative;transition:all .1s}
+.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:12px;padding:14px 8px;text-align:center;position:relative;transition:all .1s}
 .item:active{transform:scale(0.97)}
 .item b{display:block;font-size:14px;margin-bottom:3px}.item span{color:var(--ac);font-weight:700}
-.item-badge{position:absolute;top:-6px;right:-6px;background:var(--ac);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.quick-add-btn{position:absolute;top:4px;right:4px;background:var(--bg);border:1px solid var(--bd);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ac);font-weight:bold}
 .row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
 .q{display:flex;align-items:center;gap:6px}
 .sm{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:8px;width:34px;height:34px;font-size:16px;display:flex;align-items:center;justify-content:center}
@@ -30,7 +30,7 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 input,textarea,select{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
 input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:13px}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:19px;margin-top:2px}
-#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
 .status-pill{font-size:11px;padding:3px 8px;border-radius:10px;background:#e9ecef;color:#495057}
 .login-box{max-width:360px;margin:40px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
 .type-toggle{display:flex;gap:6px;margin:8px 0}.type-btn{flex:1;padding:10px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;border-radius:10px;text-align:center}
@@ -46,18 +46,17 @@ input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-
 .whatsapp-btn{background:#25D366;color:#fff;border:0;padding:12px;font-weight:700;font-size:15px;border-radius:10px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
 
 /* Zus Coffee Style Modal Customizer */
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;display:flex;align-items:flex-end;justify-content:center}
-.modal-sheet{background:var(--card);width:100%;max-width:600px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;animation:slideUp .2s ease-out}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:flex;align-items:flex-end;justify-content:center}
+.modal-sheet{background:var(--card);width:100%;max-width:600px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -5px 25px rgba(0,0,0,0.25)}
 .modal-header{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
-.modal-body{padding:12px 18px;overflow-y:auto;flex:1}
-.modal-footer{padding:12px 18px;border-top:1px solid var(--bd);background:var(--card)}
-.zus-section{margin-bottom:14px}
-.zus-section-title{font-size:13px;font-weight:700;color:var(--mu);text-transform:uppercase;margin-bottom:6px}
-.zus-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:6px}
-.zus-btn{background:var(--bg);border:1.5px solid var(--bd);padding:10px 6px;border-radius:10px;font-weight:600;font-size:13px;color:var(--tx);text-align:center;transition:all .1s}
+.modal-body{padding:14px 18px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 18px;border-top:1px solid var(--bd);background:var(--card)}
+.zus-section{margin-bottom:16px}
+.zus-section-title{font-size:13px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:8px}
+.zus-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px}
+.zus-btn{background:var(--bg);border:1.5px solid var(--bd);padding:12px 6px;border-radius:10px;font-weight:600;font-size:13px;color:var(--tx);text-align:center;user-select:none}
 .zus-btn:active{transform:scale(0.96)}
-.zus-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.12);color:var(--ac);font-weight:700}
+.zus-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.15);color:var(--ac);font-weight:800}
 .zus-btn.cheese{border-color:#f59f00}
 .zus-btn.cheese.active{background:#f59f00;color:#fff}
 </style></head>
@@ -74,7 +73,7 @@ input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-
 <div id="app"></div>
 <div id="toast"></div>
 
-<!-- Modal Container for Zus Coffee Style Customizer -->
+<!-- Modal Container for Customizer -->
 <div id="customModal" style="display:none"></div>
 
 <!-- Firebase SDKs -->
@@ -148,12 +147,12 @@ const defaultData = {
 let S = { ...defaultData };
 let currentUser = null;
 let unsubscribeFirestore = null;
-let cart = []; // Array of line items: [{ lineId, itemId, name, basePrice, price, cheese: false, notes: [], customText: '' }]
+let cart = []; 
 let tab = 'order', selDay = null, armed = null;
 let orderCust = '', orderType = 'pickup';
 
-// Active customization state for Zus modal
-let customItem = null; // { lineId, itemId, name, basePrice, cheese: false, notes: [], customText: '' }
+// Active customization state for modal
+let customItem = null;
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const money = n => 'RM ' + (+n || 0).toFixed(2);
@@ -248,7 +247,7 @@ function delBtn(k,id){
   return `<button class="ghost danger" data-act="del" data-k="${k}" data-id="${id}">${armed==k+id?'Tap again to confirm':'Delete'}</button>`;
 }
 
-// ----------------- ZUS COFFEE STYLE MODAL -----------------
+// ----------------- ZUS STYLE CUSTOMIZER MODAL -----------------
 function openCustomizer(itemId, existingLineId = null){
   const m = S.menu.find(x => x.id == itemId);
   if(!m) return;
@@ -273,52 +272,36 @@ function openCustomizer(itemId, existingLineId = null){
 }
 
 function renderCustomModal(){
-  if(!customItem){ $('customModal').style.display = 'none'; return; }
+  const modalBox = $('customModal');
+  if(!customItem){ 
+    modalBox.style.display = 'none'; 
+    modalBox.innerHTML = '';
+    return; 
+  }
   
   const curPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
-  const n = customItem.notes;
+  const n = customItem.notes || [];
   const isSelected = (val) => n.includes(val);
 
   const zusSegments = [
-    {
-      title: "🧀 Add-ons (Extra)",
-      special: true
-    },
-    {
-      title: "🥬 Sayur / Vege",
-      options: ["No Vege", "More Vege"]
-    },
-    {
-      title: "🧅 Bawang / Onion",
-      options: ["No Onion", "Less Onion", "More Onion"]
-    },
-    {
-      title: "🥗 Coleslaw",
-      options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"]
-    },
-    {
-      title: "🥫 Sos Cili",
-      options: ["No Sos Cili", "Less Sos Cili", "More Sos Cili"]
-    },
-    {
-      title: "🥣 Sos Blackpepper",
-      options: ["No Blackpepper Sauce", "Less Blackpepper Sauce", "More Blackpepper Sauce"]
-    },
-    {
-      title: "🍶 Mayonis",
-      options: ["No Mayo", "Less Mayo", "More Mayo"]
-    }
+    { title: "🧀 Add-ons (Extra)", special: true },
+    { title: "🥬 Sayur / Vege", options: ["No Vege", "More Vege"] },
+    { title: "🧅 Bawang / Onion", options: ["No Onion", "Less Onion", "More Onion"] },
+    { title: "🥗 Coleslaw", options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"] },
+    { title: "🥫 Sos Cili", options: ["No Sos Cili", "Less Sos Cili", "More Sos Cili"] },
+    { title: "🥣 Sos Blackpepper", options: ["No Blackpepper Sauce", "Less Blackpepper Sauce", "More Blackpepper Sauce"] },
+    { title: "🍶 Mayonis", options: ["No Mayo", "Less Mayo", "More Mayo"] }
   ];
 
-  $('customModal').innerHTML = `
+  modalBox.innerHTML = `
   <div class="modal-overlay" data-act="closemodal">
-    <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-sheet">
       <div class="modal-header">
         <div>
           <b style="font-size:17px">${esc(customItem.name)}</b>
-          <div class="mu" style="font-size:13px">Customization &amp; Remarks</div>
+          <div class="mu" style="font-size:12px">Customization &amp; Options</div>
         </div>
-        <button class="ghost" data-act="closemodal" style="padding:4px 10px;font-size:18px">✕</button>
+        <button class="ghost" data-act="closemodal" style="padding:6px 12px;font-size:18px;font-weight:bold">✕</button>
       </div>
 
       <div class="modal-body">
@@ -328,7 +311,7 @@ function renderCustomModal(){
             <div class="zus-section">
               <div class="zus-section-title">${seg.title}</div>
               <div class="zus-options">
-                <button class="zus-btn cheese ${customItem.cheese ? 'active' : ''}" data-act="zus_cheese">
+                <button type="button" class="zus-btn cheese ${customItem.cheese ? 'active' : ''}" data-act="zus_cheese">
                   🧀 Cheese (+RM 2.00)
                 </button>
               </div>
@@ -339,7 +322,7 @@ function renderCustomModal(){
             <div class="zus-section-title">${seg.title}</div>
             <div class="zus-options">
               ${seg.options.map(opt => `
-                <button class="zus-btn ${isSelected(opt) ? 'active' : ''}" data-act="zus_opt" data-val="${esc(opt)}">
+                <button type="button" class="zus-btn ${isSelected(opt) ? 'active' : ''}" data-act="zus_opt" data-val="${esc(opt)}">
                   ${esc(opt)}
                 </button>
               `).join('')}
@@ -354,13 +337,13 @@ function renderCustomModal(){
       </div>
 
       <div class="modal-footer">
-        <button class="big" style="background:var(--ac);width:100%" data-act="zus_confirm">
+        <button type="button" class="big" style="background:var(--ac);width:100%" data-act="zus_confirm">
           Confirm Order • ${money(curPrice)}
         </button>
       </div>
     </div>
   </div>`;
-  $('customModal').style.display = 'block';
+  modalBox.style.display = 'block';
 }
 
 // ----------------- 1. ORDER VIEW -----------------
@@ -369,11 +352,9 @@ function vOrder(){
   let total = 0;
 
   const lines = cart.map((line, idx) => {
-    const lineTotal = line.price;
-    total += lineTotal;
-    
+    total += line.price;
     const remarksList = [];
-    if(line.cheese) remarksList.push('🧀 +Cheese (+RM2)');
+    if(line.cheese) remarksList.push('🧀 Cheese (+RM2)');
     if(line.notes && line.notes.length) remarksList.push(...line.notes);
     if(line.customText) remarksList.push(line.customText);
 
@@ -399,10 +380,11 @@ function vOrder(){
   <h2>Menu Items (Tap to customize)</h2>
   <div class="grid">
     ${m.map(x => `
-      <button class="item" data-act="openmenu" data-id="${x.id}">
+      <div class="item" style="cursor:pointer" data-act="openmenu" data-id="${x.id}">
+        <span class="quick-add-btn" data-act="quickadd" data-id="${x.id}" title="Quick add standard">+</span>
         <b>${esc(x.name)}</b>
         <span>${money(x.price)}</span>
-      </button>
+      </div>
     `).join('') || '<p class="mu">No menu items yet. Add some in Settings.</p>'}
   </div>
 
@@ -414,7 +396,7 @@ function vOrder(){
       <button class="type-btn ${orderType=='delivery'?'active':''}" data-act="settype" data-type="delivery">🛵 Delivery</button>
     </div>
     
-    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to select options &amp; remarks.</p>'}</div>
+    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to choose options &amp; remarks.</p>'}</div>
     
     <div class="row" style="margin-top:12px;padding-top:10px;border-top:2px dashed var(--bd)">
       <span>Total</span>
@@ -569,13 +551,11 @@ function vHist(){
 // ----------------- 5. STOK HARIAN (AUTO-CARRYOVER) -----------------
 let curStockDate = dkey(Date.now());
 
-// Helper to get stock items for date, falling back to previous recorded day
 function getStockForDate(targetDate){
   S.stockClosing = S.stockClosing || {};
   if(S.stockClosing[targetDate] && S.stockClosing[targetDate].items && Object.keys(S.stockClosing[targetDate].items).length > 0){
     return S.stockClosing[targetDate];
   }
-  // Find latest past date
   const pastDates = Object.keys(S.stockClosing).filter(d => d < targetDate).sort();
   if(pastDates.length){
     const lastDate = pastDates[pastDates.length - 1];
@@ -641,10 +621,9 @@ function vStock(){
   </button>`;
 }
 
-// ----------------- 6. CASH CLOSING REPORT (CONNECTED) -----------------
+// ----------------- 6. CASH CLOSING REPORT -----------------
 let curCashDate = dkey(Date.now());
 
-// Helper to get previous day closing to use as today's opening
 function getPreviousClosing(targetDate){
   S.cashReports = S.cashReports || {};
   const pastDates = Object.keys(S.cashReports).filter(d => d < targetDate).sort();
@@ -663,7 +642,6 @@ function vCash(){
   
   const cr = S.cashReports[curCashDate] || { opening: '', closing: '', paidOut: '', paidIn: '' };
   
-  // If opening is not set for today, auto-fill from previous day's closing!
   if(cr.opening === '' || cr.opening === undefined){
     const prevClosing = getPreviousClosing(curCashDate);
     if(prevClosing !== null){
@@ -678,11 +656,7 @@ function vCash(){
   const pi = parseFloat(cr.paidIn) || 0;
   const po = parseFloat(cr.paidOut) || 0;
   const cashSales = s.cash;
-  
-  // Connected calculation: Expected Closing = Opening + Paid In + Jualan Cash - Paid Out
   const expectedClosing = (op + pi + cashSales - po);
-
-  // If user hasn't explicitly entered closing, auto-suggest expected closing
   const displayedClosing = (cr.closing !== '' && cr.closing !== undefined) ? cr.closing : (expectedClosing > 0 ? expectedClosing.toFixed(2) : '');
 
   return `
@@ -803,8 +777,18 @@ function render(){
   $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, cash:vCash, set:vSet }[tab]();
 }
 
+// ----------------- GLOBAL CLICK EVENT LISTENER -----------------
 document.addEventListener('click', async e => {
-  const b = e.target.closest('[data-act]'); if(!b) return;
+  // Check if clicked directly on modal overlay background to close
+  if(e.target.classList.contains('modal-overlay')){
+    customItem = null;
+    renderCustomModal();
+    return;
+  }
+
+  const b = e.target.closest('[data-act]'); 
+  if(!b) return;
+  
   const a = b.dataset.act, id = b.dataset.id;
 
   if(a=='dologin'){
@@ -819,16 +803,52 @@ document.addEventListener('click', async e => {
   if(a=='tab'){ tab = b.dataset.t; selDay = null; armed = null; }
   else if(a=='settype'){ orderType = b.dataset.type; }
   
-  // Modal Customizer
-  else if(a=='openmenu'){ openCustomizer(id); }
-  else if(a=='editcart'){ openCustomizer(cart.find(c => c.lineId == id).itemId, id); }
-  else if(a=='delcart'){ cart.splice(+b.dataset.idx, 1); render(); }
-  else if(a=='closemodal'){ customItem = null; renderCustomModal(); }
+  // Customizer Controls
+  else if(a=='openmenu'){ 
+    openCustomizer(id); 
+  }
+  else if(a=='quickadd'){
+    e.stopPropagation();
+    const m = S.menu.find(x => x.id == id);
+    if(m){
+      cart.push({
+        lineId: uid(),
+        itemId: m.id,
+        name: m.name,
+        basePrice: m.price,
+        price: m.price,
+        cheese: false,
+        notes: [],
+        customText: ''
+      });
+      render();
+      toast(`Added 1× ${m.name}`);
+    }
+  }
+  else if(a=='editcart'){ 
+    const itemInCart = cart.find(c => c.lineId == id);
+    if(itemInCart) openCustomizer(itemInCart.itemId, id); 
+  }
+  else if(a=='delcart'){ 
+    cart.splice(+b.dataset.idx, 1); 
+    render(); 
+  }
+  else if(a=='closemodal'){ 
+    customItem = null; 
+    renderCustomModal(); 
+  }
   else if(a=='zus_cheese'){
-    if(customItem){ customItem.cheese = !customItem.cheese; renderCustomModal(); }
+    if(customItem){
+      const txt = $('zusCustomText');
+      if(txt) customItem.customText = txt.value;
+      customItem.cheese = !customItem.cheese;
+      renderCustomModal();
+    }
   }
   else if(a=='zus_opt'){
     if(customItem){
+      const txt = $('zusCustomText');
+      if(txt) customItem.customText = txt.value;
       const val = b.dataset.val;
       const idx = customItem.notes.indexOf(val);
       if(idx > -1) customItem.notes.splice(idx, 1);
@@ -838,6 +858,9 @@ document.addEventListener('click', async e => {
   }
   else if(a=='zus_confirm'){
     if(customItem){
+      const txt = $('zusCustomText');
+      if(txt) customItem.customText = txt.value.trim();
+
       const finalPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
       const existingIdx = cart.findIndex(c => c.lineId == customItem.lineId);
       const lineData = {
@@ -850,6 +873,7 @@ document.addEventListener('click', async e => {
         notes: [...customItem.notes],
         customText: customItem.customText || ''
       };
+
       if(existingIdx > -1) cart[existingIdx] = lineData;
       else cart.push(lineData);
       
@@ -995,7 +1019,7 @@ Paid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}
 });
 
 document.addEventListener('input', e => {
-  const t = e.target, c = t.dataset.ch, id = t.dataset.id;
+  const t = e.target, c = t.dataset.ch;
   if(c=='cust') orderCust = t.value;
   if(c=='zus_text' && customItem){ customItem.customText = t.value; }
 });
@@ -1013,7 +1037,6 @@ document.addEventListener('change', e => {
     const name = t.dataset.name;
     S.stockClosing = S.stockClosing || {};
     if(!S.stockClosing[curStockDate]){
-      // Carryover base if first edit for this date
       S.stockClosing[curStockDate] = JSON.parse(JSON.stringify(getStockForDate(curStockDate)));
     }
     S.stockClosing[curStockDate].items = S.stockClosing[curStockDate].items || {};

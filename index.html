@@ -2,13 +2,18 @@
 <style>
 :root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--warn:#ffc107;box-sizing:border-box}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;color-scheme:dark}}
-*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 95px;max-width:760px;margin:auto}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 40px;max-width:760px;margin:auto}
 h2{margin:16px 0 10px;font-size:18px;display:flex;align-items:center;gap:8px}h3{margin:14px 0 8px;font-size:15px;color:var(--mu)}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,4px);z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,0.06)}
-nav button{flex:1;border:0;background:none;color:var(--mu);padding:8px 0;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
-nav button.on{color:var(--ac);font-weight:700}
-nav button .icon{font-size:18px}
-.badge-count{position:absolute;top:4px;right:calc(50% - 18px);background:#e03131;color:#fff;font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700}
+
+/* Top Navigation Bar */
+header{position:sticky;top:0;background:var(--card);z-index:100;border-bottom:1px solid var(--bd);margin:0 -12px 12px;padding:8px 12px 4px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.top-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+nav::-webkit-scrollbar{display:none}
+nav button{border:1px solid var(--bd);background:var(--bg);color:var(--mu);padding:7px 12px;font-size:12px;font-weight:600;border-radius:20px;display:inline-flex;align-items:center;gap:5px;position:relative;flex-shrink:0}
+nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.badge-count{background:#e03131;color:#fff;font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700}
+
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
 button{font:inherit;cursor:pointer;border-radius:8px}
@@ -23,12 +28,12 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .cash{background:var(--ok)}.qr{background:var(--blue)}.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:6px 12px}
 .danger{color:#e03131;border-color:#e03131}
 input,textarea,select{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
-input.n{width:75px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:13px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:20px;margin-top:2px}
+input.n{width:80px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:13px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:19px;margin-top:2px}
 details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:8px 0;padding:10px 12px}summary{cursor:pointer;font-weight:700}
-#toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
 .status-pill{font-size:11px;padding:3px 8px;border-radius:10px;background:#e9ecef;color:#495057}
-.login-box{max-width:360px;margin:60px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
+.login-box{max-width:360px;margin:40px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
 .type-toggle{display:flex;gap:6px;margin:8px 0}.type-btn{flex:1;padding:10px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;border-radius:10px;text-align:center}
 .type-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.1);color:var(--ac)}
 .tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase}
@@ -37,19 +42,31 @@ details{background:var(--card);border:1px solid var(--bd);border-radius:12px;mar
 .tag-cooking{background:#ffe8cc;color:#d9480f}
 .tag-ready{background:#d3f9d8;color:#2b8a3e}
 .tag-out{background:#e7f5ff;color:#1864ab}
-.tag-done{background:#f1f3f5;color:#495057}
 .action-btn{padding:8px 12px;border:0;color:#fff;font-weight:700;border-radius:8px;font-size:13px}
+
+/* Quick remark pills */
+.pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.pill{background:var(--bg);border:1px solid var(--bd);color:var(--tx);font-size:11px;padding:3px 8px;border-radius:12px;cursor:pointer}
+.pill:active{background:var(--ac);color:#fff}
+
+@media print {
+  header, nav, #toast, .no-print, button { display: none !important; }
+  body { padding: 0; background: #fff; color: #000; }
+  .card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
+}
 </style></head>
 <body>
 
-<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 6px">
-  <h1 style="margin:0;font-size:20px;color:var(--ac)">🍔 Singgah Cafe</h1>
-  <span id="syncStatus" class="status-pill">Offline</span>
-</div>
+<header id="topBar" style="display:none">
+  <div class="top-header">
+    <h1 style="margin:0;font-size:18px;color:var(--ac)">🍔 Singgah Cafe</h1>
+    <span id="syncStatus" class="status-pill">Offline</span>
+  </div>
+  <nav id="nav"></nav>
+</header>
 
 <div id="app"></div>
 <div id="toast"></div>
-<nav id="nav" style="display:none"></nav>
 
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -80,7 +97,9 @@ const defaultData = {
     {id:'m6',name:'Drink',price:3}
   ],
   orders: [],
-  stock: []
+  stock: [],
+  stockHistory: {}, // { '2026-11-12': [ { name, qty, unit } ] }
+  reports: {}       // { '2026-11-12': { opening: 100, closing: 0, paidIn: 0, paidOut: 0, outNote: '' } }
 };
 
 let S = { ...defaultData };
@@ -88,12 +107,16 @@ let currentUser = null;
 let unsubscribeFirestore = null;
 let cart = {}, tab = 'order', selDay = null, armed = null;
 let orderCust = '', orderType = 'pickup', orderNotes = {};
+let selStockDay = null;
+let reportDate = '';
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-const money = n => 'RM ' + (+n).toFixed(2);
+const money = n => 'RM ' + (+n || 0).toFixed(2);
 const dkey = d => { d = new Date(d); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
 const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $ = id => document.getElementById(id);
+
+const PRESET_REMARKS = ['No Vege', 'No Sauce', 'Less Sauce', 'Extra Sauce', 'No Mayo', 'Extra Cheese', 'Pedas', 'Tak Pedas'];
 
 // Total items sold calculator (1 order with 3 burgers = 3 items sold)
 const sum = l => {
@@ -133,7 +156,7 @@ async function save(){
 auth.onAuthStateChanged(user => {
   currentUser = user;
   if(user){
-    $('nav').style.display = 'flex';
+    $('topBar').style.display = 'block';
     setStatus('Connecting...', '#fff3bf', '#e67700');
     unsubscribeFirestore = db.collection('stall').doc('data').onSnapshot(doc => {
       if(doc.exists){
@@ -141,6 +164,8 @@ auth.onAuthStateChanged(user => {
         S.menu = S.menu || [];
         S.orders = S.orders || [];
         S.stock = S.stock || [];
+        S.stockHistory = S.stockHistory || {};
+        S.reports = S.reports || {};
       } else {
         db.collection('stall').doc('data').set(defaultData);
         S = defaultData;
@@ -153,7 +178,7 @@ auth.onAuthStateChanged(user => {
     });
   } else {
     if(unsubscribeFirestore) unsubscribeFirestore();
-    $('nav').style.display = 'none';
+    $('topBar').style.display = 'none';
     setStatus('Logged Out', '#e9ecef', '#495057');
     renderLogin();
   }
@@ -162,7 +187,7 @@ auth.onAuthStateChanged(user => {
 function renderLogin(err=''){
   $('app').innerHTML = `
   <div class="login-box">
-    <h2 style="margin-top:0">Staff Login</h2>
+    <h2 style="margin-top:0">🍔 Singgah Cafe</h2>
     <p class="mu">Sign in to take orders and manage stall sales.</p>
     ${err ? `<p style="color:#e03131;font-size:14px">${esc(err)}</p>` : ''}
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
@@ -177,7 +202,7 @@ function delBtn(k,id){
   return `<button class="ghost danger" data-act="del" data-k="${k}" data-id="${id}">${armed==k+id?'Tap again to confirm':'Delete'}</button>`;
 }
 
-// 1. ORDER VIEW
+// 1. ORDER VIEW (Menu on top + Quick Remark Buttons)
 function vOrder(){
   const m = S.menu, ids = Object.keys(cart).filter(i => m.find(x => x.id == i));
   let total = 0;
@@ -187,7 +212,7 @@ function vOrder(){
     total += x.price * cart[i];
     const curNote = orderNotes[i] || '';
     return `
-    <div style="padding:8px 0;border-bottom:1px solid var(--bd)">
+    <div style="padding:10px 0;border-bottom:1px solid var(--bd)">
       <div class="row">
         <span><b>${esc(x.name)}</b><br><span class="mu">${money(x.price)} each</span></span>
         <span class="q">
@@ -196,14 +221,19 @@ function vOrder(){
           <button class="sm" data-act="inc" data-id="${i}">+</button>
         </span>
       </div>
-      <div style="margin-top:4px">
-        <input style="width:100%;font-size:13px;padding:5px 8px" placeholder="Remarks (e.g. No sauce, No veg, Extra cheese)" value="${esc(curNote)}" data-ch="note" data-id="${i}">
+      <div style="margin-top:5px">
+        <input style="width:100%;font-size:13px;padding:6px 8px" placeholder="Remarks..." value="${esc(curNote)}" data-ch="note" data-id="${i}">
+        <div class="pills">
+          ${PRESET_REMARKS.map(p => `
+            <span class="pill" data-act="addnote" data-id="${i}" data-val="${p}">+ ${p}</span>
+          `).join('')}
+        </div>
       </div>
     </div>`;
   }).join('');
 
   return `
-  <h2>Menu</h2>
+  <h2>Menu Items</h2>
   <div class="grid">
     ${m.map(x => {
       const q = cart[x.id] || 0;
@@ -218,15 +248,13 @@ function vOrder(){
 
   <h2>Current Order</h2>
   <div class="card">
-    <div style="display:flex;gap:8px;margin-bottom:8px">
-      <input id="custNameInput" placeholder="Customer Name / Order #" value="${esc(orderCust)}" style="flex:1" data-ch="cust">
-    </div>
+    <input id="custNameInput" placeholder="Customer Name / Order #" value="${esc(orderCust)}" style="width:100%" data-ch="cust">
     <div class="type-toggle">
       <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Pickup</button>
       <button class="type-btn ${orderType=='delivery'?'active':''}" data-act="settype" data-type="delivery">🛵 Delivery</button>
     </div>
     
-    <div style="margin-top:10px">${lines || '<span class="mu">Tap items above to add to order.</span>'}</div>
+    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to start order.</p>'}</div>
     
     <div class="row" style="margin-top:12px;padding-top:10px;border-top:2px dashed var(--bd)">
       <span>Total</span>
@@ -241,16 +269,16 @@ function vOrder(){
   </div>`;
 }
 
-// 2. LIVE QUEUE & KITCHEN TRACKER
+// 2. LIVE KITCHEN & STATUS TRACKER
 function vLive(){
   const todayKey = dkey(Date.now());
   const activeOrders = S.orders.filter(o => dkey(o.t) == todayKey && o.status != 'completed').sort((a,b) => a.t - b.t);
   
   if(!activeOrders.length){
-    return `<h2>Live Kitchen &amp; Orders</h2>
+    return `<h2>Live Kitchen &amp; Queue</h2>
     <div class="card" style="text-align:center;padding:30px">
       <div style="font-size:32px">✨</div>
-      <p class="mu" style="margin:8px 0 0">All orders completed! No orders in kitchen.</p>
+      <p class="mu" style="margin:8px 0 0">All clear! No pending orders right now.</p>
     </div>`;
   }
 
@@ -268,17 +296,17 @@ function vLive(){
           <b>${esc(o.cust || 'Walk-in Customer')}</b>
           <div class="mu" style="font-size:12px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · ${o.pay=='cash'?'Cash':'QR'}</div>
         </div>
-        <div style="text-align:right">
+        <div>
           <span class="tag ${isDelivery?'tag-delivery':'tag-pickup'}">${isDelivery?'🛵 Delivery':'🛍️ Pickup'}</span>
-          <span class="tag ${statusClass}" style="margin-left:4px">${statusText}</span>
+          <span class="tag ${statusClass}">${statusText}</span>
         </div>
       </div>
       
-      <div style="background:var(--bg);padding:8px;border-radius:8px;margin:8px 0;font-size:14px">
+      <div style="background:var(--bg);padding:8px 10px;border-radius:8px;margin:8px 0;font-size:14px">
         ${(o.items || []).map(i => `
           <div style="margin-bottom:3px">
             <b>${i.q}×</b> ${esc(i.n)}
-            ${i.note ? `<span style="color:#d9480f;font-weight:600;font-size:12px"> (${esc(i.note)})</span>` : ''}
+            ${i.note ? `<span style="color:#d9480f;font-weight:700"> (${esc(i.note)})</span>` : ''}
           </div>
         `).join('')}
       </div>
@@ -290,7 +318,7 @@ function vLive(){
         ` : ''}
         
         ${o.status == 'ready' && !isDelivery ? `
-          <button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Mark Collected</button>
+          <button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Collected</button>
         ` : ''}
 
         ${o.status == 'ready' && isDelivery ? `
@@ -298,14 +326,14 @@ function vLive(){
         ` : ''}
 
         ${o.status == 'out' ? `
-          <button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="completed">🏁 Mark Delivered</button>
+          <button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="completed">🏁 Delivered</button>
         ` : ''}
       </div>
     </div>`;
   }).join('')}`;
 }
 
-// 3. TODAY VIEW
+// 3. TODAY SALES
 function vDay(k){
   const l = S.orders.filter(o => dkey(o.t) == k).sort((a,b) => b.t - a.t);
   const s = sum(l);
@@ -348,7 +376,7 @@ function vToday(){
   return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k);
 }
 
-// 4. HISTORY VIEW
+// 4. HISTORY (Items sold count)
 function vHist(){
   if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
   
@@ -389,10 +417,34 @@ function vHist(){
   return h;
 }
 
-// 5. STOCK VIEW
+// 5. STOCK WITH DAILY HISTORY TRACKING
 function vStock(){
+  const todayStr = dkey(Date.now());
+  const histDates = Object.keys(S.stockHistory || {}).sort().reverse();
+
+  let histHtml = '';
+  if(selStockDay){
+    const records = (S.stockHistory && S.stockHistory[selStockDay]) || [];
+    histHtml = `
+    <div class="card" style="border:2px solid var(--blue)">
+      <div class="row">
+        <b>Stock on ${selStockDay}</b>
+        <button class="ghost" data-act="closestockhist">Close</button>
+      </div>
+      <div style="margin-top:8px">
+        ${records.map(r => `
+          <div class="row"><span>${esc(r.name)}</span><b>${r.qty} ${esc(r.unit||'')}</b></div>
+        `).join('') || '<span class="mu">No items recorded on this date.</span>'}
+      </div>
+    </div>`;
+  }
+
   return `
-  <h2>Ingredient stock</h2>
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2>Current Stock</h2>
+    <button class="action-btn" style="background:var(--ok)" data-act="savestocktoday">📸 Save Today's Count</button>
+  </div>
+  
   ${S.stock.map(s => `
     <div class="card">
       <div class="row"><b>${esc(s.name)}</b>${delBtn('stock',s.id)}</div>
@@ -404,6 +456,7 @@ function vStock(){
       </div>
     </div>
   `).join('') || '<p class="mu">No stock items yet.</p>'}
+
   <div class="card">
     <b>Add ingredient</b>
     <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
@@ -412,10 +465,110 @@ function vStock(){
       <input id="su" placeholder="Unit (pcs, kg)" style="width:100px">
     </div>
     <button class="ghost" data-act="addstock" style="margin-top:8px">Add</button>
+  </div>
+
+  <h2>Stock History By Date</h2>
+  ${histHtml}
+  <div class="card">
+    ${histDates.map(d => `
+      <div class="row">
+        <span>📅 ${d}</span>
+        <button class="ghost" data-act="viewstockhist" data-date="${d}">View Records</button>
+      </div>
+    `).join('') || '<span class="mu">No past stock snapshots saved yet. Tap "Save Today\'s Count" above to record daily snapshots.</span>'}
   </div>`;
 }
 
-// 6. SETTINGS VIEW
+// 6. DAILY CASH & SALES CLOSING REPORT (FOR BOSS)
+function vReport(){
+  reportDate = reportDate || dkey(Date.now());
+  const r = (S.reports && S.reports[reportDate]) || { opening: 0, closing: 0, paidIn: 0, paidOut: 0, outNote: '' };
+  
+  const dayOrders = S.orders.filter(o => dkey(o.t) == reportDate);
+  const s = sum(dayOrders);
+  
+  const opening = +r.opening || 0;
+  const paidIn = +r.paidIn || 0;
+  const paidOut = +r.paidOut || 0;
+  const salesCash = s.cash;
+  const salesQr = s.qr;
+  const totalSales = s.all;
+  
+  const expectedCash = opening + paidIn + salesCash - paidOut;
+  const closing = +r.closing || 0;
+  const variance = closing - expectedCash;
+
+  return `
+  <div class="no-print" style="display:flex;justify-content:space-between;align-items:center">
+    <h2>Daily Shift Report</h2>
+    <input type="date" value="${reportDate}" data-ch="repdate" style="padding:4px 8px">
+  </div>
+
+  <!-- Printable & Exportable Report Container -->
+  <div id="printArea" class="card" style="border:2px solid var(--bd);padding:16px">
+    <div style="text-align:center;border-bottom:2px dashed var(--bd);padding-bottom:10px;margin-bottom:12px">
+      <h2 style="justify-content:center;margin:0 0 4px">🍔 Singgah Cafe</h2>
+      <b>Daily Sales &amp; Cash Report</b>
+      <div class="mu">Date: ${reportDate}</div>
+    </div>
+
+    <h3>Sales Summary</h3>
+    <div class="row"><span>Cash Sales</span><b>${money(salesCash)}</b></div>
+    <div class="row"><span>QR Sales</span><b>${money(salesQr)}</b></div>
+    <div class="row" style="font-size:17px;border-top:1px solid var(--bd);padding-top:6px"><span>Total Gross Sales</span><b style="color:var(--ac)">${money(totalSales)}</b></div>
+    <div class="row"><span>Total Items Sold</span><b>${s.n} pcs (${s.ordersCount} orders)</b></div>
+
+    <h3>Cash Drawer Reconciliation</h3>
+    <div class="row">
+      <span>1. Cash Opening (Modal / Float)</span>
+      <input class="n no-print" type="number" step="0.5" value="${r.opening||0}" data-ch="rep" data-field="opening">
+      <b class="only-print">${money(opening)}</b>
+    </div>
+    
+    <div class="row">
+      <span>2. Paid In (Add Cash)</span>
+      <input class="n no-print" type="number" step="0.5" value="${r.paidIn||0}" data-ch="rep" data-field="paidIn">
+      <b class="only-print">${money(paidIn)}</b>
+    </div>
+
+    <div class="row">
+      <span>3. Paid Out (Belanja / Expenses)</span>
+      <input class="n no-print" type="number" step="0.5" value="${r.paidOut||0}" data-ch="rep" data-field="paidOut">
+      <b class="only-print">${money(paidOut)}</b>
+    </div>
+    <div style="margin-bottom:6px">
+      <input class="no-print" style="width:100%;font-size:12px" placeholder="Expense note (e.g. bought ice RM10, gas RM35)" value="${esc(r.outNote||'')}" data-ch="rep" data-field="outNote">
+      ${r.outNote ? `<div class="only-print mu" style="font-size:12px">Note: ${esc(r.outNote)}</div>` : ''}
+    </div>
+
+    <div class="row"><span>4. Cash Sales Added</span><b>+ ${money(salesCash)}</b></div>
+
+    <div class="row" style="background:var(--bg);padding:8px;border-radius:8px;margin:8px 0">
+      <b>Expected Cash in Drawer:</b>
+      <b style="font-size:16px">${money(expectedCash)}</b>
+    </div>
+
+    <div class="row">
+      <span>5. Actual Cash Closing (Counted)</span>
+      <input class="n no-print" type="number" step="0.5" value="${r.closing||0}" data-ch="rep" data-field="closing">
+      <b class="only-print">${money(closing)}</b>
+    </div>
+
+    <div class="row" style="background:${variance < 0 ? '#ffe3e3' : (variance > 0 ? '#d3f9d8' : 'var(--bg)')};padding:8px;border-radius:8px">
+      <b>Cash Difference (Variance):</b>
+      <b style="color:${variance < 0 ? '#e03131' : (variance > 0 ? '#2b8a3e' : 'inherit')}">
+        ${variance > 0 ? '+' : ''}${money(variance)} ${variance === 0 ? '✓ Balanced' : (variance < 0 ? '⚠️ Short' : '✨ Over')}
+      </b>
+    </div>
+  </div>
+
+  <div class="no-print" style="display:flex;gap:8px;margin-top:12px">
+    <button class="big" style="background:#25D366" data-act="copyrep">📱 Copy for WhatsApp</button>
+    <button class="big" style="background:#495057" data-act="printrep">🖨️ Print / PDF</button>
+  </div>`;
+}
+
+// 7. SETTINGS VIEW
 function vSet(){
   return `
   <h2>Menu &amp; prices</h2>
@@ -439,7 +592,7 @@ function vSet(){
   <h2>Account</h2>
   <p class="mu">Logged in as: <b>${esc(currentUser ? currentUser.email : '')}</b></p>
   <button class="ghost danger" data-act="logout">Log Out</button>
-  <h2>Backup</h2>
+  <h2>Raw Backup</h2>
   <textarea id="bk" rows="4" style="width:100%">${esc(JSON.stringify(S))}</textarea>
   <div style="display:flex;gap:8px;margin-top:8px">
     <button class="ghost" data-act="copy">Copy backup</button>
@@ -452,22 +605,20 @@ function render(){
   const activeOrdersCount = S.orders.filter(o => dkey(o.t) == dkey(Date.now()) && o.status != 'completed').length;
   
   const T = [
-    ['order', '🍔', 'Order'],
-    ['live', '🍳', `Live ${activeOrdersCount > 0 ? `<span class="badge-count">${activeOrdersCount}</span>` : ''}`],
-    ['today', '📊', 'Today'],
-    ['hist', '📅', 'History'],
-    ['stock', '📦', 'Stock'],
-    ['set', '⚙️', 'Settings']
+    ['order', '🍔 Order'],
+    ['live', `🍳 Live ${activeOrdersCount > 0 ? `<span class="badge-count">${activeOrdersCount}</span>` : ''}`],
+    ['today', '📊 Today'],
+    ['hist', '📅 History'],
+    ['stock', '📦 Stock'],
+    ['rep', '📑 Report'],
+    ['set', '⚙️ Settings']
   ];
   
   $('nav').innerHTML = T.map(t => `
-    <button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">
-      <span class="icon">${t[1]}</span>
-      <span>${t[2]}</span>
-    </button>
+    <button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>
   `).join('');
   
-  $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, set:vSet }[tab]();
+  $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, rep:vReport, set:vSet }[tab]();
 }
 
 document.addEventListener('click', async e => {
@@ -489,6 +640,11 @@ document.addEventListener('click', async e => {
   else if(a=='inc') cart[id]++;
   else if(a=='dec'){ if(--cart[id] <= 0){ delete cart[id]; delete orderNotes[id]; } }
   else if(a=='clear'){ cart = {}; orderNotes = {}; orderCust = ''; }
+  else if(a=='addnote'){
+    const val = b.dataset.val;
+    const cur = orderNotes[id] || '';
+    orderNotes[id] = cur ? `${cur}, ${val}` : val;
+  }
   else if(a=='pay'){
     const items = Object.keys(cart).map(i => {
       const x = S.menu.find(y => y.id == i);
@@ -517,6 +673,15 @@ document.addEventListener('click', async e => {
     const ord = S.orders.find(o => o.id == id);
     if(ord){ ord.status = b.dataset.st; save(); }
   }
+  else if(a=='savestocktoday'){
+    const todayStr = dkey(Date.now());
+    S.stockHistory = S.stockHistory || {};
+    S.stockHistory[todayStr] = S.stock.map(s => ({ name: s.name, qty: s.qty, unit: s.unit }));
+    save();
+    toast(`Today's stock (${todayStr}) recorded!`);
+  }
+  else if(a=='viewstockhist'){ selStockDay = b.dataset.date; }
+  else if(a=='closestockhist'){ selStockDay = null; }
   else if(a=='day') selDay = id;
   else if(a=='back') selDay = null;
   else if(a=='del'){
@@ -540,6 +705,42 @@ document.addEventListener('click', async e => {
     S.menu.push({ id: uid(), name: n, price: p });
     save();
   }
+  else if(a=='printrep'){ window.print(); return; }
+  else if(a=='copyrep'){
+    const d = reportDate;
+    const r = (S.reports && S.reports[d]) || {};
+    const dayOrders = S.orders.filter(o => dkey(o.t) == d);
+    const s = sum(dayOrders);
+    const op = +r.opening||0, pi = +r.paidIn||0, po = +r.paidOut||0, cl = +r.closing||0;
+    const exp = op + pi + s.cash - po;
+    const diff = cl - exp;
+
+    const msg = `*🍔 SINGGAH CAFE - DAILY REPORT*
+📅 Date: ${d}
+━━━━━━━━━━━━━━━━━━
+💰 *SALES SUMMARY*
+💵 Cash Sales: ${money(s.cash)}
+📱 QR Sales: ${money(s.qr)}
+⭐ Total Sales: ${money(s.all)}
+📦 Total Items Sold: ${s.n} (${s.ordersCount} orders)
+
+━━━━━━━━━━━━━━━━━━
+💵 *CASH DRAWER COUNT*
+➕ Opening Modal: ${money(op)}
+➕ Paid In: ${money(pi)}
+➖ Paid Out: ${money(po)}${r.outNote ? ` (${r.outNote})` : ''}
+➕ Cash Sales: +${money(s.cash)}
+----------------------------------
+🎯 Expected Cash: ${money(exp)}
+📥 Actual Closing Cash: ${money(cl)}
+${diff === 0 ? '✅ Status: Balanced' : (diff < 0 ? `⚠️ Short: ${money(diff)}` : `✨ Over: +${money(diff)}`)}
+━━━━━━━━━━━━━━━━━━`;
+
+    try {
+      navigator.clipboard.writeText(msg).then(() => toast('Report copied for WhatsApp!'));
+    } catch(x){ toast('Unable to copy'); }
+    return;
+  }
   else if(a=='copy'){
     const t = $('bk'); t.select();
     try { navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>toast('Select all and copy')); } catch(x){ toast('Select all and copy'); }
@@ -554,7 +755,6 @@ document.addEventListener('click', async e => {
   }
   
   render();
-  window.scrollTo(0, a=='tab'? 0 : scrollY);
 });
 
 document.addEventListener('input', e => {
@@ -569,6 +769,15 @@ document.addEventListener('change', e => {
   if(c=='sq'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +t.value || 0); save(); }
   if(c=='mn'){ const m = S.menu.find(x => x.id == id); if(t.value.trim()) m.name = t.value.trim(); save(); }
   if(c=='mp'){ const m = S.menu.find(x => x.id == id); const p = parseFloat(t.value); if(!isNaN(p)) m.price = p; save(); }
+  if(c=='repdate'){ reportDate = t.value; render(); }
+  if(c=='rep'){
+    const f = t.dataset.field;
+    S.reports = S.reports || {};
+    S.reports[reportDate] = S.reports[reportDate] || { opening:0, closing:0, paidIn:0, paidOut:0, outNote:'' };
+    S.reports[reportDate][f] = (f === 'outNote') ? t.value : (+t.value || 0);
+    save();
+    render();
+  }
 });
 </script>
 </body>

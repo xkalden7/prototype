@@ -2,13 +2,13 @@
 <style>
 :root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--warn:#ffc107;box-sizing:border-box}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;color-scheme:dark}}
-*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 40px;max-width:760px;margin:auto}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 50px;max-width:760px;margin:auto}
 h2{margin:16px 0 10px;font-size:18px;display:flex;align-items:center;gap:8px}h3{margin:14px 0 8px;font-size:15px;color:var(--mu)}
 
 /* Top Navigation Bar */
-header{position:sticky;top:0;background:var(--card);z-index:100;border-bottom:1px solid var(--bd);margin:0 -12px 12px;padding:8px 12px 4px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+header{position:sticky;top:0;background:var(--card);z-index:100;border-bottom:1px solid var(--bd);margin:0 -12px 12px;padding:8px 12px 6px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .top-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 nav::-webkit-scrollbar{display:none}
 nav button{border:1px solid var(--bd);background:var(--bg);color:var(--mu);padding:7px 12px;font-size:12px;font-weight:600;border-radius:20px;display:inline-flex;align-items:center;gap:5px;position:relative;flex-shrink:0}
 nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
@@ -43,17 +43,11 @@ details{background:var(--card);border:1px solid var(--bd);border-radius:12px;mar
 .tag-ready{background:#d3f9d8;color:#2b8a3e}
 .tag-out{background:#e7f5ff;color:#1864ab}
 .action-btn{padding:8px 12px;border:0;color:#fff;font-weight:700;border-radius:8px;font-size:13px}
-
-/* Quick remark pills */
 .pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
 .pill{background:var(--bg);border:1px solid var(--bd);color:var(--tx);font-size:11px;padding:3px 8px;border-radius:12px;cursor:pointer}
 .pill:active{background:var(--ac);color:#fff}
-
-@media print {
-  header, nav, #toast, .no-print, button { display: none !important; }
-  body { padding: 0; background: #fff; color: #000; }
-  .card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
-}
+.sec-hdr{background:rgba(255,107,0,0.08);color:var(--ac);padding:8px 10px;border-radius:8px;font-weight:800;font-size:14px;margin:12px 0 6px}
+.whatsapp-btn{background:#25D366;color:#fff;border:0;padding:12px;font-weight:700;font-size:15px;border-radius:10px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
 </style></head>
 <body>
 
@@ -87,6 +81,42 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// Default 8 sections configured for the Boss
+const DEFAULT_STOCK_STRUCTURE = [
+  {
+    title: "🥩 1. PATTY & TELUR & Fries",
+    items: [
+      "Patty Burger Ayam", "Patty Burger Daging", "Patty Oblong Ayam", 
+      "Patty Oblong Daging", "Patty Oblong Kambing", "Patty Crispy Original", 
+      "Patty Crispy Hot & Spicy", "Telur Ayam", "Curly Fries", "French Fries"
+    ]
+  },
+  {
+    title: "🍞 2. ROTI & CHEESE",
+    items: ["Roti Burger", "Roti Oblong", "Cheddar Cheese", "Sos Cheese"]
+  },
+  {
+    title: "🥬 3. SAYURAN & TOPPING",
+    items: ["Kubis", "Lettuce", "Bawang Holland"]
+  },
+  {
+    title: "🥫 4. SOS & BAHAN MASAKAN",
+    items: [
+      "Sos Blackpepper Ramly", "Sos Cili", "Mayonis", "Sos Tiram", 
+      "Maggi Seasoning", "Marjerin", "Gula", "Cuka Putih", 
+      "Serbuk Lada Hitam", "Serbuk Lada Putih"
+    ]
+  },
+  {
+    title: "🔥 5. GAS & PERALATAN OPERASI",
+    items: ["Tong Gas Penuh", "Tong Gas Sedang Digunakan", "Tong Gas Kosong"]
+  },
+  {
+    title: "📦 6. BARANG PEMBUNGKUSAN",
+    items: ["Kertas Bungkus Burger", "Plastik Bungkus", "Paper Beg Kecil", "Paper Bag Besar"]
+  }
+];
+
 const defaultData = {
   menu: [
     {id:'m1',name:'Chicken Burger',price:6},
@@ -97,9 +127,8 @@ const defaultData = {
     {id:'m6',name:'Drink',price:3}
   ],
   orders: [],
-  stock: [],
-  stockHistory: {}, // { '2026-11-12': [ { name, qty, unit } ] }
-  reports: {}       // { '2026-11-12': { opening: 100, closing: 0, paidIn: 0, paidOut: 0, outNote: '' } }
+  stockClosing: {}, // Keyed by date: { items: { 'Patty Burger Ayam': '5 pek' }, restock: '', expired: '', notes: '' }
+  cashReports: {}   // Keyed by date: { opening: '170.30', closing: '208.80', paidOut: '', paidIn: '' }
 };
 
 let S = { ...defaultData };
@@ -107,18 +136,20 @@ let currentUser = null;
 let unsubscribeFirestore = null;
 let cart = {}, tab = 'order', selDay = null, armed = null;
 let orderCust = '', orderType = 'pickup', orderNotes = {};
-let selStockDay = null;
-let reportDate = '';
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const money = n => 'RM ' + (+n || 0).toFixed(2);
 const dkey = d => { d = new Date(d); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+const formatDMY = dStr => {
+  if(!dStr) return '';
+  const [y,m,d] = dStr.split('-');
+  return `${parseInt(d)}/${parseInt(m)}/${y}`;
+};
 const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $ = id => document.getElementById(id);
 
 const PRESET_REMARKS = ['No Vege', 'No Sauce', 'Less Sauce', 'Extra Sauce', 'No Mayo', 'Extra Cheese', 'Pedas', 'Tak Pedas'];
 
-// Total items sold calculator (1 order with 3 burgers = 3 items sold)
 const sum = l => {
   let cash = 0, qr = 0, itemsSold = 0;
   l.forEach(o => {
@@ -163,9 +194,8 @@ auth.onAuthStateChanged(user => {
         S = doc.data();
         S.menu = S.menu || [];
         S.orders = S.orders || [];
-        S.stock = S.stock || [];
-        S.stockHistory = S.stockHistory || {};
-        S.reports = S.reports || {};
+        S.stockClosing = S.stockClosing || {};
+        S.cashReports = S.cashReports || {};
       } else {
         db.collection('stall').doc('data').set(defaultData);
         S = defaultData;
@@ -202,7 +232,7 @@ function delBtn(k,id){
   return `<button class="ghost danger" data-act="del" data-k="${k}" data-id="${id}">${armed==k+id?'Tap again to confirm':'Delete'}</button>`;
 }
 
-// 1. ORDER VIEW (Menu on top + Quick Remark Buttons)
+// 1. ORDER VIEW
 function vOrder(){
   const m = S.menu, ids = Object.keys(cart).filter(i => m.find(x => x.id == i));
   let total = 0;
@@ -269,7 +299,7 @@ function vOrder(){
   </div>`;
 }
 
-// 2. LIVE KITCHEN & STATUS TRACKER
+// 2. LIVE KITCHEN
 function vLive(){
   const todayKey = dkey(Date.now());
   const activeOrders = S.orders.filter(o => dkey(o.t) == todayKey && o.status != 'completed').sort((a,b) => a.t - b.t);
@@ -313,21 +343,10 @@ function vLive(){
 
       <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end;align-items:center">
         ${delBtn('order', o.id)}
-        ${o.status == 'cooking' ? `
-          <button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="ready">🍳 Done Cooking</button>
-        ` : ''}
-        
-        ${o.status == 'ready' && !isDelivery ? `
-          <button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Collected</button>
-        ` : ''}
-
-        ${o.status == 'ready' && isDelivery ? `
-          <button class="action-btn" style="background:#1864ab" data-act="setstatus" data-id="${o.id}" data-st="out">🛵 Out for Delivery</button>
-        ` : ''}
-
-        ${o.status == 'out' ? `
-          <button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="completed">🏁 Delivered</button>
-        ` : ''}
+        ${o.status == 'cooking' ? `<button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="ready">🍳 Done Cooking</button>` : ''}
+        ${o.status == 'ready' && !isDelivery ? `<button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Collected</button>` : ''}
+        ${o.status == 'ready' && isDelivery ? `<button class="action-btn" style="background:#1864ab" data-act="setstatus" data-id="${o.id}" data-st="out">🛵 Out for Delivery</button>` : ''}
+        ${o.status == 'out' ? `<button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="completed">🏁 Delivered</button>` : ''}
       </div>
     </div>`;
   }).join('')}`;
@@ -376,7 +395,7 @@ function vToday(){
   return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k);
 }
 
-// 4. HISTORY (Items sold count)
+// 4. HISTORY
 function vHist(){
   if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
   
@@ -417,158 +436,131 @@ function vHist(){
   return h;
 }
 
-// 5. STOCK WITH DAILY HISTORY TRACKING
-function vStock(){
-  const todayStr = dkey(Date.now());
-  const histDates = Object.keys(S.stockHistory || {}).sort().reverse();
+// 5. STOK HARIAN (Matches Boss's exact 8-part WhatsApp format)
+let curStockDate = dkey(Date.now());
 
-  let histHtml = '';
-  if(selStockDay){
-    const records = (S.stockHistory && S.stockHistory[selStockDay]) || [];
-    histHtml = `
-    <div class="card" style="border:2px solid var(--blue)">
-      <div class="row">
-        <b>Stock on ${selStockDay}</b>
-        <button class="ghost" data-act="closestockhist">Close</button>
-      </div>
-      <div style="margin-top:8px">
-        ${records.map(r => `
-          <div class="row"><span>${esc(r.name)}</span><b>${r.qty} ${esc(r.unit||'')}</b></div>
-        `).join('') || '<span class="mu">No items recorded on this date.</span>'}
-      </div>
-    </div>`;
-  }
+function vStock(){
+  curStockDate = curStockDate || dkey(Date.now());
+  const st = (S.stockClosing && S.stockClosing[curStockDate]) || { items: {}, restock: '', expired: '', notes: '' };
+  st.items = st.items || {};
 
   return `
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <h2>Current Stock</h2>
-    <button class="action-btn" style="background:var(--ok)" data-act="savestocktoday">📸 Save Today's Count</button>
+    <h2>Laporan Stok Closing</h2>
+    <input type="date" value="${curStockDate}" data-ch="stkdate" style="padding:4px 8px">
   </div>
   
-  ${S.stock.map(s => `
-    <div class="card">
-      <div class="row"><b>${esc(s.name)}</b>${delBtn('stock',s.id)}</div>
-      <div class="q" style="margin-top:6px">
-        <button class="sm" data-act="sadj" data-id="${s.id}" data-d="-1">−</button>
-        <input class="n" type="number" inputmode="decimal" value="${s.qty}" data-ch="sq" data-id="${s.id}">
-        <button class="sm" data-act="sadj" data-id="${s.id}" data-d="1">+</button>
-        <span class="mu">${esc(s.unit||'')}</span>
-      </div>
-    </div>
-  `).join('') || '<p class="mu">No stock items yet.</p>'}
+  <button class="whatsapp-btn" data-act="copystockwa" style="margin-bottom:10px">
+    📱 Copy WhatsApp Laporan Stok
+  </button>
 
-  <div class="card">
-    <b>Add ingredient</b>
-    <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-      <input id="sn" placeholder="Name (e.g. Burger Buns)" style="flex:2 1 140px">
-      <input id="sq" class="n" type="number" inputmode="decimal" placeholder="Qty">
-      <input id="su" placeholder="Unit (pcs, kg)" style="width:100px">
+  ${DEFAULT_STOCK_STRUCTURE.map((sec, sIdx) => `
+    <div class="sec-hdr">${sec.title}</div>
+    <div class="card">
+      ${sec.items.map((item, iIdx) => {
+        const val = st.items[item] || '';
+        return `
+        <div class="row">
+          <span style="flex:1;font-size:14px">${iIdx + 1}. ${esc(item)}</span>
+          <input style="flex:1;max-width:180px;font-size:13px" placeholder="e.g. 5 pek / 1 kotak" value="${esc(val)}" data-ch="stkitem" data-name="${esc(item)}">
+        </div>`;
+      }).join('')}
     </div>
-    <button class="ghost" data-act="addstock" style="margin-top:8px">Add</button>
+  `).join('')}
+
+  <div class="sec-hdr">🛒 7. BARANG PERLU RESTOCK</div>
+  <div class="card">
+    <textarea rows="3" style="width:100%" placeholder="1. Bawang&#10;2. Seasoning&#10;3. Paper bag" data-ch="stkrestock">${esc(st.restock || '')}</textarea>
   </div>
 
-  <h2>Stock History By Date</h2>
-  ${histHtml}
+  <div class="sec-hdr">📝 8. CATATAN CLOSING</div>
   <div class="card">
-    ${histDates.map(d => `
-      <div class="row">
-        <span>📅 ${d}</span>
-        <button class="ghost" data-act="viewstockhist" data-date="${d}">View Records</button>
-      </div>
-    `).join('') || '<span class="mu">No past stock snapshots saved yet. Tap "Save Today\'s Count" above to record daily snapshots.</span>'}
-  </div>`;
+    <div style="margin-bottom:6px">
+      <b>Barang rosak / expired:</b>
+      <input style="width:100%;margin-top:4px" placeholder="e.g. Roti oblong buang 1 pack, expired" value="${esc(st.expired || '')}" data-ch="stkexpired">
+    </div>
+    <div style="margin-top:8px">
+      <b>Catatan lain:</b>
+      <input style="width:100%;margin-top:4px" placeholder="Catatan operasi / alatan lain" value="${esc(st.notes || '')}" data-ch="stknotes">
+    </div>
+  </div>
+
+  <button class="whatsapp-btn" data-act="copystockwa" style="margin-top:12px">
+    📱 Copy WhatsApp Laporan Stok
+  </button>`;
 }
 
-// 6. DAILY CASH & SALES CLOSING REPORT (FOR BOSS)
-function vReport(){
-  reportDate = reportDate || dkey(Date.now());
-  const r = (S.reports && S.reports[reportDate]) || { opening: 0, closing: 0, paidIn: 0, paidOut: 0, outNote: '' };
+// 6. CASH CLOSING REPORT (Matches Boss's exact WhatsApp Cash format)
+let curCashDate = dkey(Date.now());
+
+function vCash(){
+  curCashDate = curCashDate || dkey(Date.now());
+  const cr = (S.cashReports && S.cashReports[curCashDate]) || { opening: '', closing: '', paidOut: '', paidIn: '' };
   
-  const dayOrders = S.orders.filter(o => dkey(o.t) == reportDate);
+  const dayOrders = S.orders.filter(o => dkey(o.t) == curCashDate);
   const s = sum(dayOrders);
-  
-  const opening = +r.opening || 0;
-  const paidIn = +r.paidIn || 0;
-  const paidOut = +r.paidOut || 0;
-  const salesCash = s.cash;
-  const salesQr = s.qr;
-  const totalSales = s.all;
-  
-  const expectedCash = opening + paidIn + salesCash - paidOut;
-  const closing = +r.closing || 0;
-  const variance = closing - expectedCash;
 
   return `
-  <div class="no-print" style="display:flex;justify-content:space-between;align-items:center">
-    <h2>Daily Shift Report</h2>
-    <input type="date" value="${reportDate}" data-ch="repdate" style="padding:4px 8px">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h2>Laporan Opening &amp; Closing Cash</h2>
+    <input type="date" value="${curCashDate}" data-ch="cashdate" style="padding:4px 8px">
   </div>
 
-  <!-- Printable & Exportable Report Container -->
-  <div id="printArea" class="card" style="border:2px solid var(--bd);padding:16px">
-    <div style="text-align:center;border-bottom:2px dashed var(--bd);padding-bottom:10px;margin-bottom:12px">
-      <h2 style="justify-content:center;margin:0 0 4px">🍔 Singgah Cafe</h2>
-      <b>Daily Sales &amp; Cash Report</b>
-      <div class="mu">Date: ${reportDate}</div>
+  <button class="whatsapp-btn" data-act="copycashwa" style="margin-bottom:10px">
+    📱 Copy WhatsApp Laporan Cash
+  </button>
+
+  <div class="card" style="border:2px solid var(--bd);padding:14px">
+    <div style="text-align:center;border-bottom:1px solid var(--bd);padding-bottom:8px;margin-bottom:10px">
+      <b style="font-size:16px">🍔 SINGGAH CAFE</b><br>
+      <span class="mu">LAPORAN OPENING &amp; CLOSING CASH</span><br>
+      <b>Tarikh: ${formatDMY(curCashDate)}</b>
     </div>
 
-    <h3>Sales Summary</h3>
-    <div class="row"><span>Cash Sales</span><b>${money(salesCash)}</b></div>
-    <div class="row"><span>QR Sales</span><b>${money(salesQr)}</b></div>
-    <div class="row" style="font-size:17px;border-top:1px solid var(--bd);padding-top:6px"><span>Total Gross Sales</span><b style="color:var(--ac)">${money(totalSales)}</b></div>
-    <div class="row"><span>Total Items Sold</span><b>${s.n} pcs (${s.ordersCount} orders)</b></div>
+    <div class="sec-hdr" style="margin-top:0">📊 RINGKASAN JUALAN</div>
 
-    <h3>Cash Drawer Reconciliation</h3>
     <div class="row">
-      <span>1. Cash Opening (Modal / Float)</span>
-      <input class="n no-print" type="number" step="0.5" value="${r.opening||0}" data-ch="rep" data-field="opening">
-      <b class="only-print">${money(opening)}</b>
-    </div>
-    
-    <div class="row">
-      <span>2. Paid In (Add Cash)</span>
-      <input class="n no-print" type="number" step="0.5" value="${r.paidIn||0}" data-ch="rep" data-field="paidIn">
-      <b class="only-print">${money(paidIn)}</b>
+      <span>Cash Opening: RM</span>
+      <input class="n" type="number" step="0.1" placeholder="170.30" value="${cr.opening}" data-ch="cashfield" data-f="opening">
     </div>
 
     <div class="row">
-      <span>3. Paid Out (Belanja / Expenses)</span>
-      <input class="n no-print" type="number" step="0.5" value="${r.paidOut||0}" data-ch="rep" data-field="paidOut">
-      <b class="only-print">${money(paidOut)}</b>
-    </div>
-    <div style="margin-bottom:6px">
-      <input class="no-print" style="width:100%;font-size:12px" placeholder="Expense note (e.g. bought ice RM10, gas RM35)" value="${esc(r.outNote||'')}" data-ch="rep" data-field="outNote">
-      ${r.outNote ? `<div class="only-print mu" style="font-size:12px">Note: ${esc(r.outNote)}</div>` : ''}
-    </div>
-
-    <div class="row"><span>4. Cash Sales Added</span><b>+ ${money(salesCash)}</b></div>
-
-    <div class="row" style="background:var(--bg);padding:8px;border-radius:8px;margin:8px 0">
-      <b>Expected Cash in Drawer:</b>
-      <b style="font-size:16px">${money(expectedCash)}</b>
+      <span>Cash Closing: RM</span>
+      <input class="n" type="number" step="0.1" placeholder="208.80" value="${cr.closing}" data-ch="cashfield" data-f="closing">
     </div>
 
     <div class="row">
-      <span>5. Actual Cash Closing (Counted)</span>
-      <input class="n no-print" type="number" step="0.5" value="${r.closing||0}" data-ch="rep" data-field="closing">
-      <b class="only-print">${money(closing)}</b>
+      <span>Paid Out: RM</span>
+      <input class="n" type="number" step="0.1" placeholder="0.00" value="${cr.paidOut}" data-ch="cashfield" data-f="paidOut">
     </div>
 
-    <div class="row" style="background:${variance < 0 ? '#ffe3e3' : (variance > 0 ? '#d3f9d8' : 'var(--bg)')};padding:8px;border-radius:8px">
-      <b>Cash Difference (Variance):</b>
-      <b style="color:${variance < 0 ? '#e03131' : (variance > 0 ? '#2b8a3e' : 'inherit')}">
-        ${variance > 0 ? '+' : ''}${money(variance)} ${variance === 0 ? '✓ Balanced' : (variance < 0 ? '⚠️ Short' : '✨ Over')}
-      </b>
+    <div class="row">
+      <span>Paid In: RM</span>
+      <input class="n" type="number" step="0.1" placeholder="0.00" value="${cr.paidIn}" data-ch="cashfield" data-f="paidIn">
+    </div>
+
+    <div style="margin-top:14px;border-top:1px dashed var(--bd);padding-top:10px">
+      <div class="row">
+        <span>💵 Jualan Cash:</span>
+        <b>RM ${(s.cash).toFixed(2)}</b>
+      </div>
+      <div class="row">
+        <span>📱 Jualan QR:</span>
+        <b>RM ${(s.qr).toFixed(2)}</b>
+      </div>
+      <div class="row" style="font-size:17px;font-weight:800;color:var(--ok);border-top:1.5px solid var(--bd);padding-top:8px">
+        <span>✅ TOTAL JUALAN:</span>
+        <span>RM ${(s.all).toFixed(2)}</span>
+      </div>
     </div>
   </div>
 
-  <div class="no-print" style="display:flex;gap:8px;margin-top:12px">
-    <button class="big" style="background:#25D366" data-act="copyrep">📱 Copy for WhatsApp</button>
-    <button class="big" style="background:#495057" data-act="printrep">🖨️ Print / PDF</button>
-  </div>`;
+  <button class="whatsapp-btn" data-act="copycashwa" style="margin-top:10px">
+    📱 Copy WhatsApp Laporan Cash
+  </button>`;
 }
 
-// 7. SETTINGS VIEW
+// 7. SETTINGS
 function vSet(){
   return `
   <h2>Menu &amp; prices</h2>
@@ -592,7 +584,7 @@ function vSet(){
   <h2>Account</h2>
   <p class="mu">Logged in as: <b>${esc(currentUser ? currentUser.email : '')}</b></p>
   <button class="ghost danger" data-act="logout">Log Out</button>
-  <h2>Raw Backup</h2>
+  <h2>Backup</h2>
   <textarea id="bk" rows="4" style="width:100%">${esc(JSON.stringify(S))}</textarea>
   <div style="display:flex;gap:8px;margin-top:8px">
     <button class="ghost" data-act="copy">Copy backup</button>
@@ -609,8 +601,8 @@ function render(){
     ['live', `🍳 Live ${activeOrdersCount > 0 ? `<span class="badge-count">${activeOrdersCount}</span>` : ''}`],
     ['today', '📊 Today'],
     ['hist', '📅 History'],
-    ['stock', '📦 Stock'],
-    ['rep', '📑 Report'],
+    ['stock', '📦 Stok Harian'],
+    ['cash', '💵 Cash Report'],
     ['set', '⚙️ Settings']
   ];
   
@@ -618,7 +610,7 @@ function render(){
     <button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>
   `).join('');
   
-  $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, rep:vReport, set:vSet }[tab]();
+  $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, cash:vCash, set:vSet }[tab]();
 }
 
 document.addEventListener('click', async e => {
@@ -673,15 +665,6 @@ document.addEventListener('click', async e => {
     const ord = S.orders.find(o => o.id == id);
     if(ord){ ord.status = b.dataset.st; save(); }
   }
-  else if(a=='savestocktoday'){
-    const todayStr = dkey(Date.now());
-    S.stockHistory = S.stockHistory || {};
-    S.stockHistory[todayStr] = S.stock.map(s => ({ name: s.name, qty: s.qty, unit: s.unit }));
-    save();
-    toast(`Today's stock (${todayStr}) recorded!`);
-  }
-  else if(a=='viewstockhist'){ selStockDay = b.dataset.date; }
-  else if(a=='closestockhist'){ selStockDay = null; }
   else if(a=='day') selDay = id;
   else if(a=='back') selDay = null;
   else if(a=='del'){
@@ -689,14 +672,7 @@ document.addEventListener('click', async e => {
     if(armed != k+id){ armed = k+id; render(); return; }
     armed = null;
     if(k=='order') S.orders = S.orders.filter(o => o.id != id);
-    if(k=='stock') S.stock = S.stock.filter(o => o.id != id);
     if(k=='menu'){ S.menu = S.menu.filter(o => o.id != id); delete cart[id]; }
-    save();
-  }
-  else if(a=='sadj'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +((+s.qty || 0) + +b.dataset.d).toFixed(2)); save(); }
-  else if(a=='addstock'){
-    const n = $('sn').value.trim(); if(!n) return;
-    S.stock.push({ id: uid(), name: n, qty: +$('sq').value || 0, unit: $('su').value.trim() });
     save();
   }
   else if(a=='addmenu'){
@@ -705,40 +681,62 @@ document.addEventListener('click', async e => {
     S.menu.push({ id: uid(), name: n, price: p });
     save();
   }
-  else if(a=='printrep'){ window.print(); return; }
-  else if(a=='copyrep'){
-    const d = reportDate;
-    const r = (S.reports && S.reports[d]) || {};
-    const dayOrders = S.orders.filter(o => dkey(o.t) == d);
-    const s = sum(dayOrders);
-    const op = +r.opening||0, pi = +r.paidIn||0, po = +r.paidOut||0, cl = +r.closing||0;
-    const exp = op + pi + s.cash - po;
-    const diff = cl - exp;
+  else if(a=='copystockwa'){
+    const st = (S.stockClosing && S.stockClosing[curStockDate]) || { items: {}, restock: '', expired: '', notes: '' };
+    st.items = st.items || {};
 
-    const msg = `*🍔 SINGGAH CAFE - DAILY REPORT*
-📅 Date: ${d}
-━━━━━━━━━━━━━━━━━━
-💰 *SALES SUMMARY*
-💵 Cash Sales: ${money(s.cash)}
-📱 QR Sales: ${money(s.qr)}
-⭐ Total Sales: ${money(s.all)}
-📦 Total Items Sold: ${s.n} (${s.ordersCount} orders)
+    let msg = `🍔 *SINGGAH CAFE*
+📋 *LAPORAN STOK CLOSING HARIAN*
 
-━━━━━━━━━━━━━━━━━━
-💵 *CASH DRAWER COUNT*
-➕ Opening Modal: ${money(op)}
-➕ Paid In: ${money(pi)}
-➖ Paid Out: ${money(po)}${r.outNote ? ` (${r.outNote})` : ''}
-➕ Cash Sales: +${money(s.cash)}
-----------------------------------
-🎯 Expected Cash: ${money(exp)}
-📥 Actual Closing Cash: ${money(cl)}
-${diff === 0 ? '✅ Status: Balanced' : (diff < 0 ? `⚠️ Short: ${money(diff)}` : `✨ Over: +${money(diff)}`)}
-━━━━━━━━━━━━━━━━━━`;
+📅 Tarikh: ${formatDMY(curStockDate)}\n\n`;
+
+    DEFAULT_STOCK_STRUCTURE.forEach(sec => {
+      msg += `━━━━━━━━━━━━━━━━\n*${sec.title.toUpperCase()}*\n━━━━━━━━━━━━━━━━\n`;
+      sec.items.forEach((item, idx) => {
+        const val = st.items[item] || '-';
+        msg += `${idx + 1}. ${item}: ${val}\n`;
+      });
+      msg += '\n';
+    });
+
+    msg += `━━━━━━━━━━━━━━━━\n🛒 *7. BARANG PERLU RESTOCK*\n${st.restock || '-'}\n\n`;
+    msg += `━━━━━━━━━━━━━━━━\n📝 *8. CATATAN CLOSING*\n━━━━━━━━━━━━━━━━\n`;
+    msg += `Barang rosak / expired: ${st.expired || '-'}\nCatatan lain: ${st.notes || '-'}`;
 
     try {
-      navigator.clipboard.writeText(msg).then(() => toast('Report copied for WhatsApp!'));
-    } catch(x){ toast('Unable to copy'); }
+      navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Stok disalin untuk WhatsApp!'));
+    } catch(x){ toast('Gagal salin'); }
+    return;
+  }
+  else if(a=='copycashwa'){
+    const cr = (S.cashReports && S.cashReports[curCashDate]) || { opening: '', closing: '', paidOut: '', paidIn: '' };
+    const dayOrders = S.orders.filter(o => dkey(o.t) == curCashDate);
+    const s = sum(dayOrders);
+
+    const msg = `🍔 SINGGAH CAFE
+📋 LAPORAN OPENING & CLOSING CASH
+
+📅 Tarikh: ${formatDMY(curCashDate)}
+
+━━━━━━━━━━━━━━━━
+📊 RINGKASAN JUALAN
+━━━━━━━━━━━━━━━━
+
+Cash Opening: RM${cr.opening || ''}
+Cash Closing: RM ${cr.closing || ''}
+Paid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}
+Paid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}
+
+💵 Jualan Cash: RM${(s.cash).toFixed(1)}
+📱 Jualan QR: RM${(s.qr).toFixed(1)}
+
+✅ TOTAL JUALAN: RM${(s.all).toFixed(1)}
+
+━━━━━━━━━━━━━━━━`;
+
+    try {
+      navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Cash disalin untuk WhatsApp!'));
+    } catch(x){ toast('Gagal salin'); }
     return;
   }
   else if(a=='copy'){
@@ -749,7 +747,7 @@ ${diff === 0 ? '✅ Status: Balanced' : (diff < 0 ? `⚠️ Short: ${money(diff)
   else if(a=='restore'){
     try {
       const d = JSON.parse($('bk').value);
-      if(!Array.isArray(d.menu)||!Array.isArray(d.orders)||!Array.isArray(d.stock)) throw 0;
+      if(!Array.isArray(d.menu)||!Array.isArray(d.orders)) throw 0;
       S = d; save(); toast('Restored');
     } catch(x){ toast('Backup text not valid'); return; }
   }
@@ -766,17 +764,47 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const t = e.target, c = t.dataset.ch, id = t.dataset.id;
   if(!c) return;
-  if(c=='sq'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +t.value || 0); save(); }
+
   if(c=='mn'){ const m = S.menu.find(x => x.id == id); if(t.value.trim()) m.name = t.value.trim(); save(); }
   if(c=='mp'){ const m = S.menu.find(x => x.id == id); const p = parseFloat(t.value); if(!isNaN(p)) m.price = p; save(); }
-  if(c=='repdate'){ reportDate = t.value; render(); }
-  if(c=='rep'){
-    const f = t.dataset.field;
-    S.reports = S.reports || {};
-    S.reports[reportDate] = S.reports[reportDate] || { opening:0, closing:0, paidIn:0, paidOut:0, outNote:'' };
-    S.reports[reportDate][f] = (f === 'outNote') ? t.value : (+t.value || 0);
+  
+  // Stock reporting changes
+  if(c=='stkdate'){ curStockDate = t.value; render(); }
+  if(c=='stkitem'){
+    const name = t.dataset.name;
+    S.stockClosing = S.stockClosing || {};
+    S.stockClosing[curStockDate] = S.stockClosing[curStockDate] || { items:{}, restock:'', expired:'', notes:'' };
+    S.stockClosing[curStockDate].items = S.stockClosing[curStockDate].items || {};
+    S.stockClosing[curStockDate].items[name] = t.value;
     save();
-    render();
+  }
+  if(c=='stkrestock'){
+    S.stockClosing = S.stockClosing || {};
+    S.stockClosing[curStockDate] = S.stockClosing[curStockDate] || { items:{}, restock:'', expired:'', notes:'' };
+    S.stockClosing[curStockDate].restock = t.value;
+    save();
+  }
+  if(c=='stkexpired'){
+    S.stockClosing = S.stockClosing || {};
+    S.stockClosing[curStockDate] = S.stockClosing[curStockDate] || { items:{}, restock:'', expired:'', notes:'' };
+    S.stockClosing[curStockDate].expired = t.value;
+    save();
+  }
+  if(c=='stknotes'){
+    S.stockClosing = S.stockClosing || {};
+    S.stockClosing[curStockDate] = S.stockClosing[curStockDate] || { items:{}, restock:'', expired:'', notes:'' };
+    S.stockClosing[curStockDate].notes = t.value;
+    save();
+  }
+
+  // Cash reporting changes
+  if(c=='cashdate'){ curCashDate = t.value; render(); }
+  if(c=='cashfield'){
+    const f = t.dataset.f;
+    S.cashReports = S.cashReports || {};
+    S.cashReports[curCashDate] = S.cashReports[curCashDate] || { opening:'', closing:'', paidOut:'', paidIn:'' };
+    S.cashReports[curCashDate][f] = t.value;
+    save();
   }
 });
 </script>

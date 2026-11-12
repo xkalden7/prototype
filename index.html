@@ -1,33 +1,49 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Singgah Cafe POS</title>
 <style>
-:root{--bg:#fff8f0;--card:#fff;--tx:#2b1d12;--mu:#7a6a5c;--ac:#d9480f;--ok:#2b8a3e;--bd:#ecd9c6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1511;--card:#2a201a;--tx:#f5e9dc;--mu:#b5a291;--ac:#ff8a4c;--ok:#69db7c;--bd:#4a3a2e;color-scheme:dark}}
-*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:0 12px 90px;max-width:720px;margin:auto}
-h2{margin:16px 0 8px;font-size:18px}h3{margin:12px 0 6px;font-size:15px;color:var(--mu)}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
-nav button{flex:1;border:0;background:none;color:var(--mu);padding:12px 2px;font-size:13px}nav button.on{color:var(--ac);font-weight:700}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin:8px 0}
+:root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--warn:#ffc107;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 95px;max-width:760px;margin:auto}
+h2{margin:16px 0 10px;font-size:18px;display:flex;align-items:center;gap:8px}h3{margin:14px 0 8px;font-size:15px;color:var(--mu)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,4px);z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,0.06)}
+nav button{flex:1;border:0;background:none;color:var(--mu);padding:8px 0;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+nav button.on{color:var(--ac);font-weight:700}
+nav button .icon{font-size:18px}
+.badge-count{position:absolute;top:4px;right:calc(50% - 18px);background:#e03131;color:#fff;font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
-button{font:inherit;cursor:pointer}
-.item{background:var(--card);color:var(--tx);border:2px solid var(--bd);border-radius:12px;padding:14px 6px;text-align:center}
-.item b{display:block}.item span{color:var(--ac);font-weight:700}
-.row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
+button{font:inherit;cursor:pointer;border-radius:8px}
+.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:12px;padding:12px 8px;text-align:center;position:relative;transition:all .1s}
+.item:active{transform:scale(0.97)}
+.item b{display:block;font-size:14px;margin-bottom:3px}.item span{color:var(--ac);font-weight:700}
+.item-badge{position:absolute;top:-6px;right:-6px;background:var(--ac);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
 .q{display:flex;align-items:center;gap:6px}
-.sm{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:8px;width:34px;height:34px;font-size:18px}
-.big{flex:1;border:0;border-radius:12px;padding:16px;font-size:17px;font-weight:700;color:#fff}
-.cash{background:var(--ok)}.qr{background:#1971c2}.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:6px 10px}
+.sm{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:8px;width:32px;height:32px;font-size:16px;display:flex;align-items:center;justify-content:center}
+.big{flex:1;border:0;border-radius:10px;padding:14px;font-size:16px;font-weight:700;color:#fff}
+.cash{background:var(--ok)}.qr{background:var(--blue)}.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:6px 12px}
 .danger{color:#e03131;border-color:#e03131}
-input,textarea{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px;min-width:0}
-input.n{width:80px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:14px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:19px}
+input,textarea,select{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
+input.n{width:75px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:13px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:20px;margin-top:2px}
 details{background:var(--card);border:1px solid var(--bd);border-radius:12px;margin:8px 0;padding:10px 12px}summary{cursor:pointer;font-weight:700}
-#toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:20px;display:none;z-index:9}
+#toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
 .status-pill{font-size:11px;padding:3px 8px;border-radius:10px;background:#e9ecef;color:#495057}
-.login-box{max-width:360px;margin:50px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
+.login-box{max-width:360px;margin:60px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
+.type-toggle{display:flex;gap:6px;margin:8px 0}.type-btn{flex:1;padding:10px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;border-radius:10px;text-align:center}
+.type-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.1);color:var(--ac)}
+.tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase}
+.tag-pickup{background:#e7f5ff;color:#1971c2}
+.tag-delivery{background:#fff3bf;color:#d9480f}
+.tag-cooking{background:#ffe8cc;color:#d9480f}
+.tag-ready{background:#d3f9d8;color:#2b8a3e}
+.tag-out{background:#e7f5ff;color:#1864ab}
+.tag-done{background:#f1f3f5;color:#495057}
+.action-btn{padding:8px 12px;border:0;color:#fff;font-weight:700;border-radius:8px;font-size:13px}
 </style></head>
 <body>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px">
-  <h1 style="margin:0;font-size:22px;color:var(--ac)">🍔 Singgah Cafe</h1>
+
+<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 6px">
+  <h1 style="margin:0;font-size:20px;color:var(--ac)">🍔 Singgah Cafe</h1>
   <span id="syncStatus" class="status-pill">Offline</span>
 </div>
 
@@ -41,7 +57,6 @@ details{background:var(--card);border:1px solid var(--bd);border-radius:12px;mar
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <script>
-// --- FIREBASE CONFIGURATION ---
 const firebaseConfig = {
   apiKey: "AIzaSyCze8lXYoPOVfTUIcYtv1T8xEFJ2VuJD8g",
   authDomain: "singgah-cafe.firebaseapp.com",
@@ -72,13 +87,23 @@ let S = { ...defaultData };
 let currentUser = null;
 let unsubscribeFirestore = null;
 let cart = {}, tab = 'order', selDay = null, armed = null;
+let orderCust = '', orderType = 'pickup', orderNotes = {};
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const money = n => 'RM ' + (+n).toFixed(2);
 const dkey = d => { d = new Date(d); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $ = id => document.getElementById(id);
-const sum = l => { let cash=0,qr=0; l.forEach(o => o.pay=='cash'? cash+=o.total : qr+=o.total); return {cash, qr, all: cash+qr, n: l.length}; };
+
+// Total items sold calculator (1 order with 3 burgers = 3 items sold)
+const sum = l => {
+  let cash = 0, qr = 0, itemsSold = 0;
+  l.forEach(o => {
+    if(o.pay == 'cash') cash += o.total; else qr += o.total;
+    itemsSold += (o.items || []).reduce((acc, it) => acc + (it.q || 0), 0);
+  });
+  return { cash, qr, all: cash + qr, n: itemsSold, ordersCount: l.length };
+};
 
 function toast(m){
   const t = $('toast');
@@ -92,7 +117,6 @@ function setStatus(text, bg='#e9ecef', col='#495057'){
   if(s){ s.textContent = text; s.style.background = bg; s.style.color = col; }
 }
 
-// Save to Firebase Cloud
 async function save(){
   if(!currentUser) return;
   try {
@@ -106,13 +130,11 @@ async function save(){
   }
 }
 
-// Track login state
 auth.onAuthStateChanged(user => {
   currentUser = user;
   if(user){
     $('nav').style.display = 'flex';
     setStatus('Connecting...', '#fff3bf', '#e67700');
-    // Start real-time sync with database
     unsubscribeFirestore = db.collection('stall').doc('data').onSnapshot(doc => {
       if(doc.exists){
         S = doc.data();
@@ -130,7 +152,6 @@ auth.onAuthStateChanged(user => {
       setStatus('No Access', '#ffe3e3', '#c92a2a');
     });
   } else {
-    // Logged out
     if(unsubscribeFirestore) unsubscribeFirestore();
     $('nav').style.display = 'none';
     setStatus('Logged Out', '#e9ecef', '#495057');
@@ -142,10 +163,10 @@ function renderLogin(err=''){
   $('app').innerHTML = `
   <div class="login-box">
     <h2 style="margin-top:0">Staff Login</h2>
-    <p class="mu">Sign in with your stall staff account to access orders and sales.</p>
+    <p class="mu">Sign in to take orders and manage stall sales.</p>
     ${err ? `<p style="color:#e03131;font-size:14px">${esc(err)}</p>` : ''}
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
-      <input id="u_email" type="email" placeholder="Staff Email (e.g. staff@singgah.com)">
+      <input id="u_email" type="email" placeholder="Staff Email">
       <input id="u_pass" type="password" placeholder="Password">
       <button class="big" style="background:var(--ac);padding:12px;margin-top:8px" data-act="dologin">Log In</button>
     </div>
@@ -156,128 +177,398 @@ function delBtn(k,id){
   return `<button class="ghost danger" data-act="del" data-k="${k}" data-id="${id}">${armed==k+id?'Tap again to confirm':'Delete'}</button>`;
 }
 
+// 1. ORDER VIEW
 function vOrder(){
- const m = S.menu, ids = Object.keys(cart).filter(i => m.find(x => x.id == i));
- let total = 0;
- const lines = ids.map(i => {
-   const x = m.find(y => y.id == i);
-   total += x.price * cart[i];
-   return `<div class="row"><span>${esc(x.name)}<br><span class="mu">${money(x.price)}</span></span><span class="q"><button class="sm" data-act="dec" data-id="${i}">−</button><b>${cart[i]}</b><button class="sm" data-act="inc" data-id="${i}">+</button></span></div>`;
- }).join('');
- return `<h2>New order</h2>
- <div class="grid">${m.map(x=>`<button class="item" data-act="add" data-id="${x.id}"><b>${esc(x.name)}</b><span>${money(x.price)}</span></button>`).join('')||'<p class="mu">No menu items yet. Add some in Settings.</p>'}</div>
- <div class="card">${lines||'<span class="mu">Tap an item above to add it.</span>'}
- <div class="row"><span>Total</span><span class="tot">${money(total)}</span></div>
- <div style="display:flex;gap:8px;margin-top:8px"><button class="big cash" data-act="pay" data-p="cash">Cash</button><button class="big qr" data-act="pay" data-p="qr">QR</button></div>
- <div style="margin-top:8px"><button class="ghost" data-act="clear">Clear order</button></div></div>`;
+  const m = S.menu, ids = Object.keys(cart).filter(i => m.find(x => x.id == i));
+  let total = 0;
+  
+  const lines = ids.map(i => {
+    const x = m.find(y => y.id == i);
+    total += x.price * cart[i];
+    const curNote = orderNotes[i] || '';
+    return `
+    <div style="padding:8px 0;border-bottom:1px solid var(--bd)">
+      <div class="row">
+        <span><b>${esc(x.name)}</b><br><span class="mu">${money(x.price)} each</span></span>
+        <span class="q">
+          <button class="sm" data-act="dec" data-id="${i}">−</button>
+          <b>${cart[i]}</b>
+          <button class="sm" data-act="inc" data-id="${i}">+</button>
+        </span>
+      </div>
+      <div style="margin-top:4px">
+        <input style="width:100%;font-size:13px;padding:5px 8px" placeholder="Remarks (e.g. No sauce, No veg, Extra cheese)" value="${esc(curNote)}" data-ch="note" data-id="${i}">
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+  <h2>Menu</h2>
+  <div class="grid">
+    ${m.map(x => {
+      const q = cart[x.id] || 0;
+      return `
+      <button class="item" data-act="add" data-id="${x.id}">
+        ${q > 0 ? `<div class="item-badge">${q}</div>` : ''}
+        <b>${esc(x.name)}</b>
+        <span>${money(x.price)}</span>
+      </button>`;
+    }).join('') || '<p class="mu">No menu items yet. Add some in Settings.</p>'}
+  </div>
+
+  <h2>Current Order</h2>
+  <div class="card">
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input id="custNameInput" placeholder="Customer Name / Order #" value="${esc(orderCust)}" style="flex:1" data-ch="cust">
+    </div>
+    <div class="type-toggle">
+      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Pickup</button>
+      <button class="type-btn ${orderType=='delivery'?'active':''}" data-act="settype" data-type="delivery">🛵 Delivery</button>
+    </div>
+    
+    <div style="margin-top:10px">${lines || '<span class="mu">Tap items above to add to order.</span>'}</div>
+    
+    <div class="row" style="margin-top:12px;padding-top:10px;border-top:2px dashed var(--bd)">
+      <span>Total</span>
+      <span class="tot">${money(total)}</span>
+    </div>
+    
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="big cash" data-act="pay" data-p="cash">💵 Cash</button>
+      <button class="big qr" data-act="pay" data-p="qr">📱 QR</button>
+    </div>
+    <div style="margin-top:8px"><button class="ghost" data-act="clear">Clear order</button></div>
+  </div>`;
 }
 
+// 2. LIVE QUEUE & KITCHEN TRACKER
+function vLive(){
+  const todayKey = dkey(Date.now());
+  const activeOrders = S.orders.filter(o => dkey(o.t) == todayKey && o.status != 'completed').sort((a,b) => a.t - b.t);
+  
+  if(!activeOrders.length){
+    return `<h2>Live Kitchen &amp; Orders</h2>
+    <div class="card" style="text-align:center;padding:30px">
+      <div style="font-size:32px">✨</div>
+      <p class="mu" style="margin:8px 0 0">All orders completed! No orders in kitchen.</p>
+    </div>`;
+  }
+
+  return `
+  <h2>Live Orders (${activeOrders.length})</h2>
+  ${activeOrders.map(o => {
+    const isDelivery = o.type == 'delivery';
+    const statusText = o.status == 'cooking' ? '🍳 Cooking' : (o.status == 'ready' ? '✅ Ready' : (o.status == 'out' ? '🛵 Out for Delivery' : 'Done'));
+    const statusClass = o.status == 'cooking' ? 'tag-cooking' : (o.status == 'ready' ? 'tag-ready' : 'tag-out');
+
+    return `
+    <div class="card" style="border-left:5px solid ${o.status=='cooking'?'var(--warn)':'var(--ok)'}">
+      <div class="row">
+        <div>
+          <b>${esc(o.cust || 'Walk-in Customer')}</b>
+          <div class="mu" style="font-size:12px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · ${o.pay=='cash'?'Cash':'QR'}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="tag ${isDelivery?'tag-delivery':'tag-pickup'}">${isDelivery?'🛵 Delivery':'🛍️ Pickup'}</span>
+          <span class="tag ${statusClass}" style="margin-left:4px">${statusText}</span>
+        </div>
+      </div>
+      
+      <div style="background:var(--bg);padding:8px;border-radius:8px;margin:8px 0;font-size:14px">
+        ${(o.items || []).map(i => `
+          <div style="margin-bottom:3px">
+            <b>${i.q}×</b> ${esc(i.n)}
+            ${i.note ? `<span style="color:#d9480f;font-weight:600;font-size:12px"> (${esc(i.note)})</span>` : ''}
+          </div>
+        `).join('')}
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end;align-items:center">
+        ${delBtn('order', o.id)}
+        ${o.status == 'cooking' ? `
+          <button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="ready">🍳 Done Cooking</button>
+        ` : ''}
+        
+        ${o.status == 'ready' && !isDelivery ? `
+          <button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Mark Collected</button>
+        ` : ''}
+
+        ${o.status == 'ready' && isDelivery ? `
+          <button class="action-btn" style="background:#1864ab" data-act="setstatus" data-id="${o.id}" data-st="out">🛵 Out for Delivery</button>
+        ` : ''}
+
+        ${o.status == 'out' ? `
+          <button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="completed">🏁 Mark Delivered</button>
+        ` : ''}
+      </div>
+    </div>`;
+  }).join('')}`;
+}
+
+// 3. TODAY VIEW
 function vDay(k){
- const l = S.orders.filter(o => dkey(o.t) == k).sort((a,b) => b.t - a.t), s = sum(l), c = {};
- l.forEach(o => o.items.forEach(i => c[i.n] = (c[i.n] || 0) + i.q));
- return `<div class="stats"><div>Total sales<b>${money(s.all)}</b></div><div>Orders<b>${s.n}</b></div><div>Cash<b>${money(s.cash)}</b></div><div>QR<b>${money(s.qr)}</b></div></div>
- <h3>Items sold</h3><div class="card">${Object.keys(c).sort((a,b)=>c[b]-c[a]).map(n=>`<div class="row"><span>${esc(n)}</span><b>${c[n]}</b></div>`).join('')||'<span class="mu">Nothing yet.</span>'}</div>
- <h3>Orders</h3>${l.map(o=>`<div class="card"><div class="row"><b>${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${o.pay=='cash'?'Cash':'QR'}</b><b>${money(o.total)}</b></div><div class="mu">${o.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</div><div style="margin-top:6px">${delBtn('order',o.id)}</div></div>`).join('')||''}`;
+  const l = S.orders.filter(o => dkey(o.t) == k).sort((a,b) => b.t - a.t);
+  const s = sum(l);
+  const c = {};
+  l.forEach(o => (o.items || []).forEach(i => c[i.n] = (c[i.n] || 0) + i.q));
+
+  return `
+  <div class="stats">
+    <div>Total sales<b>${money(s.all)}</b></div>
+    <div>Total items sold<b>${s.n}</b></div>
+    <div>Cash<b>${money(s.cash)}</b></div>
+    <div>QR<b>${money(s.qr)}</b></div>
+  </div>
+  
+  <h3>Items sold today</h3>
+  <div class="card">
+    ${Object.keys(c).sort((a,b)=>c[b]-c[a]).map(n => `<div class="row"><span>${esc(n)}</span><b>${c[n]} sold</b></div>`).join('') || '<span class="mu">Nothing sold yet.</span>'}
+  </div>
+  
+  <h3>All Orders (${l.length})</h3>
+  ${l.map(o => `
+    <div class="card">
+      <div class="row">
+        <div>
+          <b>${esc(o.cust || 'Customer')} · ${o.pay=='cash'?'Cash':'QR'}</b>
+          <div class="mu">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · <span class="tag ${o.type=='delivery'?'tag-delivery':'tag-pickup'}">${o.type=='delivery'?'Delivery':'Pickup'}</span></div>
+        </div>
+        <b>${money(o.total)}</b>
+      </div>
+      <div class="mu" style="margin-top:6px">
+        ${(o.items || []).map(i => `${i.q}× ${esc(i.n)}${i.note ? ` (${esc(i.note)})` : ''}`).join(', ')}
+      </div>
+      <div style="margin-top:6px">${delBtn('order', o.id)}</div>
+    </div>
+  `).join('') || '<span class="mu">No orders today.</span>'}`;
 }
 
-function vToday(){ const k = dkey(Date.now()); return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k); }
+function vToday(){
+  const k = dkey(Date.now());
+  return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k);
+}
 
+// 4. HISTORY VIEW
 function vHist(){
- if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
- const months = {}; S.orders.forEach(o => { const d = dkey(o.t); (months[d.slice(0,7)] = months[d.slice(0,7)] || {})[d] = 1; });
- const yrs = {}; Object.keys(months).forEach(m => yrs[m.slice(0,4)] = 1);
- let h = '<h2>Sales history</h2>';
- if(!S.orders.length) return h + '<p class="mu">No sales recorded yet.</p>';
- Object.keys(yrs).sort().reverse().forEach(y => {
-  const ys = sum(S.orders.filter(o => dkey(o.t).slice(0,4) == y));
-  h += `<div class="card"><b>Year ${y}</b><div class="mu">${ys.n} orders · Cash ${money(ys.cash)} · QR ${money(ys.qr)}</div><div class="tot">${money(ys.all)}</div></div>`;
-  Object.keys(months).filter(m => m.startsWith(y)).sort().reverse().forEach(m => {
-   const ms = sum(S.orders.filter(o => dkey(o.t).slice(0,7) == m));
-   h += `<details><summary>${m} — ${money(ms.all)}</summary><div class="mu">${ms.n} orders · Cash ${money(ms.cash)} · QR ${money(ms.qr)}</div>` +
-   Object.keys(months[m]).sort().reverse().map(d => { const ds = sum(S.orders.filter(o => dkey(o.t) == d)); return `<div class="row"><button class="ghost" data-act="day" data-id="${d}">${d}</button><span>${ds.n} orders · <b>${money(ds.all)}</b></span></div>`; }).join('') + '</details>';
+  if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
+  
+  const months = {};
+  S.orders.forEach(o => { const d = dkey(o.t); (months[d.slice(0,7)] = months[d.slice(0,7)] || {})[d] = 1; });
+  const yrs = {};
+  Object.keys(months).forEach(m => yrs[m.slice(0,4)] = 1);
+
+  let h = '<h2>Sales &amp; Items History</h2>';
+  if(!S.orders.length) return h + '<p class="mu">No sales recorded yet.</p>';
+
+  Object.keys(yrs).sort().reverse().forEach(y => {
+    const ys = sum(S.orders.filter(o => dkey(o.t).slice(0,4) == y));
+    h += `
+    <div class="card">
+      <b>Year ${y}</b>
+      <div class="mu">${ys.n} items sold (${ys.ordersCount} orders) · Cash ${money(ys.cash)} · QR ${money(ys.qr)}</div>
+      <div class="tot">${money(ys.all)}</div>
+    </div>`;
+
+    Object.keys(months).filter(m => m.startsWith(y)).sort().reverse().forEach(m => {
+      const ms = sum(S.orders.filter(o => dkey(o.t).slice(0,7) == m));
+      h += `
+      <details>
+        <summary>${m} — ${money(ms.all)} <span class="mu">(${ms.n} items sold)</span></summary>
+        <div class="mu" style="margin:4px 0 8px">${ms.n} items sold · Cash ${money(ms.cash)} · QR ${money(ms.qr)}</div>
+        ${Object.keys(months[m]).sort().reverse().map(d => {
+          const ds = sum(S.orders.filter(o => dkey(o.t) == d));
+          return `
+          <div class="row">
+            <button class="ghost" data-act="day" data-id="${d}">${d}</button>
+            <span>${ds.n} items sold · <b>${money(ds.all)}</b></span>
+          </div>`;
+        }).join('')}
+      </details>`;
+    });
   });
- });
- return h;
+  return h;
 }
 
+// 5. STOCK VIEW
 function vStock(){
- return `<h2>Ingredient stock</h2>${S.stock.map(s=>`<div class="card"><div class="row"><b>${esc(s.name)}</b>${delBtn('stock',s.id)}</div><div class="q" style="margin-top:6px"><button class="sm" data-act="sadj" data-id="${s.id}" data-d="-1">−</button><input class="n" type="number" inputmode="decimal" value="${s.qty}" data-ch="sq" data-id="${s.id}"><button class="sm" data-act="sadj" data-id="${s.id}" data-d="1">+</button><span class="mu">${esc(s.unit||'')}</span></div></div>`).join('')||'<p class="mu">No stock items yet. Add your first below.</p>'}
- <div class="card"><b>Add ingredient</b><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><input id="sn" placeholder="Name (e.g. Buns)" style="flex:2 1 140px"><input id="sq" class="n" type="number" inputmode="decimal" placeholder="Qty"><input id="su" placeholder="Unit (pcs, kg)" style="width:110px"></div><button class="ghost" data-act="addstock" style="margin-top:8px">Add</button></div>`;
+  return `
+  <h2>Ingredient stock</h2>
+  ${S.stock.map(s => `
+    <div class="card">
+      <div class="row"><b>${esc(s.name)}</b>${delBtn('stock',s.id)}</div>
+      <div class="q" style="margin-top:6px">
+        <button class="sm" data-act="sadj" data-id="${s.id}" data-d="-1">−</button>
+        <input class="n" type="number" inputmode="decimal" value="${s.qty}" data-ch="sq" data-id="${s.id}">
+        <button class="sm" data-act="sadj" data-id="${s.id}" data-d="1">+</button>
+        <span class="mu">${esc(s.unit||'')}</span>
+      </div>
+    </div>
+  `).join('') || '<p class="mu">No stock items yet.</p>'}
+  <div class="card">
+    <b>Add ingredient</b>
+    <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
+      <input id="sn" placeholder="Name (e.g. Burger Buns)" style="flex:2 1 140px">
+      <input id="sq" class="n" type="number" inputmode="decimal" placeholder="Qty">
+      <input id="su" placeholder="Unit (pcs, kg)" style="width:100px">
+    </div>
+    <button class="ghost" data-act="addstock" style="margin-top:8px">Add</button>
+  </div>`;
 }
 
+// 6. SETTINGS VIEW
 function vSet(){
- return `<h2>Menu &amp; prices</h2>${S.menu.map(x=>`<div class="card"><div class="row"><input value="${esc(x.name)}" data-ch="mn" data-id="${x.id}" style="flex:1"><input class="n" type="number" step="0.1" inputmode="decimal" value="${x.price}" data-ch="mp" data-id="${x.id}">${delBtn('menu',x.id)}</div></div>`).join('')}
- <div class="card"><b>Add menu item</b><div style="display:flex;gap:6px;margin-top:6px"><input id="mn" placeholder="Name" style="flex:1"><input id="mp" class="n" type="number" step="0.1" inputmode="decimal" placeholder="Price"></div><button class="ghost" data-act="addmenu" style="margin-top:8px">Add</button></div>
- <h2>Account</h2><p class="mu">Logged in as: <b>${esc(currentUser ? currentUser.email : '')}</b></p>
- <button class="ghost danger" data-act="logout">Log Out</button>
- <h2>Backup</h2><p class="mu">Data is securely saved in Google Firebase. You can also copy a local raw backup text below:</p>
- <textarea id="bk" rows="4" style="width:100%">${esc(JSON.stringify(S))}</textarea>
- <div style="display:flex;gap:8px;margin-top:8px"><button class="ghost" data-act="copy">Copy backup</button><button class="ghost" data-act="restore">Restore</button></div>`;
+  return `
+  <h2>Menu &amp; prices</h2>
+  ${S.menu.map(x => `
+    <div class="card">
+      <div class="row">
+        <input value="${esc(x.name)}" data-ch="mn" data-id="${x.id}" style="flex:1">
+        <input class="n" type="number" step="0.1" inputmode="decimal" value="${x.price}" data-ch="mp" data-id="${x.id}">
+        ${delBtn('menu',x.id)}
+      </div>
+    </div>
+  `).join('')}
+  <div class="card">
+    <b>Add menu item</b>
+    <div style="display:flex;gap:6px;margin-top:6px">
+      <input id="mn" placeholder="Name" style="flex:1">
+      <input id="mp" class="n" type="number" step="0.1" inputmode="decimal" placeholder="Price">
+    </div>
+    <button class="ghost" data-act="addmenu" style="margin-top:8px">Add</button>
+  </div>
+  <h2>Account</h2>
+  <p class="mu">Logged in as: <b>${esc(currentUser ? currentUser.email : '')}</b></p>
+  <button class="ghost danger" data-act="logout">Log Out</button>
+  <h2>Backup</h2>
+  <textarea id="bk" rows="4" style="width:100%">${esc(JSON.stringify(S))}</textarea>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button class="ghost" data-act="copy">Copy backup</button>
+    <button class="ghost" data-act="restore">Restore</button>
+  </div>`;
 }
 
 function render(){
- if(!currentUser) return;
- const T = [['order','Order'],['today','Today'],['hist','History'],['stock','Stock'],['set','Settings']];
- $('nav').innerHTML = T.map(t => `<button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>`).join('');
- $('app').innerHTML = {order:vOrder, today:vToday, hist:vHist, stock:vStock, set:vSet}[tab]();
+  if(!currentUser) return;
+  const activeOrdersCount = S.orders.filter(o => dkey(o.t) == dkey(Date.now()) && o.status != 'completed').length;
+  
+  const T = [
+    ['order', '🍔', 'Order'],
+    ['live', '🍳', `Live ${activeOrdersCount > 0 ? `<span class="badge-count">${activeOrdersCount}</span>` : ''}`],
+    ['today', '📊', 'Today'],
+    ['hist', '📅', 'History'],
+    ['stock', '📦', 'Stock'],
+    ['set', '⚙️', 'Settings']
+  ];
+  
+  $('nav').innerHTML = T.map(t => `
+    <button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">
+      <span class="icon">${t[1]}</span>
+      <span>${t[2]}</span>
+    </button>
+  `).join('');
+  
+  $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, set:vSet }[tab]();
 }
 
 document.addEventListener('click', async e => {
- const b = e.target.closest('[data-act]'); if(!b) return;
- const a = b.dataset.act, id = b.dataset.id;
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const a = b.dataset.act, id = b.dataset.id;
 
- if(a=='dologin'){
-   const em = $('u_email').value.trim();
-   const pw = $('u_pass').value;
-   if(!em || !pw) return renderLogin('Please enter both email and password.');
-   try {
-     await auth.signInWithEmailAndPassword(em, pw);
-   } catch(err) {
-     renderLogin(err.message || 'Login failed. Check email or password.');
-   }
-   return;
- }
- if(a=='logout'){
-   await auth.signOut();
-   return;
- }
- if(a=='tab'){ tab = b.dataset.t; selDay = null; armed = null; }
- else if(a=='add') cart[id] = (cart[id] || 0) + 1;
- else if(a=='inc') cart[id]++;
- else if(a=='dec'){ if(--cart[id] <= 0) delete cart[id]; }
- else if(a=='clear') cart = {};
- else if(a=='pay'){
-  const items = Object.keys(cart).map(i => { const x = S.menu.find(y => y.id == i); return x && {n: x.name, p: x.price, q: cart[i]}; }).filter(Boolean);
-  if(!items.length){ toast('Add items first'); return; }
-  S.orders.push({id: uid(), t: Date.now(), items, total: items.reduce((s,i) => s + i.p*i.q, 0), pay: b.dataset.p});
-  cart = {}; save(); toast('Order saved');
- }
- else if(a=='day') selDay = id;
- else if(a=='back') selDay = null;
- else if(a=='del'){
-  const k = b.dataset.k;
-  if(armed != k+id){ armed = k+id; render(); return; }
-  armed = null;
-  if(k=='order') S.orders = S.orders.filter(o => o.id != id);
-  if(k=='stock') S.stock = S.stock.filter(o => o.id != id);
-  if(k=='menu'){ S.menu = S.menu.filter(o => o.id != id); delete cart[id]; }
-  save();
- }
- else if(a=='sadj'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +((+s.qty || 0) + +b.dataset.d).toFixed(2)); save(); }
- else if(a=='addstock'){ const n = $('sn').value.trim(); if(!n) return; S.stock.push({id: uid(), name: n, qty: +$('sq').value || 0, unit: $('su').value.trim()}); save(); }
- else if(a=='addmenu'){ const n = $('mn').value.trim(), p = parseFloat($('mp').value); if(!n || isNaN(p)) return toast('Enter name and price'); S.menu.push({id: uid(), name: n, price: p}); save(); }
- else if(a=='copy'){ const t = $('bk'); t.select(); try{ navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>toast('Select all and copy')); }catch(x){ toast('Select all and copy'); } return; }
- else if(a=='restore'){ try{ const d = JSON.parse($('bk').value); if(!Array.isArray(d.menu)||!Array.isArray(d.orders)||!Array.isArray(d.stock)) throw 0; S = d; save(); toast('Restored'); }catch(x){ toast('Backup text not valid'); return; } }
- render(); window.scrollTo(0, a=='tab'? 0 : scrollY);
+  if(a=='dologin'){
+    const em = $('u_email').value.trim(), pw = $('u_pass').value;
+    if(!em || !pw) return renderLogin('Please enter both email and password.');
+    try { await auth.signInWithEmailAndPassword(em, pw); } 
+    catch(err) { renderLogin(err.message || 'Login failed.'); }
+    return;
+  }
+  if(a=='logout'){ await auth.signOut(); return; }
+  
+  if(a=='tab'){ tab = b.dataset.t; selDay = null; armed = null; }
+  else if(a=='settype'){ orderType = b.dataset.type; }
+  else if(a=='add') cart[id] = (cart[id] || 0) + 1;
+  else if(a=='inc') cart[id]++;
+  else if(a=='dec'){ if(--cart[id] <= 0){ delete cart[id]; delete orderNotes[id]; } }
+  else if(a=='clear'){ cart = {}; orderNotes = {}; orderCust = ''; }
+  else if(a=='pay'){
+    const items = Object.keys(cart).map(i => {
+      const x = S.menu.find(y => y.id == i);
+      return x && { id: x.id, n: x.name, p: x.price, q: cart[i], note: orderNotes[i] || '' };
+    }).filter(Boolean);
+    
+    if(!items.length){ toast('Add items first'); return; }
+    
+    const newOrder = {
+      id: uid(),
+      t: Date.now(),
+      cust: orderCust.trim() || 'Walk-in',
+      type: orderType,
+      status: 'cooking',
+      items,
+      total: items.reduce((s,i) => s + i.p*i.q, 0),
+      pay: b.dataset.p
+    };
+    
+    S.orders.push(newOrder);
+    cart = {}; orderNotes = {}; orderCust = '';
+    save();
+    toast('Order sent to kitchen!');
+  }
+  else if(a=='setstatus'){
+    const ord = S.orders.find(o => o.id == id);
+    if(ord){ ord.status = b.dataset.st; save(); }
+  }
+  else if(a=='day') selDay = id;
+  else if(a=='back') selDay = null;
+  else if(a=='del'){
+    const k = b.dataset.k;
+    if(armed != k+id){ armed = k+id; render(); return; }
+    armed = null;
+    if(k=='order') S.orders = S.orders.filter(o => o.id != id);
+    if(k=='stock') S.stock = S.stock.filter(o => o.id != id);
+    if(k=='menu'){ S.menu = S.menu.filter(o => o.id != id); delete cart[id]; }
+    save();
+  }
+  else if(a=='sadj'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +((+s.qty || 0) + +b.dataset.d).toFixed(2)); save(); }
+  else if(a=='addstock'){
+    const n = $('sn').value.trim(); if(!n) return;
+    S.stock.push({ id: uid(), name: n, qty: +$('sq').value || 0, unit: $('su').value.trim() });
+    save();
+  }
+  else if(a=='addmenu'){
+    const n = $('mn').value.trim(), p = parseFloat($('mp').value);
+    if(!n || isNaN(p)) return toast('Enter name and price');
+    S.menu.push({ id: uid(), name: n, price: p });
+    save();
+  }
+  else if(a=='copy'){
+    const t = $('bk'); t.select();
+    try { navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>toast('Select all and copy')); } catch(x){ toast('Select all and copy'); }
+    return;
+  }
+  else if(a=='restore'){
+    try {
+      const d = JSON.parse($('bk').value);
+      if(!Array.isArray(d.menu)||!Array.isArray(d.orders)||!Array.isArray(d.stock)) throw 0;
+      S = d; save(); toast('Restored');
+    } catch(x){ toast('Backup text not valid'); return; }
+  }
+  
+  render();
+  window.scrollTo(0, a=='tab'? 0 : scrollY);
+});
+
+document.addEventListener('input', e => {
+  const t = e.target, c = t.dataset.ch, id = t.dataset.id;
+  if(c=='note') orderNotes[id] = t.value;
+  if(c=='cust') orderCust = t.value;
 });
 
 document.addEventListener('change', e => {
- const t = e.target, c = t.dataset.ch; if(!c) return;
- const id = t.dataset.id;
- if(c=='sq'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +t.value || 0); }
- if(c=='mn'){ const m = S.menu.find(x => x.id == id); if(t.value.trim()) m.name = t.value.trim(); }
- if(c=='mp'){ const m = S.menu.find(x => x.id == id); const p = parseFloat(t.value); if(!isNaN(p)) m.price = p; }
- save();
+  const t = e.target, c = t.dataset.ch, id = t.dataset.id;
+  if(!c) return;
+  if(c=='sq'){ const s = S.stock.find(x => x.id == id); s.qty = Math.max(0, +t.value || 0); save(); }
+  if(c=='mn'){ const m = S.menu.find(x => x.id == id); if(t.value.trim()) m.name = t.value.trim(); save(); }
+  if(c=='mp'){ const m = S.menu.find(x => x.id == id); const p = parseFloat(t.value); if(!isNaN(p)) m.price = p; save(); }
 });
 </script>
 </body>

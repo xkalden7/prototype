@@ -1,26 +1,28 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Singgah Cafe - Pesan Dari Bilik</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Singgah Cafe - Online Order</title>
 <style>
-:root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd}
-@media (prefers-color-scheme:dark){:root{--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;color-scheme:dark}}
+:root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--err:#e03131}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--err:#ff6b6b;color-scheme:dark}}
 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,sans-serif;padding:0 12px 100px;max-width:540px;margin:auto}
 h2{margin:16px 0 10px;font-size:18px}
-.header{padding:16px 0 12px;border-bottom:1px solid var(--bd);text-align:center}
+.header{padding:14px 0 10px;border-bottom:1px solid var(--bd);text-align:center}
+.lang-bar{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.lang-btn{background:var(--bg);border:1px solid var(--bd);color:var(--tx);font-size:12px;font-weight:700;padding:4px 10px;border-radius:14px;cursor:pointer}
+.lang-btn.active{background:var(--ac);color:#fff;border-color:var(--ac)}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 button{font:inherit;cursor:pointer;border-radius:10px}
-.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:12px;padding:14px 8px;text-align:center}
+.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;transition:transform .1s}
 .item:active{transform:scale(0.97)}
 .item b{display:block;font-size:15px;margin-bottom:4px}.item span{color:var(--ac);font-weight:700}
 .big{width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;font-weight:700;color:#fff}
+.big:disabled{background:#aaa !important;cursor:not-allowed;opacity:0.6}
 input,textarea{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:10px;width:100%}
-.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bd);padding:12px 16px;z-index:90;display:flex;justify-content:space-between;align-items:center}
-.tot{font-size:20px;font-weight:800;color:var(--ac)}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:flex;align-items:flex-end;justify-content:center}
 .modal-sheet{background:var(--card);width:100%;max-width:540px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column}
 .modal-header{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
 .modal-body{padding:14px 18px;overflow-y:auto;flex:1}
 .zus-section{margin-bottom:14px}
-.zus-section-title{font-size:13px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:6px}
+.zus-section-title{font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:6px;display:flex;justify-content:space-between}
 .zus-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:6px}
 .zus-btn{background:var(--bg);border:1.5px solid var(--bd);padding:10px 4px;border-radius:8px;font-weight:600;font-size:12px;color:var(--tx);text-align:center}
 .zus-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.15);color:var(--ac);font-weight:800}
@@ -29,12 +31,22 @@ input,textarea{font:inherit;background:var(--bg);color:var(--tx);border:1px soli
 .qr-box{background:#fff;color:#000;padding:16px;border-radius:12px;text-align:center;border:2px dashed #ff6b00;margin:12px 0}
 .pulse{animation:pulse 1.8s infinite}
 @keyframes pulse{0%{opacity:1}50%{opacity:0.5}100%{opacity:1}}
+.pay-agree{display:flex;gap:10px;align-items:flex-start;background:rgba(255,107,0,0.06);padding:12px;border-radius:10px;border:1px solid var(--ac);margin:10px 0}
+.pay-agree input{width:20px;height:20px;margin-top:2px;cursor:pointer}
+.err-msg{color:var(--err);font-size:12px;margin-top:4px;display:none}
 </style></head>
 <body>
 
 <div class="header">
   <h1 style="margin:0;font-size:22px;color:var(--ac)">🍔 Singgah Cafe</h1>
-  <div style="font-size:13px;color:var(--mu);margin-top:2px">Pesan Dari Bilik • Ambil Di Kaunter Bila Siap</div>
+  <div id="subTitle" style="font-size:13px;color:var(--mu);margin-top:2px">Order From Room • Pickup When Ready</div>
+  
+  <!-- Language Selector -->
+  <div class="lang-bar">
+    <button type="button" class="lang-btn" data-lang="bm">🇲🇾 BM</button>
+    <button type="button" class="lang-btn" data-lang="en">🇬🇧 EN</button>
+    <button type="button" class="lang-btn" data-lang="zh">🇨🇳 中文</button>
+  </div>
 </div>
 
 <div id="content"></div>
@@ -57,27 +69,182 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// Multi-language Dictionary
+const T = {
+  bm: {
+    sub: "Pesan Dari Bilik • Ambil Di Kaunter Bila Siap",
+    menu: "Pilih Menu",
+    tap_opt: "Tekan untuk pilihan",
+    loading: "Menu sedang dimuat naik...",
+    your_order: "Pesanan Anda",
+    normal: "Normal (Standard)",
+    info_title: "Maklumat Anda",
+    name_ph: "Nama Penuh (e.g. Azman)",
+    phone_ph: "No. Telefon / WhatsApp (e.g. 0123456789)",
+    name_err: "Sila masukkan nama yang sah (minima 2 huruf).",
+    phone_err: "Sila masukkan nombor telefon yang sah (9-12 digit).",
+    qr_title: "📱 IMBAS & BAYAR SEBELUM HANTAR",
+    qr_desc: "Sila buat pindahan DuitNow QR sebanyak",
+    qr_acct: "SINGGAH CAFE<br>DuitNow ID / Akaun: <b>012-3456789</b>",
+    qr_note: "*Resit bayaran akan disemak semasa ambil pesanan nanti",
+    agree_pay: "Saya sudah selesai membuat bayaran QR ke akaun di atas.",
+    btn_submit: "Hantar Pesanan",
+    empty_cart: "🛒 Troli kosong. Sila pilih burger di atas.",
+    custom_title: "Pilihan & Catatan",
+    add_cheese: "🧀 Tambah Cheese (+RM 2.00)",
+    sec_addon: "🧀 Tambahan",
+    sec_sayur: "🥬 Sayur",
+    sec_bawang: "🧅 Bawang (Burger Daging)",
+    sec_coleslaw: "🥗 Coleslaw (Burger Ayam / Benjo)",
+    sec_cili: "🥫 Sos Cili",
+    sec_bp: "🥣 Sos Blackpepper",
+    sec_mayo: "🍶 Mayonis",
+    sec_special: "✏️ Catatan Khas",
+    special_ph: "e.g. Masak garing / Sos asing",
+    btn_add_cart: "Tambah ke Troli",
+    track_cooking_h: "SEDANG DIMASAK...",
+    track_cooking_p: "Pesanan anda telah diterima di dapur. Sila tunggu di bilik sehingga siap!",
+    track_ready_h: "BURGER ANDA DAH SIAP!",
+    track_ready_p: "Sila datang ke kaunter Singgah Cafe sekarang untuk ambil pesanan anda.",
+    btn_collected: "✅ Selesai / Dah Ambil",
+    status_wait: "⏳ Menunggu tukang masak...",
+    cust_lbl: "Pelanggan",
+    opt_pick_1: "(Pilih 1 sahaja)"
+  },
+  en: {
+    sub: "Order From Room • Pickup When Ready",
+    menu: "Select Menu",
+    tap_opt: "Tap to customize",
+    loading: "Loading menu...",
+    your_order: "Your Order",
+    normal: "Standard (Normal)",
+    info_title: "Your Details",
+    name_ph: "Full Name (e.g. John / Room 204)",
+    phone_ph: "Phone / WhatsApp (e.g. 0123456789)",
+    name_err: "Please enter a valid name (at least 2 letters).",
+    phone_err: "Please enter a valid phone number (9-12 digits).",
+    qr_title: "📱 SCAN & PAY BEFORE SENDING",
+    qr_desc: "Please transfer DuitNow QR amount of",
+    qr_acct: "SINGGAH CAFE<br>DuitNow ID: <b>012-3456789</b>",
+    qr_note: "*Payment receipt will be verified upon collection",
+    agree_pay: "I have completed the QR payment to the account above.",
+    btn_submit: "Place Order",
+    empty_cart: "🛒 Cart is empty. Tap any burger above to add.",
+    custom_title: "Customize & Remarks",
+    add_cheese: "🧀 Add Cheese (+RM 2.00)",
+    sec_addon: "🧀 Add-ons",
+    sec_sayur: "🥬 Vegetables",
+    sec_bawang: "🧅 Onion (Beef Menu Only)",
+    sec_coleslaw: "🥗 Coleslaw (Chicken / Egg Only)",
+    sec_cili: "🥫 Chilli Sauce",
+    sec_bp: "🥣 Blackpepper Sauce",
+    sec_mayo: "🍶 Mayonnaise",
+    sec_special: "✏️ Special Request",
+    special_ph: "e.g. Well done / Sauce separate",
+    btn_add_cart: "Add to Cart",
+    track_cooking_h: "COOKING IN PROGRESS...",
+    track_cooking_p: "Your order is received in the kitchen. Relax in your room until ready!",
+    track_ready_h: "YOUR BURGER IS READY!",
+    track_ready_p: "Please come to Singgah Cafe counter to collect your food.",
+    btn_collected: "✅ Collected / Completed",
+    status_wait: "⏳ Waiting for chef...",
+    cust_lbl: "Customer",
+    opt_pick_1: "(Choose max 1)"
+  },
+  zh: {
+    sub: "宿舍远程点餐 • 做好到档口自取",
+    menu: "挑选汉堡",
+    tap_opt: "点击进行定制备注",
+    loading: "菜单加载中...",
+    your_order: "已选餐品",
+    normal: "标准做法 (Normal)",
+    info_title: "您的联系信息",
+    name_ph: "姓名 / 房号 (例: 张三 / 302室)",
+    phone_ph: "电话号码 (例: 0123456789)",
+    name_err: "请输入有效姓名（至少2个字）。",
+    phone_err: "请输入有效的电话号码（9至12位数字）。",
+    qr_title: "📱 下单前请扫码完成支付",
+    qr_desc: "请使用 DuitNow QR / 银行扫码转账金额：",
+    qr_acct: "SINGGAH CAFE<br>DuitNow 账号: <b>012-3456789</b>",
+    qr_note: "*取餐时柜台会核对转账截图",
+    agree_pay: "我确认已扫码完成上述金额的支付。",
+    btn_submit: "确认提交订单",
+    empty_cart: "🛒 购物车为空，请点击上方汉堡定制添加。",
+    custom_title: "口味定制与备注",
+    add_cheese: "🧀 加芝士片 (+RM 2.00)",
+    sec_addon: "🧀 加料选项",
+    sec_sayur: "🥬 蔬菜",
+    sec_bawang: "🧅 洋葱 (仅限牛肉汉堡)",
+    sec_coleslaw: "🥗 卷心菜沙拉 (仅限鸡肉/鸡蛋汉堡)",
+    sec_cili: "🥫 辣椒酱",
+    sec_bp: "🥣 黑椒酱",
+    sec_mayo: "🍶 美乃滋 (沙拉酱)",
+    sec_special: "✏️ 其他特殊要求",
+    special_ph: "例: 煎脆一点 / 酱料分开放",
+    btn_add_cart: "加入购物车",
+    track_cooking_h: "厨房正在制作中...",
+    track_cooking_p: "订单已发送到后厨！请在房间稍候，完成后会立即提醒。",
+    track_ready_h: "您的汉堡做好啦！",
+    track_ready_p: "请前往 Singgah Cafe 档口柜台取餐，趁热享用！",
+    btn_collected: "✅ 已取餐 / 结束",
+    status_wait: "⏳ 正在烹饪中...",
+    cust_lbl: "顾客",
+    opt_pick_1: "(限选1项)"
+  }
+};
+
+// Option labels translated
+const OPT_NAMES = {
+  "No Vege": { bm: "Taknak Sayur", en: "No Vege", zh: "不要蔬菜" },
+  "More Vege": { bm: "Lebih Sayur", en: "More Vege", zh: "多放蔬菜" },
+  "No Onion": { bm: "Taknak Bawang", en: "No Onion", zh: "不要洋葱" },
+  "Less Onion": { bm: "Kurang Bawang", en: "Less Onion", zh: "少放洋葱" },
+  "More Onion": { bm: "Lebih Bawang", en: "More Onion", zh: "多放洋葱" },
+  "No Coleslaw": { bm: "Taknak Coleslaw", en: "No Coleslaw", zh: "不要沙律" },
+  "Less Coleslaw": { bm: "Kurang Coleslaw", en: "Less Coleslaw", zh: "少放沙律" },
+  "More Coleslaw": { bm: "Lebih Coleslaw", en: "More Coleslaw", zh: "多放沙律" },
+  "No Sos Cili": { bm: "Taknak Sos Cili", en: "No Chilli Sauce", zh: "不要辣椒酱" },
+  "Less Sos Cili": { bm: "Kurang Sos Cili", en: "Less Chilli Sauce", zh: "少辣椒酱" },
+  "More Sos Cili": { bm: "Lebih Sos Cili", en: "More Chilli Sauce", zh: "多放辣椒酱" },
+  "No Blackpepper Sauce": { bm: "Taknak Blackpepper", en: "No Blackpepper", zh: "不要黑椒酱" },
+  "Less Blackpepper Sauce": { bm: "Kurang Blackpepper", en: "Less Blackpepper", zh: "少黑椒酱" },
+  "More Blackpepper Sauce": { bm: "Lebih Blackpepper", en: "More Blackpepper", zh: "多黑椒酱" },
+  "No Mayo": { bm: "Taknak Mayonis", en: "No Mayo", zh: "不要美乃滋" },
+  "Less Mayo": { bm: "Kurang Mayonis", en: "Less Mayo", zh: "少美乃滋" },
+  "More Mayo": { bm: "Lebih Mayonis", en: "More Mayo", zh: "多美乃滋" }
+};
+
+let currentLang = localStorage.getItem('singgah_lang') || 'en';
 let menu = [];
 let cart = [];
 let customItem = null;
 let activeOrderId = localStorage.getItem('singgah_active_order') || null;
 let activeOrderData = null;
+let isPayAgreed = false;
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const money = n => 'RM ' + (+n || 0).toFixed(2);
-const dkey = d => { d = new Date(d); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
 const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $ = id => document.getElementById(id);
 
-// Load latest menu from Firebase
+function setLang(lang){
+  currentLang = lang;
+  localStorage.setItem('singgah_lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  $('subTitle').textContent = T[currentLang].sub;
+  render();
+  if(customItem) renderCustomModal();
+}
+
+// Real-time menu from Firebase
 db.collection('stall').doc('data').onSnapshot(doc => {
-  if(doc.exists) {
-    menu = doc.data().menu || [];
-  }
+  if(doc.exists) menu = doc.data().menu || [];
   render();
 });
 
-// If customer already has an active order, track its status live
+// Real-time active order status listener
 if(activeOrderId){
   db.collection('orders').doc(activeOrderId).onSnapshot(doc => {
     if(doc.exists){
@@ -91,16 +258,34 @@ if(activeOrderId){
   });
 }
 
+// Burger type helpers
+function isDagingItem(name){
+  return /daging|beef|meat|kambing|lamb/i.test(name || '');
+}
+function isAyamOrBenjoItem(name){
+  return /ayam|chicken|benjo|telur|egg/i.test(name || '');
+}
+
+// Customizer modal
 function openCustomizer(id){
   const m = menu.find(x => x.id == id);
   if(!m) return;
+
+  // Single-selection state per section
   customItem = {
     lineId: uid(),
     itemId: m.id,
     name: m.name,
     basePrice: m.price,
     cheese: false,
-    notes: [],
+    selected: {
+      sayur: '',
+      bawang: '',
+      coleslaw: '',
+      sosCili: '',
+      sosBp: '',
+      mayo: ''
+    },
     customText: ''
   };
   renderCustomModal();
@@ -110,102 +295,157 @@ function renderCustomModal(){
   const modal = $('customModal');
   if(!customItem){ modal.style.display = 'none'; modal.innerHTML = ''; return; }
   
+  const t = T[currentLang];
   const curPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
-  const n = customItem.notes || [];
-  const isSelected = val => n.includes(val);
+  const name = customItem.name;
 
-  const zusSegments = [
-    { title: "🧀 Tambahan Cheese", special: true },
-    { title: "🥬 Sayur", options: ["No Vege", "More Vege"] },
-    { title: "🧅 Bawang", options: ["No Onion", "Less Onion", "More Onion"] },
-    { title: "🥗 Coleslaw", options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"] },
-    { title: "🥫 Sos Cili", options: ["No Sos Cili", "Less Sos Cili", "More Sos Cili"] },
-    { title: "🥣 Sos Blackpepper", options: ["No Blackpepper Sauce", "Less Blackpepper Sauce", "More Blackpepper Sauce"] },
-    { title: "🍶 Mayonis", options: ["No Mayo", "Less Mayo", "More Mayo"] }
-  ];
+  // Build segments dynamically based on burger name keywords
+  const segments = [];
+
+  // 1. Cheese (Available for all)
+  segments.push({ key: 'cheese', title: t.sec_addon, special: 'cheese' });
+
+  // 2. Sayur (Available for all)
+  segments.push({
+    key: 'sayur',
+    title: `${t.sec_sayur} <span style="font-size:11px;font-weight:normal">${t.opt_pick_1}</span>`,
+    options: ["No Vege", "More Vege"]
+  });
+
+  // 3. Bawang (ONLY for Daging/Beef/Lamb)
+  if(isDagingItem(name)){
+    segments.push({
+      key: 'bawang',
+      title: `${t.sec_bawang} <span style="font-size:11px;font-weight:normal">${t.opt_pick_1}</span>`,
+      options: ["No Onion", "Less Onion", "More Onion"]
+    });
+  }
+
+  // 4. Coleslaw (ONLY for Ayam/Benjo)
+  if(isAyamOrBenjoItem(name)){
+    segments.push({
+      key: 'coleslaw',
+      title: `${t.sec_coleslaw} <span style="font-size:11px;font-weight:normal">${t.opt_pick_1}</span>`,
+      options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"]
+    });
+  }
+
+  // 5. Sos Cili (Available for all)
+  segments.push({
+    key: 'sosCili',
+    title: `${t.sec_cili} <span style="font-size:11px;font-weight:normal">${t.opt_pick_1}</span>`,
+    options: ["No Sos Cili", "Less Sos Cili", "More Sos Cili"]
+  });
+
+  // 6. Sos Blackpepper (Available for all)
+  segments.push({
+    key: 'sosBp',
+    title: `${t.sec_bp} <span style="font-size:11px;font-weight:normal">${t.opt_pick_1}</span>`,
+    options: ["No Blackpepper Sauce", "Less Blackpepper Sauce", "More Blackpepper Sauce"]
+  });
+
+  // 7. Mayonis (Available for all)
+  segments.push({
+    key: 'mayo',
+    title: `${t.sec_mayo} <span style="font-size:11px;font-weight:normal">${t.opt_pick_1}</span>`,
+    options: ["No Mayo", "Less Mayo", "More Mayo"]
+  });
 
   modal.innerHTML = `
-  <div class="modal-overlay" data-act="closemodal">
-    <div class="modal-sheet">
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-sheet" id="modalSheet">
       <div class="modal-header">
         <div>
-          <b>${esc(customItem.name)}</b>
-          <div style="font-size:12px;color:var(--mu)">Pilih pilihan anda</div>
+          <b style="font-size:16px">${esc(customItem.name)}</b>
+          <div style="font-size:12px;color:var(--mu)">${t.custom_title}</div>
         </div>
-        <button data-act="closemodal" style="border:0;background:none;font-size:20px;padding:4px 8px">✕</button>
+        <button type="button" data-act="closemodal" style="border:0;background:none;font-size:22px;padding:4px 8px">✕</button>
       </div>
+
       <div class="modal-body">
-        ${zusSegments.map(seg => {
-          if(seg.special){
+        ${segments.map(seg => {
+          if(seg.special === 'cheese'){
             return `
             <div class="zus-section">
               <div class="zus-section-title">${seg.title}</div>
               <div class="zus-options">
-                <button type="button" class="zus-btn cheese ${customItem.cheese?'active':''}" data-act="opt_cheese">
-                  🧀 Cheese (+RM 2.00)
+                <button type="button" class="zus-btn cheese ${customItem.cheese ? 'active' : ''}" data-act="toggle_cheese">
+                  ${t.add_cheese}
                 </button>
               </div>
             </div>`;
           }
+          const curVal = customItem.selected[seg.key] || '';
           return `
           <div class="zus-section">
             <div class="zus-section-title">${seg.title}</div>
             <div class="zus-options">
-              ${seg.options.map(opt => `
-                <button type="button" class="zus-btn ${isSelected(opt)?'active':''}" data-act="opt_sel" data-val="${esc(opt)}">
-                  ${esc(opt)}
-                </button>
-              `).join('')}
+              ${seg.options.map(opt => {
+                const isAct = (curVal === opt);
+                const label = (OPT_NAMES[opt] && OPT_NAMES[opt][currentLang]) || opt;
+                return `
+                <button type="button" class="zus-btn ${isAct ? 'active' : ''}" data-act="select_opt" data-sec="${seg.key}" data-val="${esc(opt)}">
+                  ${esc(label)}
+                </button>`;
+              }).join('')}
             </div>
           </div>`;
         }).join('')}
+
         <div class="zus-section">
-          <div class="zus-section-title">✏️ Catatan Lain (Special Request)</div>
-          <input id="custNote" placeholder="e.g. Masak garing / Sos asing" value="${esc(customItem.customText||'')}">
+          <div class="zus-section-title">${t.sec_special}</div>
+          <input type="text" id="custNoteInput" placeholder="${t.special_ph}" value="${esc(customItem.customText||'')}">
         </div>
       </div>
+
       <div style="padding:12px 18px;border-top:1px solid var(--bd)">
-        <button class="big" style="background:var(--ac)" data-act="confirm_item">
-          Tambah ke Troli • ${money(curPrice)}
+        <button type="button" class="big" style="background:var(--ac)" data-act="confirm_item">
+          ${t.btn_add_cart} • ${money(curPrice)}
         </button>
       </div>
     </div>
   </div>`;
   modal.style.display = 'block';
+
+  // Prevent Enter key in text input from reloading page
+  const noteInput = $('custNoteInput');
+  if(noteInput){
+    noteInput.addEventListener('keydown', e => { if(e.key === 'Enter') e.preventDefault(); });
+    noteInput.addEventListener('input', e => { if(customItem) customItem.customText = e.target.value; });
+  }
 }
 
 function render(){
-  // 1. LIVE TRACKING SCREEN (If customer already placed an order)
-  if(activeOrderData){
-    const st = activeOrderData.status;
-    const isReady = st == 'ready';
-    const isCooking = st == 'cooking';
+  const t = T[currentLang];
 
+  // 1. LIVE TRACKING SCREEN
+  if(activeOrderData){
+    const isReady = activeOrderData.status === 'ready';
     $('content').innerHTML = `
-    <div class="card" style="text-align:center;padding:24px 16px;border:2px solid ${isReady?'var(--ok)':'var(--ac)'}">
-      <div style="font-size:44px;margin-bottom:8px">${isReady?'🎉':'🍳'}</div>
-      <h2 style="margin:0 0 6px">${isReady?'BURGER ANDA DAH SIAP!':'SEDANG DIMASAK...'}</h2>
+    <div class="card" style="text-align:center;padding:26px 16px;border:2px solid ${isReady?'var(--ok)':'var(--ac)'}">
+      <div style="font-size:46px;margin-bottom:8px">${isReady?'🎉':'🍳'}</div>
+      <h2 style="margin:0 0 6px;color:${isReady?'var(--ok)':'var(--ac)'}">${isReady ? t.track_ready_h : t.track_cooking_h}</h2>
       <p style="margin:0 0 16px;color:var(--mu);font-size:14px">
-        ${isReady ? 'Sila datang ke kaunter Singgah Cafe untuk mengambil pesanan anda.' : 'Pesanan anda telah diterima di dapur. Tunggu di bilik/meja sehingga siap!'}
+        ${isReady ? t.track_ready_p : t.track_cooking_p}
       </p>
 
-      <div style="background:var(--bg);padding:12px;border-radius:10px;text-align:left;margin-bottom:14px">
+      <div style="background:var(--bg);padding:14px;border-radius:10px;text-align:left;margin-bottom:16px">
         <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-          <b>Pelanggan: ${esc(activeOrderData.cust)}</b>
+          <b>${t.cust_lbl}: ${esc(activeOrderData.cust)}</b>
           <span style="font-weight:700;color:var(--ac)">${money(activeOrderData.total)} (QR)</span>
         </div>
-        <div style="font-size:13px;color:var(--mu)">
-          ${(activeOrderData.items||[]).map(i => `• ${i.q}× ${esc(i.n)} ${i.note ? `(${esc(i.note)})` : ''}`).join('<br>')}
+        <div style="font-size:13px;color:var(--mu);line-height:1.5">
+          ${(activeOrderData.items||[]).map(i => `• <b>${i.q}×</b> ${esc(i.n)} ${i.note ? `<i>(${esc(i.note)})</i>` : ''}`).join('<br>')}
         </div>
       </div>
 
       ${isReady ? `
-        <button class="big" style="background:var(--ok)" data-act="finishorder">
-          ✅ Selesai / Dah Ambil Burger
+        <button type="button" class="big" style="background:var(--ok)" data-act="finishorder">
+          ${t.btn_collected}
         </button>
       ` : `
-        <div class="pulse" style="font-size:13px;font-weight:700;color:var(--ac)">
-          ⏳ Menunggu tukang masak...
+        <div class="pulse" style="font-size:14px;font-weight:700;color:var(--ac)">
+          ${t.status_wait}
         </div>
       `}
     </div>`;
@@ -216,111 +456,210 @@ function render(){
   const total = cart.reduce((s,i) => s + i.price, 0);
 
   $('content').innerHTML = `
-  <h2>Pilih Menu</h2>
+  <h2>${t.menu}</h2>
   <div class="grid">
     ${menu.map(x => `
       <div class="item" data-act="openitem" data-id="${x.id}">
         <b>${esc(x.name)}</b>
         <span>${money(x.price)}</span>
-        <div style="font-size:11px;color:var(--mu);margin-top:4px">Tekan untuk pilih options</div>
+        <div style="font-size:11px;color:var(--mu);margin-top:4px">${t.tap_opt}</div>
       </div>
-    `).join('') || '<p style="color:var(--mu)">Menu sedang dimuat naik...</p>'}
+    `).join('') || `<p style="color:var(--mu)">${t.loading}</p>`}
   </div>
 
   ${cart.length > 0 ? `
-    <h2>Pesanan Anda (${cart.length} item)</h2>
+    <h2>${t.your_order} (${cart.length})</h2>
     <div class="card">
       ${cart.map((line, idx) => {
         const notes = [];
-        if(line.cheese) notes.push('🧀 +Cheese (+RM2)');
+        if(line.cheese) notes.push(t.add_cheese);
         if(line.notes) notes.push(...line.notes);
         if(line.customText) notes.push(line.customText);
 
         return `
-        <div style="padding:8px 0;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
-          <div>
+        <div style="padding:10px 0;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div style="flex:1">
             <b>${esc(line.name)}</b> <span style="color:var(--ac);font-weight:700">${money(line.price)}</span>
-            <div style="font-size:12px;color:var(--mu)">${notes.join(', ') || 'Normal'}</div>
+            <div style="font-size:12px;color:var(--mu);margin-top:2px">${notes.join(' • ') || t.normal}</div>
           </div>
-          <button style="border:0;background:none;color:#e03131;font-size:18px" data-act="delcart" data-idx="${idx}">✕</button>
+          <button type="button" style="border:0;background:none;color:var(--err);font-size:18px;padding:4px 8px" data-act="delcart" data-idx="${idx}">✕</button>
         </div>`;
       }).join('')}
 
-      <h3 style="margin:16px 0 6px">Maklumat Anda</h3>
-      <input id="custName" placeholder="Nama Anda (e.g. Azman / Bilik 204)" style="margin-bottom:8px">
-      <input id="custPhone" type="tel" placeholder="No. Telefon / WhatsApp" style="margin-bottom:12px">
-
-      <h3 style="margin:12px 0 6px">Bayaran: DuitNow QR Sahaja</h3>
-      <div class="qr-box">
-        <b style="font-size:15px;color:#d9480f">📱 IMBAS &amp; BAYAR SEBELUM HANTAR</b>
-        <p style="font-size:12px;color:#666;margin:6px 0">
-          Sila buat pindahan DuitNow QR sebanyak <b>${money(total)}</b> ke DuitNow stall di bawah:
-        </p>
-        <div style="background:#eee;padding:12px;border-radius:8px;font-family:monospace;font-size:14px;margin-bottom:6px">
-          <b>SINGGAH CAFE</b><br>
-          DuitNow ID / Akaun: <b>012-3456789</b>
-        </div>
-        <div style="font-size:11px;color:#888">*Tunjukkan resit QR bila ambil burger nanti</div>
+      <h3 style="margin:16px 0 6px">${t.info_title}</h3>
+      <div>
+        <input type="text" id="custName" placeholder="${t.name_ph}" style="margin-bottom:2px">
+        <div id="nameErr" class="err-msg">${t.name_err}</div>
+      </div>
+      <div style="margin-top:8px">
+        <input type="tel" id="custPhone" placeholder="${t.phone_ph}" style="margin-bottom:2px">
+        <div id="phoneErr" class="err-msg">${t.phone_err}</div>
       </div>
 
-      <button class="big" style="background:var(--ac);margin-top:10px" data-act="submitorder">
-        🚀 Hantar Pesanan (${money(total)})
+      <h3 style="margin:16px 0 6px">${t.qr_title}</h3>
+      <div class="qr-box">
+        <p style="font-size:13px;color:#333;margin:4px 0">
+          ${t.qr_desc} <b style="font-size:18px;color:var(--ac)">${money(total)}</b>
+        </p>
+        <div style="background:#f1f3f5;padding:12px;border-radius:8px;font-family:monospace;font-size:14px;margin:8px 0">
+          ${t.qr_acct}
+        </div>
+        <div style="font-size:11px;color:#777">${t.qr_note}</div>
+      </div>
+
+      <!-- Payment confirmation checkbox -->
+      <label class="pay-agree">
+        <input type="checkbox" id="chkAgreePay">
+        <span style="font-size:13px;font-weight:600;line-height:1.4">${t.agree_pay}</span>
+      </label>
+
+      <button type="button" class="big" id="btnSubmitOrder" style="background:var(--ac);margin-top:6px" data-act="submitorder">
+        🚀 ${t.btn_submit} (${money(total)})
       </button>
     </div>
   ` : `
     <div class="card" style="text-align:center;color:var(--mu);padding:24px 12px">
-      🛒 Troli kosong. Tekan mana-mana burger di atas untuk pilih sayur, sos, &amp; cheese.
+      ${t.empty_cart}
     </div>
   `}`;
+
+  // Prevent Enter key in customer inputs
+  ['custName', 'custPhone'].forEach(fId => {
+    const el = $(fId);
+    if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter') e.preventDefault(); });
+  });
 }
 
+// Global click handler
 document.addEventListener('click', async e => {
-  if(e.target.classList.contains('modal-overlay')){ customItem = null; renderCustomModal(); return; }
-  const b = e.target.closest('[data-act]'); if(!b) return;
+  // Language button click
+  const langBtn = e.target.closest('[data-lang]');
+  if(langBtn){
+    setLang(langBtn.dataset.lang);
+    return;
+  }
+
+  // Close modal when tapping overlay background
+  if(e.target.id === 'modalOverlay'){
+    customItem = null;
+    renderCustomModal();
+    return;
+  }
+
+  const b = e.target.closest('[data-act]');
+  if(!b) return;
   const a = b.dataset.act, id = b.dataset.id;
 
-  if(a=='openitem'){ openCustomizer(id); }
-  else if(a=='closemodal'){ customItem = null; renderCustomModal(); }
-  else if(a=='opt_cheese'){
-    if(customItem){ customItem.cheese = !customItem.cheese; renderCustomModal(); }
+  if(a === 'openitem'){
+    openCustomizer(id);
   }
-  else if(a=='opt_sel'){
+  else if(a === 'closemodal'){
+    customItem = null;
+    renderCustomModal();
+  }
+  else if(a === 'toggle_cheese'){
     if(customItem){
-      const val = b.dataset.val;
-      const idx = customItem.notes.indexOf(val);
-      if(idx > -1) customItem.notes.splice(idx, 1);
-      else customItem.notes.push(val);
+      const noteInput = $('custNoteInput');
+      if(noteInput) customItem.customText = noteInput.value;
+      customItem.cheese = !customItem.cheese;
       renderCustomModal();
     }
   }
-  else if(a=='confirm_item'){
+  else if(a === 'select_opt'){
     if(customItem){
-      const noteInput = $('custNote');
+      const noteInput = $('custNoteInput');
+      if(noteInput) customItem.customText = noteInput.value;
+
+      const sec = b.dataset.sec;
+      const val = b.dataset.val;
+
+      // 1 option per section: if already selected, deselect; otherwise, select this one only!
+      if(customItem.selected[sec] === val){
+        customItem.selected[sec] = '';
+      } else {
+        customItem.selected[sec] = val;
+      }
+      renderCustomModal();
+    }
+  }
+  else if(a === 'confirm_item'){
+    if(customItem){
+      const noteInput = $('custNoteInput');
       if(noteInput) customItem.customText = noteInput.value.trim();
+
       const finalPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
+      
+      // Collect selected notes
+      const finalNotes = [];
+      Object.keys(customItem.selected).forEach(k => {
+        const optVal = customItem.selected[k];
+        if(optVal){
+          const localized = (OPT_NAMES[optVal] && OPT_NAMES[optVal][currentLang]) || optVal;
+          finalNotes.push(localized);
+        }
+      });
+
       cart.push({
         lineId: customItem.lineId,
         itemId: customItem.itemId,
         name: customItem.name,
         price: finalPrice,
         cheese: customItem.cheese,
-        notes: [...customItem.notes],
+        notes: finalNotes,
         customText: customItem.customText || ''
       });
+
       customItem = null;
       renderCustomModal();
       render();
     }
   }
-  else if(a=='delcart'){
+  else if(a === 'delcart'){
     cart.splice(+b.dataset.idx, 1);
     render();
   }
-  else if(a=='submitorder'){
-    const name = ($('custName').value || '').trim();
-    const phone = ($('custPhone').value || '').trim();
-    if(!name){ alert('Sila masukkan nama anda!'); return; }
-    if(!cart.length){ alert('Troli anda kosong!'); return; }
+  else if(a === 'submitorder'){
+    const nameEl = $('custName');
+    const phoneEl = $('custPhone');
+    const chkPay = $('chkAgreePay');
+    const nameErr = $('nameErr');
+    const phoneErr = $('phoneErr');
+
+    const name = (nameEl ? nameEl.value : '').trim();
+    const phone = (phoneEl ? phoneEl.value : '').trim().replace(/[\s-]/g, '');
+
+    let valid = true;
+
+    // Validate Name (at least 2 letters)
+    if(!name || name.length < 2){
+      if(nameErr) nameErr.style.display = 'block';
+      if(nameEl) nameEl.style.borderColor = 'var(--err)';
+      valid = false;
+    } else {
+      if(nameErr) nameErr.style.display = 'none';
+      if(nameEl) nameEl.style.borderColor = 'var(--bd)';
+    }
+
+    // Validate Phone (digits, 9 to 13 digits)
+    const phoneRegex = /^\+?[0-9]{9,13}$/;
+    if(!phone || !phoneRegex.test(phone)){
+      if(phoneErr) phoneErr.style.display = 'block';
+      if(phoneEl) phoneEl.style.borderColor = 'var(--err)';
+      valid = false;
+    } else {
+      if(phoneErr) phoneErr.style.display = 'none';
+      if(phoneEl) phoneEl.style.borderColor = 'var(--bd)';
+    }
+
+    if(!valid) return;
+
+    // Must check "I have paid"
+    if(!chkPay || !chkPay.checked){
+      alert(currentLang === 'zh' ? '请先完成QR转账并勾选确认方框！' : (currentLang === 'bm' ? 'Sila buat bayaran QR terlebih dahulu dan tandakan kotak pengesahan!' : 'Please complete the QR payment and check the confirmation box first!'));
+      return;
+    }
+
+    if(!cart.length){ return; }
 
     const total = cart.reduce((s,i) => s + i.price, 0);
     const orderId = uid();
@@ -336,8 +675,8 @@ document.addEventListener('click', async e => {
     const newOrder = {
       id: orderId,
       t: Date.now(),
-      cust: `${name} (${phone || 'No Tel'})`,
-      type: 'delivery', // marks as online room pickup
+      cust: `${name} (${phone})`,
+      type: 'delivery',
       status: 'cooking',
       items: items,
       total: total,
@@ -345,30 +684,4 @@ document.addEventListener('click', async e => {
     };
 
     try {
-      await db.collection('orders').doc(orderId).set(newOrder);
-      localStorage.setItem('singgah_active_order', orderId);
-      activeOrderId = orderId;
-      activeOrderData = newOrder;
-      cart = [];
-      
-      // Start real-time listener for this order
-      db.collection('orders').doc(orderId).onSnapshot(doc => {
-        if(doc.exists) activeOrderData = doc.data();
-        render();
-      });
-      render();
-    } catch(err) {
-      console.error(err);
-      alert('Ralat semasa menghantar pesanan. Sila cuba lagi.');
-    }
-  }
-  else if(a=='finishorder'){
-    localStorage.removeItem('singgah_active_order');
-    activeOrderId = null;
-    activeOrderData = null;
-    render();
-  }
-});
-</script>
-</body>
-</html>
+      await db.collection(

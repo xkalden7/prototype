@@ -4,8 +4,6 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;color-scheme:dark}}
 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 60px;max-width:760px;margin:auto}
 h2{margin:16px 0 10px;font-size:18px;display:flex;align-items:center;gap:8px}h3{margin:14px 0 8px;font-size:15px;color:var(--mu)}
-
-/* Top Navigation Bar */
 header{position:sticky;top:0;background:var(--card);z-index:100;border-bottom:1px solid var(--bd);margin:0 -12px 12px;padding:8px 12px 6px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .top-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
@@ -13,7 +11,6 @@ nav::-webkit-scrollbar{display:none}
 nav button{border:1px solid var(--bd);background:var(--bg);color:var(--mu);padding:7px 12px;font-size:12px;font-weight:600;border-radius:20px;display:inline-flex;align-items:center;gap:5px;position:relative;flex-shrink:0}
 nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 .badge-count{background:#e03131;color:#fff;font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700}
-
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
 button{font:inherit;cursor:pointer;border-radius:8px}
@@ -45,7 +42,6 @@ input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-
 .sec-hdr{background:rgba(255,107,0,0.08);color:var(--ac);padding:8px 10px;border-radius:8px;font-weight:800;font-size:14px;margin:12px 0 6px}
 .whatsapp-btn{background:#25D366;color:#fff;border:0;padding:12px;font-weight:700;font-size:15px;border-radius:10px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
 
-/* Zus Coffee Style Modal Customizer */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:flex;align-items:flex-end;justify-content:center}
 .modal-sheet{background:var(--card);width:100%;max-width:600px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -5px 25px rgba(0,0,0,0.25)}
 .modal-header{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
@@ -72,8 +68,6 @@ input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-
 
 <div id="app"></div>
 <div id="toast"></div>
-
-<!-- Modal Container for Customizer -->
 <div id="customModal" style="display:none"></div>
 
 <!-- Firebase SDKs -->
@@ -147,11 +141,10 @@ const defaultData = {
 let S = { ...defaultData };
 let currentUser = null;
 let unsubscribeFirestore = null;
+let unsubscribeOrders = null;
 let cart = []; 
 let tab = 'order', selDay = null, armed = null;
 let orderCust = '', orderType = 'pickup';
-
-// Active customization state for modal
 let customItem = null;
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
@@ -204,6 +197,8 @@ auth.onAuthStateChanged(user => {
   if(user){
     $('topBar').style.display = 'block';
     setStatus('Connecting...', '#fff3bf', '#e67700');
+    
+    // Listen to main stall data
     unsubscribeFirestore = db.collection('stall').doc('data').onSnapshot(doc => {
       if(doc.exists){
         S = doc.data();
@@ -217,12 +212,33 @@ auth.onAuthStateChanged(user => {
       }
       setStatus('Cloud Synced ✓', '#d3f9d8', '#2b8a3e');
       render();
-    }, err => {
-      console.error(err);
-      setStatus('No Access', '#ffe3e3', '#c92a2a');
     });
+
+    // Listen to incoming customer online orders from 'orders' collection!
+    unsubscribeOrders = db.collection('orders').onSnapshot(snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const orderData = change.doc.data();
+        if(change.type === 'added'){
+          const exists = S.orders.some(o => o.id === orderData.id);
+          if(!exists){
+            S.orders.push(orderData);
+            toast(`🔔 Pesanan Baru dari ${orderData.cust}!`);
+            save();
+          }
+        } else if(change.type === 'modified'){
+          const idx = S.orders.findIndex(o => o.id === orderData.id);
+          if(idx > -1){
+            S.orders[idx] = orderData;
+            save();
+          }
+        }
+      });
+      render();
+    });
+
   } else {
     if(unsubscribeFirestore) unsubscribeFirestore();
+    if(unsubscribeOrders) unsubscribeOrders();
     $('topBar').style.display = 'none';
     setStatus('Logged Out', '#e9ecef', '#495057');
     renderLogin();
@@ -233,7 +249,7 @@ function renderLogin(err=''){
   $('app').innerHTML = `
   <div class="login-box">
     <h2 style="margin-top:0">🍔 Singgah Cafe</h2>
-    <p class="mu">Sign in to take orders and manage stall sales.</p>
+    <p class="mu">Staff Sign In</p>
     ${err ? `<p style="color:#e03131;font-size:14px">${esc(err)}</p>` : ''}
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
       <input id="u_email" type="email" placeholder="Staff Email">
@@ -247,16 +263,13 @@ function delBtn(k,id){
   return `<button class="ghost danger" data-act="del" data-k="${k}" data-id="${id}">${armed==k+id?'Tap again to confirm':'Delete'}</button>`;
 }
 
-// ----------------- ZUS STYLE CUSTOMIZER MODAL -----------------
 function openCustomizer(itemId, existingLineId = null){
   const m = S.menu.find(x => x.id == itemId);
   if(!m) return;
 
   if(existingLineId){
     const itemInCart = cart.find(c => c.lineId == existingLineId);
-    if(itemInCart){
-      customItem = JSON.parse(JSON.stringify(itemInCart));
-    }
+    if(itemInCart) customItem = JSON.parse(JSON.stringify(itemInCart));
   } else {
     customItem = {
       lineId: uid(),
@@ -273,15 +286,11 @@ function openCustomizer(itemId, existingLineId = null){
 
 function renderCustomModal(){
   const modalBox = $('customModal');
-  if(!customItem){ 
-    modalBox.style.display = 'none'; 
-    modalBox.innerHTML = '';
-    return; 
-  }
+  if(!customItem){ modalBox.style.display = 'none'; modalBox.innerHTML = ''; return; }
   
   const curPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
   const n = customItem.notes || [];
-  const isSelected = (val) => n.includes(val);
+  const isSelected = val => n.includes(val);
 
   const zusSegments = [
     { title: "🧀 Add-ons (Extra)", special: true },
@@ -346,7 +355,6 @@ function renderCustomModal(){
   modalBox.style.display = 'block';
 }
 
-// ----------------- 1. ORDER VIEW -----------------
 function vOrder(){
   const m = S.menu;
   let total = 0;
@@ -377,26 +385,26 @@ function vOrder(){
   }).join('');
 
   return `
-  <h2>Menu Items (Tap to customize)</h2>
+  <h2>Menu Items (Walk-in Order)</h2>
   <div class="grid">
     ${m.map(x => `
       <div class="item" style="cursor:pointer" data-act="openmenu" data-id="${x.id}">
-        <span class="quick-add-btn" data-act="quickadd" data-id="${x.id}" title="Quick add standard">+</span>
+        <span class="quick-add-btn" data-act="quickadd" data-id="${x.id}">+</span>
         <b>${esc(x.name)}</b>
         <span>${money(x.price)}</span>
       </div>
-    `).join('') || '<p class="mu">No menu items yet. Add some in Settings.</p>'}
+    `).join('') || '<p class="mu">No menu items yet.</p>'}
   </div>
 
   <h2>Current Order</h2>
   <div class="card">
     <input id="custNameInput" placeholder="Customer Name / Order #" value="${esc(orderCust)}" style="width:100%" data-ch="cust">
     <div class="type-toggle">
-      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Pickup</button>
+      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Walk-in Pickup</button>
       <button class="type-btn ${orderType=='delivery'?'active':''}" data-act="settype" data-type="delivery">🛵 Delivery</button>
     </div>
     
-    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to choose options &amp; remarks.</p>'}</div>
+    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to select options.</p>'}</div>
     
     <div class="row" style="margin-top:12px;padding-top:10px;border-top:2px dashed var(--bd)">
       <span>Total</span>
@@ -411,7 +419,6 @@ function vOrder(){
   </div>`;
 }
 
-// ----------------- 2. LIVE KITCHEN -----------------
 function vLive(){
   const todayKey = dkey(Date.now());
   const activeOrders = S.orders.filter(o => dkey(o.t) == todayKey && o.status != 'completed').sort((a,b) => a.t - b.t);
@@ -420,26 +427,26 @@ function vLive(){
     return `<h2>Live Kitchen &amp; Queue</h2>
     <div class="card" style="text-align:center;padding:30px">
       <div style="font-size:32px">✨</div>
-      <p class="mu" style="margin:8px 0 0">All clear! No pending orders right now.</p>
+      <p class="mu" style="margin:8px 0 0">All clear! No pending orders.</p>
     </div>`;
   }
 
   return `
   <h2>Live Orders (${activeOrders.length})</h2>
   ${activeOrders.map(o => {
-    const isDelivery = o.type == 'delivery';
-    const statusText = o.status == 'cooking' ? '🍳 Cooking' : (o.status == 'ready' ? '✅ Ready' : (o.status == 'out' ? '🛵 Out for Delivery' : 'Done'));
-    const statusClass = o.status == 'cooking' ? 'tag-cooking' : (o.status == 'ready' ? 'tag-ready' : 'tag-out');
+    const isOnline = o.cust && o.cust.includes('(');
+    const statusText = o.status == 'cooking' ? '🍳 Cooking' : (o.status == 'ready' ? '✅ Ready' : 'Done');
+    const statusClass = o.status == 'cooking' ? 'tag-cooking' : 'tag-ready';
 
     return `
     <div class="card" style="border-left:5px solid ${o.status=='cooking'?'var(--warn)':'var(--ok)'}">
       <div class="row">
         <div>
-          <b>${esc(o.cust || 'Walk-in Customer')}</b>
+          <b>${esc(o.cust || 'Walk-in')}</b>
           <div class="mu" style="font-size:12px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · ${o.pay=='cash'?'Cash':'QR'}</div>
         </div>
         <div>
-          <span class="tag ${isDelivery?'tag-delivery':'tag-pickup'}">${isDelivery?'🛵 Delivery':'🛍️ Pickup'}</span>
+          <span class="tag ${isOnline?'tag-delivery':'tag-pickup'}">${isOnline?'🌐 Online (Bilik)':'🛍️ Walk-in'}</span>
           <span class="tag ${statusClass}">${statusText}</span>
         </div>
       </div>
@@ -456,15 +463,12 @@ function vLive(){
       <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end;align-items:center">
         ${delBtn('order', o.id)}
         ${o.status == 'cooking' ? `<button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="ready">🍳 Done Cooking</button>` : ''}
-        ${o.status == 'ready' && !isDelivery ? `<button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Collected</button>` : ''}
-        ${o.status == 'ready' && isDelivery ? `<button class="action-btn" style="background:#1864ab" data-act="setstatus" data-id="${o.id}" data-st="out">🛵 Out for Delivery</button>` : ''}
-        ${o.status == 'out' ? `<button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="completed">🏁 Delivered</button>` : ''}
+        ${o.status == 'ready' ? `<button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Collected</button>` : ''}
       </div>
     </div>`;
   }).join('')}`;
 }
 
-// ----------------- 3. TODAY SALES -----------------
 function vDay(k){
   const l = S.orders.filter(o => dkey(o.t) == k).sort((a,b) => b.t - a.t);
   const s = sum(l);
@@ -490,7 +494,7 @@ function vDay(k){
       <div class="row">
         <div>
           <b>${esc(o.cust || 'Customer')} · ${o.pay=='cash'?'Cash':'QR'}</b>
-          <div class="mu">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · <span class="tag ${o.type=='delivery'?'tag-delivery':'tag-pickup'}">${o.type=='delivery'?'Delivery':'Pickup'}</span></div>
+          <div class="mu">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · <span class="tag ${o.type=='delivery'?'tag-delivery':'tag-pickup'}">${o.type=='delivery'?'Online':'Walk-in'}</span></div>
         </div>
         <b>${money(o.total)}</b>
       </div>
@@ -502,55 +506,31 @@ function vDay(k){
   `).join('') || '<span class="mu">No orders today.</span>'}`;
 }
 
-function vToday(){
-  const k = dkey(Date.now());
-  return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k);
-}
+function vToday(){ const k = dkey(Date.now()); return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k); }
 
-// ----------------- 4. HISTORY -----------------
 function vHist(){
   if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
-  
-  const months = {};
-  S.orders.forEach(o => { const d = dkey(o.t); (months[d.slice(0,7)] = months[d.slice(0,7)] || {})[d] = 1; });
-  const yrs = {};
-  Object.keys(months).forEach(m => yrs[m.slice(0,4)] = 1);
-
+  const months = {}; S.orders.forEach(o => { const d = dkey(o.t); (months[d.slice(0,7)] = months[d.slice(0,7)] || {})[d] = 1; });
+  const yrs = {}; Object.keys(months).forEach(m => yrs[m.slice(0,4)] = 1);
   let h = '<h2>Sales &amp; Items History</h2>';
   if(!S.orders.length) return h + '<p class="mu">No sales recorded yet.</p>';
 
   Object.keys(yrs).sort().reverse().forEach(y => {
     const ys = sum(S.orders.filter(o => dkey(o.t).slice(0,4) == y));
-    h += `
-    <div class="card">
-      <b>Year ${y}</b>
-      <div class="mu">${ys.n} items sold (${ys.ordersCount} orders) · Cash ${money(ys.cash)} · QR ${money(ys.qr)}</div>
-      <div class="tot">${money(ys.all)}</div>
-    </div>`;
-
+    h += `<div class="card"><b>Year ${y}</b><div class="mu">${ys.n} items sold (${ys.ordersCount} orders) · Cash ${money(ys.cash)} · QR ${money(ys.qr)}</div><div class="tot">${money(ys.all)}</div></div>`;
     Object.keys(months).filter(m => m.startsWith(y)).sort().reverse().forEach(m => {
       const ms = sum(S.orders.filter(o => dkey(o.t).slice(0,7) == m));
-      h += `
-      <details>
-        <summary>${m} — ${money(ms.all)} <span class="mu">(${ms.n} items sold)</span></summary>
-        <div class="mu" style="margin:4px 0 8px">${ms.n} items sold · Cash ${money(ms.cash)} · QR ${money(ms.qr)}</div>
-        ${Object.keys(months[m]).sort().reverse().map(d => {
-          const ds = sum(S.orders.filter(o => dkey(o.t) == d));
-          return `
-          <div class="row">
-            <button class="ghost" data-act="day" data-id="${d}">${d}</button>
-            <span>${ds.n} items sold · <b>${money(ds.all)}</b></span>
-          </div>`;
-        }).join('')}
-      </details>`;
+      h += `<details><summary>${m} — ${money(ms.all)} <span class="mu">(${ms.n} items sold)</span></summary><div class="mu" style="margin:4px 0 8px">${ms.n} items sold · Cash ${money(ms.cash)} · QR ${money(ms.qr)}</div>` +
+      Object.keys(months[m]).sort().reverse().map(d => {
+        const ds = sum(S.orders.filter(o => dkey(o.t) == d));
+        return `<div class="row"><button class="ghost" data-act="day" data-id="${d}">${d}</button><span>${ds.n} items sold · <b>${money(ds.all)}</b></span></div>`;
+      }).join('') + '</details>';
     });
   });
   return h;
 }
 
-// ----------------- 5. STOK HARIAN (AUTO-CARRYOVER) -----------------
 let curStockDate = dkey(Date.now());
-
 function getStockForDate(targetDate){
   S.stockClosing = S.stockClosing || {};
   if(S.stockClosing[targetDate] && S.stockClosing[targetDate].items && Object.keys(S.stockClosing[targetDate].items).length > 0){
@@ -560,12 +540,7 @@ function getStockForDate(targetDate){
   if(pastDates.length){
     const lastDate = pastDates[pastDates.length - 1];
     const prev = S.stockClosing[lastDate];
-    return {
-      items: { ...(prev.items || {}) },
-      restock: prev.restock || '',
-      expired: '',
-      notes: ''
-    };
+    return { items: { ...(prev.items || {}) }, restock: prev.restock || '', expired: '', notes: '' };
   }
   return { items: {}, restock: '', expired: '', notes: '' };
 }
@@ -580,83 +555,54 @@ function vStock(){
     <h2>Laporan Stok Closing</h2>
     <input type="date" value="${curStockDate}" data-ch="stkdate" style="padding:4px 8px">
   </div>
-  
-  <button class="whatsapp-btn" data-act="copystockwa" style="margin-bottom:10px">
-    📱 Copy WhatsApp Laporan Stok
-  </button>
-
+  <button class="whatsapp-btn" data-act="copystockwa" style="margin-bottom:10px">📱 Copy WhatsApp Laporan Stok</button>
   ${DEFAULT_STOCK_STRUCTURE.map(sec => `
     <div class="sec-hdr">${sec.title}</div>
     <div class="card">
-      ${sec.items.map((item, iIdx) => {
-        const val = st.items[item] || '';
-        return `
+      ${sec.items.map((item, iIdx) => `
         <div class="row">
           <span style="flex:1;font-size:14px">${iIdx + 1}. ${esc(item)}</span>
-          <input style="flex:1;max-width:180px;font-size:13px" placeholder="e.g. 5 pek / 1 kotak" value="${esc(val)}" data-ch="stkitem" data-name="${esc(item)}">
-        </div>`;
-      }).join('')}
+          <input style="flex:1;max-width:180px;font-size:13px" placeholder="e.g. 5 pek" value="${esc(st.items[item] || '')}" data-ch="stkitem" data-name="${esc(item)}">
+        </div>
+      `).join('')}
     </div>
   `).join('')}
-
   <div class="sec-hdr">🛒 7. BARANG PERLU RESTOCK</div>
-  <div class="card">
-    <textarea rows="3" style="width:100%" placeholder="1. Bawang&#10;2. Seasoning&#10;3. Paper bag" data-ch="stkrestock">${esc(st.restock || '')}</textarea>
-  </div>
-
+  <div class="card"><textarea rows="3" style="width:100%" data-ch="stkrestock">${esc(st.restock || '')}</textarea></div>
   <div class="sec-hdr">📝 8. CATATAN CLOSING</div>
   <div class="card">
-    <div style="margin-bottom:6px">
-      <b>Barang rosak / expired:</b>
-      <input style="width:100%;margin-top:4px" placeholder="e.g. Roti oblong buang 1 pack, expired" value="${esc(st.expired || '')}" data-ch="stkexpired">
-    </div>
-    <div style="margin-top:8px">
-      <b>Catatan lain:</b>
-      <input style="width:100%;margin-top:4px" placeholder="Catatan operasi / alatan lain" value="${esc(st.notes || '')}" data-ch="stknotes">
-    </div>
+    <b>Barang rosak / expired:</b><input style="width:100%;margin-top:4px" value="${esc(st.expired || '')}" data-ch="stkexpired">
+    <div style="margin-top:8px"><b>Catatan lain:</b><input style="width:100%;margin-top:4px" value="${esc(st.notes || '')}" data-ch="stknotes"></div>
   </div>
-
-  <button class="whatsapp-btn" data-act="copystockwa" style="margin-top:12px">
-    📱 Copy WhatsApp Laporan Stok
-  </button>`;
+  <button class="whatsapp-btn" data-act="copystockwa" style="margin-top:12px">📱 Copy WhatsApp Laporan Stok</button>`;
 }
 
-// ----------------- 6. CASH CLOSING REPORT -----------------
 let curCashDate = dkey(Date.now());
-
 function getPreviousClosing(targetDate){
   S.cashReports = S.cashReports || {};
   const pastDates = Object.keys(S.cashReports).filter(d => d < targetDate).sort();
   if(!pastDates.length) return null;
-  const lastDate = pastDates[pastDates.length - 1];
-  const lastRep = S.cashReports[lastDate];
-  if(lastRep && lastRep.closing !== '' && lastRep.closing !== undefined){
-    return parseFloat(lastRep.closing);
-  }
+  const lastRep = S.cashReports[pastDates[pastDates.length - 1]];
+  if(lastRep && lastRep.closing !== '' && lastRep.closing !== undefined) return parseFloat(lastRep.closing);
   return null;
 }
 
 function vCash(){
   curCashDate = curCashDate || dkey(Date.now());
   S.cashReports = S.cashReports || {};
-  
   const cr = S.cashReports[curCashDate] || { opening: '', closing: '', paidOut: '', paidIn: '' };
   
   if(cr.opening === '' || cr.opening === undefined){
     const prevClosing = getPreviousClosing(curCashDate);
-    if(prevClosing !== null){
-      cr.opening = prevClosing.toFixed(2);
-    }
+    if(prevClosing !== null) cr.opening = prevClosing.toFixed(2);
   }
 
   const dayOrders = S.orders.filter(o => dkey(o.t) == curCashDate);
   const s = sum(dayOrders);
-
   const op = parseFloat(cr.opening) || 0;
   const pi = parseFloat(cr.paidIn) || 0;
   const po = parseFloat(cr.paidOut) || 0;
-  const cashSales = s.cash;
-  const expectedClosing = (op + pi + cashSales - po);
+  const expectedClosing = (op + pi + s.cash - po);
   const displayedClosing = (cr.closing !== '' && cr.closing !== undefined) ? cr.closing : (expectedClosing > 0 ? expectedClosing.toFixed(2) : '');
 
   return `
@@ -664,69 +610,34 @@ function vCash(){
     <h2>Laporan Opening &amp; Closing Cash</h2>
     <input type="date" value="${curCashDate}" data-ch="cashdate" style="padding:4px 8px">
   </div>
-
-  <button class="whatsapp-btn" data-act="copycashwa" style="margin-bottom:10px">
-    📱 Copy WhatsApp Laporan Cash
-  </button>
-
+  <button class="whatsapp-btn" data-act="copycashwa" style="margin-bottom:10px">📱 Copy WhatsApp Laporan Cash</button>
   <div class="card" style="border:2px solid var(--bd);padding:14px">
     <div style="text-align:center;border-bottom:1px solid var(--bd);padding-bottom:8px;margin-bottom:10px">
-      <b style="font-size:16px">🍔 SINGGAH CAFE</b><br>
-      <span class="mu">LAPORAN OPENING &amp; CLOSING CASH</span><br>
-      <b>Tarikh: ${formatDMY(curCashDate)}</b>
+      <b style="font-size:16px">🍔 SINGGAH CAFE</b><br><span class="mu">LAPORAN OPENING &amp; CLOSING CASH</span><br><b>Tarikh: ${formatDMY(curCashDate)}</b>
     </div>
-
     <div class="sec-hdr" style="margin-top:0">📊 RINGKASAN JUALAN &amp; TUNAI</div>
-
-    <div class="row">
-      <span>Cash Opening: RM</span>
-      <input class="n" type="number" step="0.1" placeholder="170.30" value="${cr.opening}" data-ch="cashfield" data-f="opening">
-    </div>
-
-    <div class="row">
-      <span>Paid In (Masuk Duit): RM</span>
-      <input class="n" type="number" step="0.1" placeholder="0.00" value="${cr.paidIn}" data-ch="cashfield" data-f="paidIn">
-    </div>
-
-    <div class="row">
-      <span>Paid Out (Keluar Duit): RM</span>
-      <input class="n" type="number" step="0.1" placeholder="0.00" value="${cr.paidOut}" data-ch="cashfield" data-f="paidOut">
-    </div>
-
-    <div class="row" style="background:rgba(255,107,0,0.06);padding:8px;border-radius:8px;margin:6px 0">
-      <span><b>💵 Jualan Cash (Auto):</b></span>
-      <b>RM ${(s.cash).toFixed(2)}</b>
-    </div>
-
-    <div class="row">
-      <span><b>Cash Closing: RM</b></span>
-      <input class="n" type="number" step="0.1" placeholder="${expectedClosing.toFixed(2)}" value="${displayedClosing}" data-ch="cashfield" data-f="closing">
-    </div>
-
+    <div class="row"><span>Cash Opening: RM</span><input class="n" type="number" step="0.1" value="${cr.opening}" data-ch="cashfield" data-f="opening"></div>
+    <div class="row"><span>Paid In: RM</span><input class="n" type="number" step="0.1" value="${cr.paidIn}" data-ch="cashfield" data-f="paidIn"></div>
+    <div class="row"><span>Paid Out: RM</span><input class="n" type="number" step="0.1" value="${cr.paidOut}" data-ch="cashfield" data-f="paidOut"></div>
+    <div class="row" style="background:rgba(255,107,0,0.06);padding:8px;border-radius:8px;margin:6px 0"><span><b>💵 Jualan Cash:</b></span><b>RM ${(s.cash).toFixed(2)}</b></div>
+    <div class="row"><span><b>Cash Closing: RM</b></span><input class="n" type="number" step="0.1" placeholder="${expectedClosing.toFixed(2)}" value="${displayedClosing}" data-ch="cashfield" data-f="closing"></div>
     <div style="margin-top:14px;border-top:1px dashed var(--bd);padding-top:10px">
-      <div class="row">
-        <span>💵 Jualan Cash:</span>
-        <b>RM ${(s.cash).toFixed(2)}</b>
-      </div>
-      <div class="row">
-        <span>📱 Jualan QR:</span>
-        <b>RM ${(s.qr).toFixed(2)}</b>
-      </div>
-      <div class="row" style="font-size:17px;font-weight:800;color:var(--ok);border-top:1.5px solid var(--bd);padding-top:8px">
-        <span>✅ TOTAL JUALAN:</span>
-        <span>RM ${(s.all).toFixed(2)}</span>
-      </div>
+      <div class="row"><span>💵 Jualan Cash:</span><b>RM ${(s.cash).toFixed(2)}</b></div>
+      <div class="row"><span>📱 Jualan QR:</span><b>RM ${(s.qr).toFixed(2)}</b></div>
+      <div class="row" style="font-size:17px;font-weight:800;color:var(--ok);border-top:1.5px solid var(--bd);padding-top:8px"><span>✅ TOTAL JUALAN:</span><span>RM ${(s.all).toFixed(2)}</span></div>
     </div>
   </div>
-
-  <button class="whatsapp-btn" data-act="copycashwa" style="margin-top:10px">
-    📱 Copy WhatsApp Laporan Cash
-  </button>`;
+  <button class="whatsapp-btn" data-act="copycashwa" style="margin-top:10px">📱 Copy WhatsApp Laporan Cash</button>`;
 }
 
-// ----------------- 7. SETTINGS -----------------
 function vSet(){
   return `
+  <h2>Customer Link (Untuk Pelanggan Pesan Dari Bilik)</h2>
+  <div class="card">
+    <p class="mu" style="margin-top:0">Kongsikan link ini kepada pelanggan anda (WhatsApp bio / status):</p>
+    <input value="https://singgah-cafe.web.app/order.html" readonly style="font-weight:bold;color:var(--ac)">
+  </div>
+
   <h2>Menu &amp; prices</h2>
   ${S.menu.map(x => `
     <div class="card">
@@ -747,19 +658,12 @@ function vSet(){
   </div>
   <h2>Account</h2>
   <p class="mu">Logged in as: <b>${esc(currentUser ? currentUser.email : '')}</b></p>
-  <button class="ghost danger" data-act="logout">Log Out</button>
-  <h2>Backup</h2>
-  <textarea id="bk" rows="4" style="width:100%">${esc(JSON.stringify(S))}</textarea>
-  <div style="display:flex;gap:8px;margin-top:8px">
-    <button class="ghost" data-act="copy">Copy backup</button>
-    <button class="ghost" data-act="restore">Restore</button>
-  </div>`;
+  <button class="ghost danger" data-act="logout">Log Out</button>`;
 }
 
 function render(){
   if(!currentUser) return;
   const activeOrdersCount = S.orders.filter(o => dkey(o.t) == dkey(Date.now()) && o.status != 'completed').length;
-  
   const T = [
     ['order', '🍔 Order'],
     ['live', `🍳 Live ${activeOrdersCount > 0 ? `<span class="badge-count">${activeOrdersCount}</span>` : ''}`],
@@ -769,159 +673,79 @@ function render(){
     ['cash', '💵 Cash Report'],
     ['set', '⚙️ Settings']
   ];
-  
-  $('nav').innerHTML = T.map(t => `
-    <button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>
-  `).join('');
-  
+  $('nav').innerHTML = T.map(t => `<button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>`).join('');
   $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, cash:vCash, set:vSet }[tab]();
 }
 
-// ----------------- GLOBAL CLICK EVENT LISTENER -----------------
 document.addEventListener('click', async e => {
-  // Check if clicked directly on modal overlay background to close
-  if(e.target.classList.contains('modal-overlay')){
-    customItem = null;
-    renderCustomModal();
-    return;
-  }
-
-  const b = e.target.closest('[data-act]'); 
-  if(!b) return;
-  
+  if(e.target.classList.contains('modal-overlay')){ customItem = null; renderCustomModal(); return; }
+  const b = e.target.closest('[data-act]'); if(!b) return;
   const a = b.dataset.act, id = b.dataset.id;
 
   if(a=='dologin'){
     const em = $('u_email').value.trim(), pw = $('u_pass').value;
-    if(!em || !pw) return renderLogin('Please enter both email and password.');
-    try { await auth.signInWithEmailAndPassword(em, pw); } 
-    catch(err) { renderLogin(err.message || 'Login failed.'); }
+    if(!em || !pw) return renderLogin('Please enter email and password.');
+    try { await auth.signInWithEmailAndPassword(em, pw); } catch(err) { renderLogin(err.message || 'Login failed.'); }
     return;
   }
   if(a=='logout'){ await auth.signOut(); return; }
-  
   if(a=='tab'){ tab = b.dataset.t; selDay = null; armed = null; }
   else if(a=='settype'){ orderType = b.dataset.type; }
-  
-  // Customizer Controls
-  else if(a=='openmenu'){ 
-    openCustomizer(id); 
-  }
+  else if(a=='openmenu'){ openCustomizer(id); }
   else if(a=='quickadd'){
     e.stopPropagation();
     const m = S.menu.find(x => x.id == id);
     if(m){
-      cart.push({
-        lineId: uid(),
-        itemId: m.id,
-        name: m.name,
-        basePrice: m.price,
-        price: m.price,
-        cheese: false,
-        notes: [],
-        customText: ''
-      });
-      render();
-      toast(`Added 1× ${m.name}`);
+      cart.push({ lineId: uid(), itemId: m.id, name: m.name, basePrice: m.price, price: m.price, cheese: false, notes: [], customText: '' });
+      render(); toast(`Added 1× ${m.name}`);
     }
   }
-  else if(a=='editcart'){ 
-    const itemInCart = cart.find(c => c.lineId == id);
-    if(itemInCart) openCustomizer(itemInCart.itemId, id); 
-  }
-  else if(a=='delcart'){ 
-    cart.splice(+b.dataset.idx, 1); 
-    render(); 
-  }
-  else if(a=='closemodal'){ 
-    customItem = null; 
-    renderCustomModal(); 
-  }
+  else if(a=='editcart'){ const itemInCart = cart.find(c => c.lineId == id); if(itemInCart) openCustomizer(itemInCart.itemId, id); }
+  else if(a=='delcart'){ cart.splice(+b.dataset.idx, 1); render(); }
+  else if(a=='closemodal'){ customItem = null; renderCustomModal(); }
   else if(a=='zus_cheese'){
-    if(customItem){
-      const txt = $('zusCustomText');
-      if(txt) customItem.customText = txt.value;
-      customItem.cheese = !customItem.cheese;
-      renderCustomModal();
-    }
+    if(customItem){ const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value; customItem.cheese = !customItem.cheese; renderCustomModal(); }
   }
   else if(a=='zus_opt'){
     if(customItem){
-      const txt = $('zusCustomText');
-      if(txt) customItem.customText = txt.value;
-      const val = b.dataset.val;
-      const idx = customItem.notes.indexOf(val);
-      if(idx > -1) customItem.notes.splice(idx, 1);
-      else customItem.notes.push(val);
+      const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value;
+      const val = b.dataset.val, idx = customItem.notes.indexOf(val);
+      if(idx > -1) customItem.notes.splice(idx, 1); else customItem.notes.push(val);
       renderCustomModal();
     }
   }
   else if(a=='zus_confirm'){
     if(customItem){
-      const txt = $('zusCustomText');
-      if(txt) customItem.customText = txt.value.trim();
-
+      const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value.trim();
       const finalPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
+      const lineData = { lineId: customItem.lineId, itemId: customItem.itemId, name: customItem.name, basePrice: customItem.basePrice, price: finalPrice, cheese: customItem.cheese, notes: [...customItem.notes], customText: customItem.customText || '' };
       const existingIdx = cart.findIndex(c => c.lineId == customItem.lineId);
-      const lineData = {
-        lineId: customItem.lineId,
-        itemId: customItem.itemId,
-        name: customItem.name,
-        basePrice: customItem.basePrice,
-        price: finalPrice,
-        cheese: customItem.cheese,
-        notes: [...customItem.notes],
-        customText: customItem.customText || ''
-      };
-
-      if(existingIdx > -1) cart[existingIdx] = lineData;
-      else cart.push(lineData);
-      
-      customItem = null;
-      renderCustomModal();
-      render();
-      toast('Added to order!');
+      if(existingIdx > -1) cart[existingIdx] = lineData; else cart.push(lineData);
+      customItem = null; renderCustomModal(); render(); toast('Added to order!');
     }
   }
-
   else if(a=='clear'){ cart = []; orderCust = ''; render(); }
   else if(a=='pay'){
     if(!cart.length){ toast('Add items first'); return; }
-    
     const items = cart.map(c => {
-      const remarksList = [];
-      if(c.cheese) remarksList.push('Cheese (+RM2)');
-      if(c.notes && c.notes.length) remarksList.push(...c.notes);
-      if(c.customText) remarksList.push(c.customText);
-
-      return {
-        id: c.itemId,
-        n: c.name,
-        p: c.price,
-        q: 1,
-        note: remarksList.join(', ')
-      };
+      const notes = [];
+      if(c.cheese) notes.push('Cheese (+RM2)');
+      if(c.notes && c.notes.length) notes.push(...c.notes);
+      if(c.customText) notes.push(c.customText);
+      return { id: c.itemId, n: c.name, p: c.price, q: 1, note: notes.join(', ') };
     });
-
-    const newOrder = {
-      id: uid(),
-      t: Date.now(),
-      cust: orderCust.trim() || 'Walk-in',
-      type: orderType,
-      status: 'cooking',
-      items,
-      total: items.reduce((s,i) => s + i.p*i.q, 0),
-      pay: b.dataset.p
-    };
-    
+    const newOrder = { id: uid(), t: Date.now(), cust: orderCust.trim() || 'Walk-in', type: orderType, status: 'cooking', items, total: items.reduce((s,i) => s + i.p*i.q, 0), pay: b.dataset.p };
     S.orders.push(newOrder);
-    cart = []; orderCust = '';
-    save();
-    toast('Order sent to kitchen!');
+    cart = []; orderCust = ''; save(); toast('Order saved!');
   }
   else if(a=='setstatus'){
     const ord = S.orders.find(o => o.id == id);
-    if(ord){ ord.status = b.dataset.st; save(); }
+    if(ord){
+      ord.status = b.dataset.st;
+      save();
+      // Also update the Firestore document so customer phone instantly hears it!
+      db.collection('orders').doc(id).update({ status: b.dataset.st }).catch(()=>{});
+    }
   }
   else if(a=='day') selDay = id;
   else if(a=='back') selDay = null;
@@ -929,92 +753,38 @@ document.addEventListener('click', async e => {
     const k = b.dataset.k;
     if(armed != k+id){ armed = k+id; render(); return; }
     armed = null;
-    if(k=='order') S.orders = S.orders.filter(o => o.id != id);
+    if(k=='order'){ S.orders = S.orders.filter(o => o.id != id); db.collection('orders').doc(id).delete().catch(()=>{}); }
     if(k=='menu') S.menu = S.menu.filter(o => o.id != id);
     save();
   }
   else if(a=='addmenu'){
     const n = $('mn').value.trim(), p = parseFloat($('mp').value);
     if(!n || isNaN(p)) return toast('Enter name and price');
-    S.menu.push({ id: uid(), name: n, price: p });
-    save();
+    S.menu.push({ id: uid(), name: n, price: p }); save();
   }
   else if(a=='copystockwa'){
-    const st = getStockForDate(curStockDate);
-    st.items = st.items || {};
-
+    const st = getStockForDate(curStockDate); st.items = st.items || {};
     let msg = `🍔 *SINGGAH CAFE*\n📋 *LAPORAN STOK CLOSING HARIAN*\n\n📅 Tarikh: ${formatDMY(curStockDate)}\n\n`;
-
     DEFAULT_STOCK_STRUCTURE.forEach(sec => {
       msg += `━━━━━━━━━━━━━━━━\n*${sec.title.toUpperCase()}*\n━━━━━━━━━━━━━━━━\n`;
-      sec.items.forEach((item, idx) => {
-        const val = st.items[item] || '-';
-        msg += `${idx + 1}. ${item}: ${val}\n`;
-      });
+      sec.items.forEach((item, idx) => { msg += `${idx + 1}. ${item}: ${st.items[item] || '-'}\n`; });
       msg += '\n';
     });
-
-    msg += `━━━━━━━━━━━━━━━━\n🛒 *7. BARANG PERLU RESTOCK*\n${st.restock || '-'}\n\n`;
-    msg += `━━━━━━━━━━━━━━━━\n📝 *8. CATATAN CLOSING*\n━━━━━━━━━━━━━━━━\n`;
-    msg += `Barang rosak / expired: ${st.expired || '-'}\nCatatan lain: ${st.notes || '-'}`;
-
-    try {
-      navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Stok disalin untuk WhatsApp!'));
-    } catch(x){ toast('Gagal salin'); }
-    return;
+    msg += `━━━━━━━━━━━━━━━━\n🛒 *7. BARANG PERLU RESTOCK*\n${st.restock || '-'}\n\n━━━━━━━━━━━━━━━━\n📝 *8. CATATAN CLOSING*\n━━━━━━━━━━━━━━━━\nBarang rosak / expired: ${st.expired || '-'}\nCatatan lain: ${st.notes || '-'}`;
+    navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Stok disalin untuk WhatsApp!'));
   }
   else if(a=='copycashwa'){
     S.cashReports = S.cashReports || {};
     const cr = S.cashReports[curCashDate] || { opening: '', closing: '', paidOut: '', paidIn: '' };
     const dayOrders = S.orders.filter(o => dkey(o.t) == curCashDate);
     const s = sum(dayOrders);
-
     const opVal = cr.opening !== '' ? cr.opening : (getPreviousClosing(curCashDate) !== null ? getPreviousClosing(curCashDate).toFixed(2) : '');
-    const op = parseFloat(opVal) || 0;
-    const pi = parseFloat(cr.paidIn) || 0;
-    const po = parseFloat(cr.paidOut) || 0;
+    const op = parseFloat(opVal) || 0, pi = parseFloat(cr.paidIn) || 0, po = parseFloat(cr.paidOut) || 0;
     const expClosing = (op + pi + s.cash - po).toFixed(2);
     const clVal = cr.closing !== '' ? cr.closing : expClosing;
-
-    const msg = `🍔 SINGGAH CAFE
-📋 LAPORAN OPENING & CLOSING CASH
-
-📅 Tarikh: ${formatDMY(curCashDate)}
-
-━━━━━━━━━━━━━━━━
-📊 RINGKASAN JUALAN
-━━━━━━━━━━━━━━━━
-
-Cash Opening: RM${opVal}
-Cash Closing: RM ${clVal}
-Paid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}
-Paid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}
-
-💵 Jualan Cash: RM${(s.cash).toFixed(1)}
-📱 Jualan QR: RM${(s.qr).toFixed(1)}
-
-✅ TOTAL JUALAN: RM${(s.all).toFixed(1)}
-
-━━━━━━━━━━━━━━━━`;
-
-    try {
-      navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Cash disalin untuk WhatsApp!'));
-    } catch(x){ toast('Gagal salin'); }
-    return;
+    const msg = `🍔 SINGGAH CAFE\n📋 LAPORAN OPENING & CLOSING CASH\n\n📅 Tarikh: ${formatDMY(curCashDate)}\n\n━━━━━━━━━━━━━━━━\n📊 RINGKASAN JUALAN\n━━━━━━━━━━━━━━━━\n\nCash Opening: RM${opVal}\nCash Closing: RM ${clVal}\nPaid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}\nPaid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}\n\n💵 Jualan Cash: RM${(s.cash).toFixed(1)}\n📱 Jualan QR: RM${(s.qr).toFixed(1)}\n\n✅ TOTAL JUALAN: RM${(s.all).toFixed(1)}\n\n━━━━━━━━━━━━━━━━`;
+    navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Cash disalin untuk WhatsApp!'));
   }
-  else if(a=='copy'){
-    const t = $('bk'); t.select();
-    try { navigator.clipboard.writeText(t.value).then(()=>toast('Copied'),()=>toast('Select all and copy')); } catch(x){ toast('Select all and copy'); }
-    return;
-  }
-  else if(a=='restore'){
-    try {
-      const d = JSON.parse($('bk').value);
-      if(!Array.isArray(d.menu)||!Array.isArray(d.orders)) throw 0;
-      S = d; save(); toast('Restored');
-    } catch(x){ toast('Backup text not valid'); return; }
-  }
-  
   render();
 });
 
@@ -1027,49 +797,35 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const t = e.target, c = t.dataset.ch, id = t.dataset.id;
   if(!c) return;
-
   if(c=='mn'){ const m = S.menu.find(x => x.id == id); if(t.value.trim()) m.name = t.value.trim(); save(); }
   if(c=='mp'){ const m = S.menu.find(x => x.id == id); const p = parseFloat(t.value); if(!isNaN(p)) m.price = p; save(); }
-  
-  // Stock changes
   if(c=='stkdate'){ curStockDate = t.value; render(); }
   if(c=='stkitem'){
-    const name = t.dataset.name;
-    S.stockClosing = S.stockClosing || {};
-    if(!S.stockClosing[curStockDate]){
-      S.stockClosing[curStockDate] = JSON.parse(JSON.stringify(getStockForDate(curStockDate)));
-    }
+    const name = t.dataset.name; S.stockClosing = S.stockClosing || {};
+    if(!S.stockClosing[curStockDate]) S.stockClosing[curStockDate] = JSON.parse(JSON.stringify(getStockForDate(curStockDate)));
     S.stockClosing[curStockDate].items = S.stockClosing[curStockDate].items || {};
-    S.stockClosing[curStockDate].items[name] = t.value;
-    save();
+    S.stockClosing[curStockDate].items[name] = t.value; save();
   }
   if(c=='stkrestock'){
     S.stockClosing = S.stockClosing || {};
     if(!S.stockClosing[curStockDate]) S.stockClosing[curStockDate] = JSON.parse(JSON.stringify(getStockForDate(curStockDate)));
-    S.stockClosing[curStockDate].restock = t.value;
-    save();
+    S.stockClosing[curStockDate].restock = t.value; save();
   }
   if(c=='stkexpired'){
     S.stockClosing = S.stockClosing || {};
     if(!S.stockClosing[curStockDate]) S.stockClosing[curStockDate] = JSON.parse(JSON.stringify(getStockForDate(curStockDate)));
-    S.stockClosing[curStockDate].expired = t.value;
-    save();
+    S.stockClosing[curStockDate].expired = t.value; save();
   }
   if(c=='stknotes'){
     S.stockClosing = S.stockClosing || {};
     if(!S.stockClosing[curStockDate]) S.stockClosing[curStockDate] = JSON.parse(JSON.stringify(getStockForDate(curStockDate)));
-    S.stockClosing[curStockDate].notes = t.value;
-    save();
+    S.stockClosing[curStockDate].notes = t.value; save();
   }
-
-  // Cash changes
   if(c=='cashdate'){ curCashDate = t.value; render(); }
   if(c=='cashfield'){
-    const f = t.dataset.f;
-    S.cashReports = S.cashReports || {};
+    const f = t.dataset.f; S.cashReports = S.cashReports || {};
     S.cashReports[curCashDate] = S.cashReports[curCashDate] || { opening:'', closing:'', paidOut:'', paidIn:'' };
-    S.cashReports[curCashDate][f] = t.value;
-    save();
+    S.cashReports[curCashDate][f] = t.value; save();
   }
 });
 </script>

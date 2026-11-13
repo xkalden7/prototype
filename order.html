@@ -684,4 +684,32 @@ document.addEventListener('click', async e => {
     };
 
     try {
-      await db.collection(
+      await db.collection('orders').doc(orderId).set(newOrder);
+      localStorage.setItem('singgah_active_order', orderId);
+      activeOrderId = orderId;
+      activeOrderData = newOrder;
+      cart = [];
+
+      db.collection('orders').doc(orderId).onSnapshot(doc => {
+        if(doc.exists) activeOrderData = doc.data();
+        render();
+      });
+      render();
+    } catch(err) {
+      console.error(err);
+      alert('Error submitting order. Please try again.');
+    }
+  }
+  else if(a === 'finishorder'){
+    localStorage.removeItem('singgah_active_order');
+    activeOrderId = null;
+    activeOrderData = null;
+    render();
+  }
+});
+
+// Set default language on load
+setLang(currentLang);
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Singgah Cafe POS</title>
 <style>
-:root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--warn:#ffc107;box-sizing:border-box}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;color-scheme:dark}}
+:root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--warn:#ffc107;--claim:#7950f2;box-sizing:border-box}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;--claim:#9775fa;color-scheme:dark}}
 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 60px;max-width:760px;margin:auto}
 h2{margin:16px 0 10px;font-size:18px;display:flex;align-items:center;gap:8px}h3{margin:14px 0 8px;font-size:15px;color:var(--mu)}
 header{position:sticky;top:0;background:var(--card);z-index:100;border-bottom:1px solid var(--bd);margin:0 -12px 12px;padding:8px 12px 6px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
@@ -19,14 +19,13 @@ button{font:inherit;cursor:pointer;border-radius:8px}
 .item b{display:block;font-size:14px;margin-bottom:3px}.item span{color:var(--ac);font-weight:700}
 .quick-add-btn{position:absolute;top:4px;right:4px;background:var(--bg);border:1px solid var(--bd);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ac);font-weight:bold}
 .row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
-.q{display:flex;align-items:center;gap:6px}
-.sm{border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:8px;width:34px;height:34px;font-size:16px;display:flex;align-items:center;justify-content:center}
-.big{flex:1;border:0;border-radius:10px;padding:14px;font-size:16px;font-weight:700;color:#fff}
-.cash{background:var(--ok)}.qr{background:var(--blue)}.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:6px 12px}
+.big{flex:1;border:0;border-radius:10px;padding:14px;font-size:15px;font-weight:700;color:#fff;text-align:center}
+.cash{background:var(--ok)}.qr{background:var(--blue)}.claim{background:var(--claim)}
+.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:6px 12px}
 .danger{color:#e03131;border-color:#e03131}
 input,textarea,select{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
 input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:13px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:19px;margin-top:2px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:18px;margin-top:2px}
 #toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
 .status-pill{font-size:11px;padding:3px 8px;border-radius:10px;background:#e9ecef;color:#495057}
 .login-box{max-width:360px;margin:40px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
@@ -37,18 +36,19 @@ input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-
 .tag-delivery{background:#fff3bf;color:#d9480f}
 .tag-cooking{background:#ffe8cc;color:#d9480f}
 .tag-ready{background:#d3f9d8;color:#2b8a3e}
-.tag-out{background:#e7f5ff;color:#1864ab}
+.tag-claim{background:#f3f0ff;color:var(--claim);border:1px solid rgba(121,80,242,0.3)}
 .action-btn{padding:8px 12px;border:0;color:#fff;font-weight:700;border-radius:8px;font-size:13px}
 .sec-hdr{background:rgba(255,107,0,0.08);color:var(--ac);padding:8px 10px;border-radius:8px;font-weight:800;font-size:14px;margin:12px 0 6px}
 .whatsapp-btn{background:#25D366;color:#fff;border:0;padding:12px;font-weight:700;font-size:15px;border-radius:10px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
 
+/* Customizer Modal */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:flex;align-items:flex-end;justify-content:center}
 .modal-sheet{background:var(--card);width:100%;max-width:600px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -5px 25px rgba(0,0,0,0.25)}
 .modal-header{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
 .modal-body{padding:14px 18px;overflow-y:auto;flex:1}
 .modal-footer{padding:14px 18px;border-top:1px solid var(--bd);background:var(--card)}
 .zus-section{margin-bottom:16px}
-.zus-section-title{font-size:13px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:8px}
+.zus-section-title{font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:8px}
 .zus-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px}
 .zus-btn{background:var(--bg);border:1.5px solid var(--bd);padding:12px 6px;border-radius:10px;font-weight:600;font-size:13px;color:var(--tx);text-align:center;user-select:none}
 .zus-btn:active{transform:scale(0.96)}
@@ -158,13 +158,20 @@ const formatDMY = dStr => {
 const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $ = id => document.getElementById(id);
 
+// Burger keyword checkers
+function isDagingItem(name){ return /daging|beef|meat|kambing|lamb/i.test(name || ''); }
+function isAyamOrBenjoItem(name){ return /ayam|chicken|benjo|telur|egg/i.test(name || ''); }
+
+// Total calculation including staff claim
 const sum = l => {
-  let cash = 0, qr = 0, itemsSold = 0;
+  let cash = 0, qr = 0, claim = 0, itemsSold = 0;
   l.forEach(o => {
-    if(o.pay == 'cash') cash += o.total; else qr += o.total;
+    if(o.pay == 'cash') cash += o.total;
+    else if(o.pay == 'qr') qr += o.total;
+    else if(o.pay == 'claim') claim += o.total;
     itemsSold += (o.items || []).reduce((acc, it) => acc + (it.q || 0), 0);
   });
-  return { cash, qr, all: cash + qr, n: itemsSold, ordersCount: l.length };
+  return { cash, qr, claim, all: cash + qr + claim, n: itemsSold, ordersCount: l.length };
 };
 
 function toast(m){
@@ -198,7 +205,6 @@ auth.onAuthStateChanged(user => {
     $('topBar').style.display = 'block';
     setStatus('Connecting...', '#fff3bf', '#e67700');
     
-    // Listen to main stall data
     unsubscribeFirestore = db.collection('stall').doc('data').onSnapshot(doc => {
       if(doc.exists){
         S = doc.data();
@@ -214,7 +220,6 @@ auth.onAuthStateChanged(user => {
       render();
     });
 
-    // Listen to incoming customer online orders from 'orders' collection!
     unsubscribeOrders = db.collection('orders').onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         const orderData = change.doc.data();
@@ -222,7 +227,7 @@ auth.onAuthStateChanged(user => {
           const exists = S.orders.some(o => o.id === orderData.id);
           if(!exists){
             S.orders.push(orderData);
-            toast(`🔔 Pesanan Baru dari ${orderData.cust}!`);
+            toast(`🔔 Pesanan Baru: ${orderData.cust}!`);
             save();
           }
         } else if(change.type === 'modified'){
@@ -263,6 +268,7 @@ function delBtn(k,id){
   return `<button class="ghost danger" data-act="del" data-k="${k}" data-id="${id}">${armed==k+id?'Tap again to confirm':'Delete'}</button>`;
 }
 
+// ----------------- CUSTOMIZER MODAL -----------------
 function openCustomizer(itemId, existingLineId = null){
   const m = S.menu.find(x => x.id == itemId);
   if(!m) return;
@@ -277,7 +283,7 @@ function openCustomizer(itemId, existingLineId = null){
       name: m.name,
       basePrice: m.price,
       cheese: false,
-      notes: [],
+      selected: { sayur: '', bawang: '', coleslaw: '', sosCili: '', sosBp: '', mayo: '' },
       customText: ''
     };
   }
@@ -289,33 +295,37 @@ function renderCustomModal(){
   if(!customItem){ modalBox.style.display = 'none'; modalBox.innerHTML = ''; return; }
   
   const curPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
-  const n = customItem.notes || [];
-  const isSelected = val => n.includes(val);
+  const name = customItem.name;
 
-  const zusSegments = [
-    { title: "🧀 Add-ons (Extra)", special: true },
-    { title: "🥬 Sayur / Vege", options: ["No Vege", "More Vege"] },
-    { title: "🧅 Bawang / Onion", options: ["No Onion", "Less Onion", "More Onion"] },
-    { title: "🥗 Coleslaw", options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"] },
-    { title: "🥫 Sos Cili", options: ["No Sos Cili", "Less Sos Cili", "More Sos Cili"] },
-    { title: "🥣 Sos Blackpepper", options: ["No Blackpepper Sauce", "Less Blackpepper Sauce", "More Blackpepper Sauce"] },
-    { title: "🍶 Mayonis", options: ["No Mayo", "Less Mayo", "More Mayo"] }
-  ];
+  const segments = [];
+  segments.push({ key: 'cheese', title: "🧀 Tambahan", special: 'cheese' });
+  segments.push({ key: 'sayur', title: "🥬 Sayur (Pilih 1)", options: ["No Vege", "More Vege"] });
+
+  if(isDagingItem(name)){
+    segments.push({ key: 'bawang', title: "🧅 Bawang (Burger Daging - Pilih 1)", options: ["No Onion", "Less Onion", "More Onion"] });
+  }
+  if(isAyamOrBenjoItem(name)){
+    segments.push({ key: 'coleslaw', title: "🥗 Coleslaw (Burger Ayam / Benjo - Pilih 1)", options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"] });
+  }
+
+  segments.push({ key: 'sosCili', title: "🥫 Sos Cili (Pilih 1)", options: ["No Sos Cili", "Less Sos Cili", "More Sos Cili"] });
+  segments.push({ key: 'sosBp', title: "🥣 Sos Blackpepper (Pilih 1)", options: ["No Blackpepper Sauce", "Less Blackpepper Sauce", "More Blackpepper Sauce"] });
+  segments.push({ key: 'mayo', title: "🍶 Mayonis (Pilih 1)", options: ["No Mayo", "Less Mayo", "More Mayo"] });
 
   modalBox.innerHTML = `
-  <div class="modal-overlay" data-act="closemodal">
-    <div class="modal-sheet">
+  <div class="modal-overlay" id="staffModalOverlay">
+    <div class="modal-sheet" id="staffModalSheet">
       <div class="modal-header">
         <div>
           <b style="font-size:17px">${esc(customItem.name)}</b>
-          <div class="mu" style="font-size:12px">Customization &amp; Options</div>
+          <div class="mu" style="font-size:12px">Pilihan &amp; Remarks</div>
         </div>
-        <button class="ghost" data-act="closemodal" style="padding:6px 12px;font-size:18px;font-weight:bold">✕</button>
+        <button type="button" class="ghost" data-act="closemodal" style="padding:6px 12px;font-size:18px;font-weight:bold">✕</button>
       </div>
 
       <div class="modal-body">
-        ${zusSegments.map(seg => {
-          if(seg.special){
+        ${segments.map(seg => {
+          if(seg.special === 'cheese'){
             return `
             <div class="zus-section">
               <div class="zus-section-title">${seg.title}</div>
@@ -326,22 +336,25 @@ function renderCustomModal(){
               </div>
             </div>`;
           }
+          const curVal = customItem.selected[seg.key] || '';
           return `
           <div class="zus-section">
             <div class="zus-section-title">${seg.title}</div>
             <div class="zus-options">
-              ${seg.options.map(opt => `
-                <button type="button" class="zus-btn ${isSelected(opt) ? 'active' : ''}" data-act="zus_opt" data-val="${esc(opt)}">
+              ${seg.options.map(opt => {
+                const isAct = (curVal === opt);
+                return `
+                <button type="button" class="zus-btn ${isAct ? 'active' : ''}" data-act="zus_opt" data-sec="${seg.key}" data-val="${esc(opt)}">
                   ${esc(opt)}
-                </button>
-              `).join('')}
+                </button>`;
+              }).join('')}
             </div>
           </div>`;
         }).join('')}
 
         <div class="zus-section">
-          <div class="zus-section-title">✏️ Remarks Lain / Special Note</div>
-          <input id="zusCustomText" placeholder="e.g. Masak garing / Bungkus asing" value="${esc(customItem.customText||'')}" style="width:100%" data-ch="zus_text">
+          <div class="zus-section-title">✏️ Remarks Khas / Catatan Tambahan</div>
+          <input type="text" id="zusCustomText" placeholder="e.g. Masak garing / Bungkus asing" value="${esc(customItem.customText||'')}">
         </div>
       </div>
 
@@ -353,8 +366,16 @@ function renderCustomModal(){
     </div>
   </div>`;
   modalBox.style.display = 'block';
+
+  // Prevent Enter key in custom remarks from submitting/refreshing page
+  const txt = $('zusCustomText');
+  if(txt){
+    txt.addEventListener('keydown', e => { if(e.key === 'Enter') e.preventDefault(); });
+    txt.addEventListener('input', e => { if(customItem) customItem.customText = e.target.value; });
+  }
 }
 
+// ----------------- 1. ORDER VIEW -----------------
 function vOrder(){
   const m = S.menu;
   let total = 0;
@@ -385,7 +406,7 @@ function vOrder(){
   }).join('');
 
   return `
-  <h2>Menu Items (Walk-in Order)</h2>
+  <h2>Menu Items</h2>
   <div class="grid">
     ${m.map(x => `
       <div class="item" style="cursor:pointer" data-act="openmenu" data-id="${x.id}">
@@ -398,13 +419,13 @@ function vOrder(){
 
   <h2>Current Order</h2>
   <div class="card">
-    <input id="custNameInput" placeholder="Customer Name / Order #" value="${esc(orderCust)}" style="width:100%" data-ch="cust">
+    <input id="custNameInput" placeholder="Customer / Staff Name (e.g. Azman)" value="${esc(orderCust)}" style="width:100%" data-ch="cust">
     <div class="type-toggle">
-      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Walk-in Pickup</button>
+      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Walk-in</button>
       <button class="type-btn ${orderType=='delivery'?'active':''}" data-act="settype" data-type="delivery">🛵 Delivery</button>
     </div>
     
-    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to select options.</p>'}</div>
+    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to choose options.</p>'}</div>
     
     <div class="row" style="margin-top:12px;padding-top:10px;border-top:2px dashed var(--bd)">
       <span>Total</span>
@@ -414,11 +435,13 @@ function vOrder(){
     <div style="display:flex;gap:8px;margin-top:12px">
       <button class="big cash" data-act="pay" data-p="cash">💵 Cash</button>
       <button class="big qr" data-act="pay" data-p="qr">📱 QR</button>
+      <button class="big claim" data-act="pay" data-p="claim">🎁 Claim</button>
     </div>
     <div style="margin-top:8px"><button class="ghost" data-act="clear">Clear order</button></div>
   </div>`;
 }
 
+// ----------------- 2. LIVE KITCHEN -----------------
 function vLive(){
   const todayKey = dkey(Date.now());
   const activeOrders = S.orders.filter(o => dkey(o.t) == todayKey && o.status != 'completed').sort((a,b) => a.t - b.t);
@@ -435,18 +458,23 @@ function vLive(){
   <h2>Live Orders (${activeOrders.length})</h2>
   ${activeOrders.map(o => {
     const isOnline = o.cust && o.cust.includes('(');
+    const isClaim = o.pay == 'claim';
     const statusText = o.status == 'cooking' ? '🍳 Cooking' : (o.status == 'ready' ? '✅ Ready' : 'Done');
     const statusClass = o.status == 'cooking' ? 'tag-cooking' : 'tag-ready';
 
     return `
-    <div class="card" style="border-left:5px solid ${o.status=='cooking'?'var(--warn)':'var(--ok)'}">
+    <div class="card" style="border-left:5px solid ${isClaim?'var(--claim)':(o.status=='cooking'?'var(--warn)':'var(--ok)')}">
       <div class="row">
         <div>
           <b>${esc(o.cust || 'Walk-in')}</b>
-          <div class="mu" style="font-size:12px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · ${o.pay=='cash'?'Cash':'QR'}</div>
+          <div class="mu" style="font-size:12px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · 
+            <span style="font-weight:700;color:${isClaim?'var(--claim)':(o.pay=='cash'?'var(--ok)':'var(--blue)')}">
+              ${isClaim ? '🎁 Staff Claim' : (o.pay=='cash'?'💵 Cash':'📱 QR')}
+            </span>
+          </div>
         </div>
         <div>
-          <span class="tag ${isOnline?'tag-delivery':'tag-pickup'}">${isOnline?'🌐 Online (Bilik)':'🛍️ Walk-in'}</span>
+          ${isClaim ? `<span class="tag tag-claim">🎁 Claim</span>` : `<span class="tag ${isOnline?'tag-delivery':'tag-pickup'}">${isOnline?'🌐 Online (Bilik)':'🛍️ Walk-in'}</span>`}
           <span class="tag ${statusClass}">${statusText}</span>
         </div>
       </div>
@@ -469,31 +497,57 @@ function vLive(){
   }).join('')}`;
 }
 
+// ----------------- 3. TODAY SALES & CLAIMS -----------------
 function vDay(k){
   const l = S.orders.filter(o => dkey(o.t) == k).sort((a,b) => b.t - a.t);
   const s = sum(l);
   const c = {};
   l.forEach(o => (o.items || []).forEach(i => c[i.n] = (c[i.n] || 0) + i.q));
 
+  const claimOrders = l.filter(o => o.pay == 'claim');
+
   return `
   <div class="stats">
-    <div>Total sales<b>${money(s.all)}</b></div>
-    <div>Total items sold<b>${s.n}</b></div>
-    <div>Cash<b>${money(s.cash)}</b></div>
-    <div>QR<b>${money(s.qr)}</b></div>
+    <div>Total Sales<b>${money(s.all)}</b></div>
+    <div>Items Sold<b>${s.n} pcs</b></div>
+    <div>Cash Sales<b>${money(s.cash)}</b></div>
+    <div>QR Sales<b>${money(s.qr)}</b></div>
+    <div style="background:rgba(121,80,242,0.08);border-color:var(--claim)">
+      <span style="color:var(--claim);font-weight:700">🎁 Staff Claim</span>
+      <b style="color:var(--claim)">${money(s.claim)}</b>
+    </div>
   </div>
   
-  <h3>Items sold today</h3>
+  <h3>Items Sold Today</h3>
   <div class="card">
     ${Object.keys(c).sort((a,b)=>c[b]-c[a]).map(n => `<div class="row"><span>${esc(n)}</span><b>${c[n]} sold</b></div>`).join('') || '<span class="mu">Nothing sold yet.</span>'}
   </div>
+
+  <h3>🎁 Staff Claim History Today (${claimOrders.length})</h3>
+  <div class="card">
+    ${claimOrders.map(o => `
+      <div class="row" style="padding:6px 0">
+        <div>
+          <b>${esc(o.cust || 'Staff Claim')}</b>
+          <div class="mu" style="font-size:12px">
+            ${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} • ${(o.items||[]).map(i => `${i.q}× ${esc(i.n)} ${i.note ? `(${esc(i.note)})` : ''}`).join(', ')}
+          </div>
+        </div>
+        <b style="color:var(--claim)">${money(o.total)}</b>
+      </div>
+    `).join('') || '<span class="mu">No staff claims today.</span>'}
+  </div>
   
-  <h3>All Orders (${l.length})</h3>
+  <h3>All Orders Today (${l.length})</h3>
   ${l.map(o => `
     <div class="card">
       <div class="row">
         <div>
-          <b>${esc(o.cust || 'Customer')} · ${o.pay=='cash'?'Cash':'QR'}</b>
+          <b>${esc(o.cust || 'Customer')} · 
+            <span style="color:${o.pay=='claim'?'var(--claim)':(o.pay=='cash'?'var(--ok)':'var(--blue)')}">
+              ${o.pay=='claim'?'🎁 Staff Claim':(o.pay=='cash'?'💵 Cash':'📱 QR')}
+            </span>
+          </b>
           <div class="mu">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · <span class="tag ${o.type=='delivery'?'tag-delivery':'tag-pickup'}">${o.type=='delivery'?'Online':'Walk-in'}</span></div>
         </div>
         <b>${money(o.total)}</b>
@@ -508,6 +562,7 @@ function vDay(k){
 
 function vToday(){ const k = dkey(Date.now()); return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k); }
 
+// ----------------- 4. HISTORY -----------------
 function vHist(){
   if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
   const months = {}; S.orders.forEach(o => { const d = dkey(o.t); (months[d.slice(0,7)] = months[d.slice(0,7)] || {})[d] = 1; });
@@ -517,19 +572,20 @@ function vHist(){
 
   Object.keys(yrs).sort().reverse().forEach(y => {
     const ys = sum(S.orders.filter(o => dkey(o.t).slice(0,4) == y));
-    h += `<div class="card"><b>Year ${y}</b><div class="mu">${ys.n} items sold (${ys.ordersCount} orders) · Cash ${money(ys.cash)} · QR ${money(ys.qr)}</div><div class="tot">${money(ys.all)}</div></div>`;
+    h += `<div class="card"><b>Year ${y}</b><div class="mu">${ys.n} items sold (${ys.ordersCount} orders) • Cash ${money(ys.cash)} • QR ${money(ys.qr)} • Claim ${money(ys.claim)}</div><div class="tot">${money(ys.all)}</div></div>`;
     Object.keys(months).filter(m => m.startsWith(y)).sort().reverse().forEach(m => {
       const ms = sum(S.orders.filter(o => dkey(o.t).slice(0,7) == m));
-      h += `<details><summary>${m} — ${money(ms.all)} <span class="mu">(${ms.n} items sold)</span></summary><div class="mu" style="margin:4px 0 8px">${ms.n} items sold · Cash ${money(ms.cash)} · QR ${money(ms.qr)}</div>` +
+      h += `<details><summary>${m} — ${money(ms.all)} <span class="mu">(${ms.n} items sold)</span></summary><div class="mu" style="margin:4px 0 8px">${ms.n} items sold • Cash ${money(ms.cash)} • QR ${money(ms.qr)} • Claim ${money(ms.claim)}</div>` +
       Object.keys(months[m]).sort().reverse().map(d => {
         const ds = sum(S.orders.filter(o => dkey(o.t) == d));
-        return `<div class="row"><button class="ghost" data-act="day" data-id="${d}">${d}</button><span>${ds.n} items sold · <b>${money(ds.all)}</b></span></div>`;
+        return `<div class="row"><button class="ghost" data-act="day" data-id="${d}">${d}</button><span>${ds.n} items • <b>${money(ds.all)}</b></span></div>`;
       }).join('') + '</details>';
     });
   });
   return h;
 }
 
+// ----------------- 5. STOK HARIAN -----------------
 let curStockDate = dkey(Date.now());
 function getStockForDate(targetDate){
   S.stockClosing = S.stockClosing || {};
@@ -577,6 +633,7 @@ function vStock(){
   <button class="whatsapp-btn" data-act="copystockwa" style="margin-top:12px">📱 Copy WhatsApp Laporan Stok</button>`;
 }
 
+// ----------------- 6. CASH CLOSING REPORT -----------------
 let curCashDate = dkey(Date.now());
 function getPreviousClosing(targetDate){
   S.cashReports = S.cashReports || {};
@@ -602,6 +659,8 @@ function vCash(){
   const op = parseFloat(cr.opening) || 0;
   const pi = parseFloat(cr.paidIn) || 0;
   const po = parseFloat(cr.paidOut) || 0;
+  
+  // Cash drawer only counts real cash sales (Claim is not cash)
   const expectedClosing = (op + pi + s.cash - po);
   const displayedClosing = (cr.closing !== '' && cr.closing !== undefined) ? cr.closing : (expectedClosing > 0 ? expectedClosing.toFixed(2) : '');
 
@@ -624,17 +683,19 @@ function vCash(){
     <div style="margin-top:14px;border-top:1px dashed var(--bd);padding-top:10px">
       <div class="row"><span>💵 Jualan Cash:</span><b>RM ${(s.cash).toFixed(2)}</b></div>
       <div class="row"><span>📱 Jualan QR:</span><b>RM ${(s.qr).toFixed(2)}</b></div>
+      <div class="row"><span>🎁 Staff Claim:</span><b style="color:var(--claim)">RM ${(s.claim).toFixed(2)}</b></div>
       <div class="row" style="font-size:17px;font-weight:800;color:var(--ok);border-top:1.5px solid var(--bd);padding-top:8px"><span>✅ TOTAL JUALAN:</span><span>RM ${(s.all).toFixed(2)}</span></div>
     </div>
   </div>
   <button class="whatsapp-btn" data-act="copycashwa" style="margin-top:10px">📱 Copy WhatsApp Laporan Cash</button>`;
 }
 
+// ----------------- 7. SETTINGS -----------------
 function vSet(){
   return `
   <h2>Customer Link (Untuk Pelanggan Pesan Dari Bilik)</h2>
   <div class="card">
-    <p class="mu" style="margin-top:0">Kongsikan link ini kepada pelanggan anda (WhatsApp bio / status):</p>
+    <p class="mu" style="margin-top:0">Kongsikan link ini kepada pelanggan anda:</p>
     <input value="https://singgah-cafe.web.app/order.html" readonly style="font-weight:bold;color:var(--ac)">
   </div>
 
@@ -677,8 +738,20 @@ function render(){
   $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, cash:vCash, set:vSet }[tab]();
 }
 
+// ----------------- GLOBAL CLICK LISTENER -----------------
 document.addEventListener('click', async e => {
-  if(e.target.classList.contains('modal-overlay')){ customItem = null; renderCustomModal(); return; }
+  // If tapped directly on dark overlay outside modal sheet, close modal
+  if(e.target.id === 'staffModalOverlay'){
+    customItem = null;
+    renderCustomModal();
+    return;
+  }
+
+  // If clicked inside modal sheet on text, labels, or inputs WITHOUT a data-act, DO NOTHING (don't exit!)
+  if(e.target.closest('#staffModalSheet') && !e.target.closest('[data-act]')){
+    return;
+  }
+
   const b = e.target.closest('[data-act]'); if(!b) return;
   const a = b.dataset.act, id = b.dataset.id;
 
@@ -704,13 +777,24 @@ document.addEventListener('click', async e => {
   else if(a=='delcart'){ cart.splice(+b.dataset.idx, 1); render(); }
   else if(a=='closemodal'){ customItem = null; renderCustomModal(); }
   else if(a=='zus_cheese'){
-    if(customItem){ const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value; customItem.cheese = !customItem.cheese; renderCustomModal(); }
+    if(customItem){
+      const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value;
+      customItem.cheese = !customItem.cheese;
+      renderCustomModal();
+    }
   }
   else if(a=='zus_opt'){
     if(customItem){
       const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value;
-      const val = b.dataset.val, idx = customItem.notes.indexOf(val);
-      if(idx > -1) customItem.notes.splice(idx, 1); else customItem.notes.push(val);
+      const sec = b.dataset.sec;
+      const val = b.dataset.val;
+
+      // 1 option per section rule
+      if(customItem.selected[sec] === val){
+        customItem.selected[sec] = '';
+      } else {
+        customItem.selected[sec] = val;
+      }
       renderCustomModal();
     }
   }
@@ -718,15 +802,36 @@ document.addEventListener('click', async e => {
     if(customItem){
       const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value.trim();
       const finalPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
-      const lineData = { lineId: customItem.lineId, itemId: customItem.itemId, name: customItem.name, basePrice: customItem.basePrice, price: finalPrice, cheese: customItem.cheese, notes: [...customItem.notes], customText: customItem.customText || '' };
+      
+      const finalNotes = [];
+      Object.keys(customItem.selected).forEach(k => {
+        if(customItem.selected[k]) finalNotes.push(customItem.selected[k]);
+      });
+
+      const lineData = {
+        lineId: customItem.lineId,
+        itemId: customItem.itemId,
+        name: customItem.name,
+        basePrice: customItem.basePrice,
+        price: finalPrice,
+        cheese: customItem.cheese,
+        notes: finalNotes,
+        customText: customItem.customText || ''
+      };
       const existingIdx = cart.findIndex(c => c.lineId == customItem.lineId);
       if(existingIdx > -1) cart[existingIdx] = lineData; else cart.push(lineData);
-      customItem = null; renderCustomModal(); render(); toast('Added to order!');
+      
+      customItem = null;
+      renderCustomModal();
+      render();
+      toast('Added to order!');
     }
   }
   else if(a=='clear'){ cart = []; orderCust = ''; render(); }
   else if(a=='pay'){
     if(!cart.length){ toast('Add items first'); return; }
+    
+    const payMethod = b.dataset.p; // 'cash', 'qr', or 'claim'
     const items = cart.map(c => {
       const notes = [];
       if(c.cheese) notes.push('Cheese (+RM2)');
@@ -734,16 +839,30 @@ document.addEventListener('click', async e => {
       if(c.customText) notes.push(c.customText);
       return { id: c.itemId, n: c.name, p: c.price, q: 1, note: notes.join(', ') };
     });
-    const newOrder = { id: uid(), t: Date.now(), cust: orderCust.trim() || 'Walk-in', type: orderType, status: 'cooking', items, total: items.reduce((s,i) => s + i.p*i.q, 0), pay: b.dataset.p };
+
+    const custNameDisplay = (orderCust.trim()) || (payMethod === 'claim' ? 'Staff Claim' : 'Walk-in');
+
+    const newOrder = {
+      id: uid(),
+      t: Date.now(),
+      cust: custNameDisplay,
+      type: orderType,
+      status: 'cooking',
+      items,
+      total: items.reduce((s,i) => s + i.p*i.q, 0),
+      pay: payMethod
+    };
+
     S.orders.push(newOrder);
-    cart = []; orderCust = ''; save(); toast('Order saved!');
+    cart = []; orderCust = '';
+    save();
+    toast(payMethod === 'claim' ? '🎁 Staff Claim Saved!' : 'Order saved!');
   }
   else if(a=='setstatus'){
     const ord = S.orders.find(o => o.id == id);
     if(ord){
       ord.status = b.dataset.st;
       save();
-      // Also update the Firestore document so customer phone instantly hears it!
       db.collection('orders').doc(id).update({ status: b.dataset.st }).catch(()=>{});
     }
   }
@@ -782,7 +901,7 @@ document.addEventListener('click', async e => {
     const op = parseFloat(opVal) || 0, pi = parseFloat(cr.paidIn) || 0, po = parseFloat(cr.paidOut) || 0;
     const expClosing = (op + pi + s.cash - po).toFixed(2);
     const clVal = cr.closing !== '' ? cr.closing : expClosing;
-    const msg = `🍔 SINGGAH CAFE\n📋 LAPORAN OPENING & CLOSING CASH\n\n📅 Tarikh: ${formatDMY(curCashDate)}\n\n━━━━━━━━━━━━━━━━\n📊 RINGKASAN JUALAN\n━━━━━━━━━━━━━━━━\n\nCash Opening: RM${opVal}\nCash Closing: RM ${clVal}\nPaid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}\nPaid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}\n\n💵 Jualan Cash: RM${(s.cash).toFixed(1)}\n📱 Jualan QR: RM${(s.qr).toFixed(1)}\n\n✅ TOTAL JUALAN: RM${(s.all).toFixed(1)}\n\n━━━━━━━━━━━━━━━━`;
+    const msg = `🍔 SINGGAH CAFE\n📋 LAPORAN OPENING & CLOSING CASH\n\n📅 Tarikh: ${formatDMY(curCashDate)}\n\n━━━━━━━━━━━━━━━━\n📊 RINGKASAN JUALAN\n━━━━━━━━━━━━━━━━\n\nCash Opening: RM${opVal}\nCash Closing: RM ${clVal}\nPaid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}\nPaid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}\n\n💵 Jualan Cash: RM${(s.cash).toFixed(1)}\n📱 Jualan QR: RM${(s.qr).toFixed(1)}\n🎁 Staff Claim: RM${(s.claim).toFixed(1)}\n\n✅ TOTAL JUALAN: RM${(s.all).toFixed(1)}\n\n━━━━━━━━━━━━━━━━`;
     navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Cash disalin untuk WhatsApp!'));
   }
   render();
@@ -791,7 +910,6 @@ document.addEventListener('click', async e => {
 document.addEventListener('input', e => {
   const t = e.target, c = t.dataset.ch;
   if(c=='cust') orderCust = t.value;
-  if(c=='zus_text' && customItem){ customItem.customText = t.value; }
 });
 
 document.addEventListener('change', e => {

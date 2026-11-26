@@ -2,65 +2,76 @@
 <style>
 :root{--bg:#f8f9fa;--card:#ffffff;--tx:#212529;--mu:#6c757d;--ac:#ff6b00;--ok:#20c997;--bd:#dee2e6;--blue:#0d6efd;--warn:#ffc107;--claim:#7950f2;box-sizing:border-box}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121212;--card:#1e1e1e;--tx:#f8f9fa;--mu:#a0a0a0;--ac:#ff822d;--ok:#2dd4bf;--bd:#2e2e2e;--blue:#3b82f6;--warn:#facc15;--claim:#9775fa;color-scheme:dark}}
-*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:15px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 60px;max-width:760px;margin:auto}
-h2{margin:16px 0 10px;font-size:18px;display:flex;align-items:center;gap:8px}h3{margin:14px 0 8px;font-size:15px;color:var(--mu)}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--tx);font:16px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:0 12px 70px;max-width:780px;margin:auto}
+h2{margin:18px 0 10px;font-size:19px;display:flex;align-items:center;gap:8px}h3{margin:16px 0 8px;font-size:16px;color:var(--mu)}
+
+/* Top Navigation Bar */
 header{position:sticky;top:0;background:var(--card);z-index:100;border-bottom:1px solid var(--bd);margin:0 -12px 12px;padding:8px 12px 6px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
 .top-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 nav::-webkit-scrollbar{display:none}
-nav button{border:1px solid var(--bd);background:var(--bg);color:var(--mu);padding:7px 12px;font-size:12px;font-weight:600;border-radius:20px;display:inline-flex;align-items:center;gap:5px;position:relative;flex-shrink:0}
+nav button{border:1px solid var(--bd);background:var(--bg);color:var(--mu);padding:9px 14px;font-size:13px;font-weight:700;border-radius:24px;display:inline-flex;align-items:center;gap:6px;position:relative;flex-shrink:0}
 nav button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-.badge-count{background:#e03131;color:#fff;font-size:10px;padding:1px 5px;border-radius:10px;font-weight:700}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin:10px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
-button{font:inherit;cursor:pointer;border-radius:8px}
-.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:12px;padding:14px 8px;text-align:center;position:relative;transition:all .1s}
+.badge-count{background:#e03131;color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;font-weight:800}
+
+/* Category Filter Bar */
+.cat-bar{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;margin:10px 0;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.cat-bar::-webkit-scrollbar{display:none}
+.cat-btn{background:var(--card);border:1.5px solid var(--bd);color:var(--tx);padding:8px 14px;font-size:13px;font-weight:700;border-radius:10px}
+.cat-btn.active{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 1px 3px rgba(0,0,0,0.03)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+button{font:inherit;cursor:pointer;border-radius:10px}
+.item{background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:14px;padding:16px 8px;text-align:center;position:relative;transition:all .1s}
 .item:active{transform:scale(0.97)}
-.item b{display:block;font-size:14px;margin-bottom:3px}.item span{color:var(--ac);font-weight:700}
-.quick-add-btn{position:absolute;top:4px;right:4px;background:var(--bg);border:1px solid var(--bd);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ac);font-weight:bold}
-.row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
-.big{flex:1;border:0;border-radius:10px;padding:14px;font-size:15px;font-weight:700;color:#fff;text-align:center}
-.cash{background:var(--ok)}.qr{background:var(--blue)}.claim{background:var(--claim)}
-.ghost{background:none;border:1px solid var(--bd);color:var(--mu);border-radius:8px;padding:6px 12px}
+.item b{display:block;font-size:15px;margin-bottom:4px}.item span{color:var(--ac);font-weight:800;font-size:15px}
+.quick-add-btn{position:absolute;top:6px;right:6px;background:var(--bg);border:1.5px solid var(--bd);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--ac);font-weight:bold}
+.row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd)}.row:last-child{border:0}
+.q{display:flex;align-items:center;gap:6px}
+.sm{border:1.5px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:10px;width:38px;height:38px;font-size:18px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+.big{flex:1;border:0;border-radius:12px;padding:16px;font-size:16px;font-weight:800;color:#fff;text-align:center;min-height:54px}
+.cash{background:var(--ok)}.qr{background:var(--blue)}
+.ghost{background:none;border:1.5px solid var(--bd);color:var(--mu);border-radius:10px;padding:8px 14px;font-weight:600}
 .danger{color:#e03131;border-color:#e03131}
-input,textarea,select{font:inherit;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;min-width:0}
-input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px}.stats b{display:block;font-size:18px;margin-top:2px}
-#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#212529;color:#fff;padding:10px 20px;border-radius:24px;display:none;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+input,textarea,select{font:inherit;background:var(--bg);color:var(--tx);border:1.5px solid var(--bd);border-radius:10px;padding:10px 12px;min-width:0}
+input.n{width:90px}.tot{font-size:24px;font-weight:800}.mu{color:var(--mu);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px}.stats div{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px}.stats b{display:block;font-size:19px;margin-top:2px}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);background:#212529;color:#fff;padding:12px 24px;border-radius:30px;display:none;z-index:9999;box-shadow:0 4px 14px rgba(0,0,0,0.2);font-weight:600}
 .status-pill{font-size:11px;padding:3px 8px;border-radius:10px;background:#e9ecef;color:#495057}
 .login-box{max-width:360px;margin:40px auto;background:var(--card);border:1px solid var(--bd);padding:24px;border-radius:16px}
-.type-toggle{display:flex;gap:6px;margin:8px 0}.type-btn{flex:1;padding:10px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;border-radius:10px;text-align:center}
+.type-toggle{display:flex;gap:8px;margin:8px 0}.type-btn{flex:1;padding:12px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font-weight:700;font-size:15px;border-radius:12px;text-align:center}
 .type-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.1);color:var(--ac)}
-.tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase}
+.tag{display:inline-block;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:800;text-transform:uppercase}
 .tag-pickup{background:#e7f5ff;color:#1971c2}
 .tag-delivery{background:#fff3bf;color:#d9480f}
 .tag-cooking{background:#ffe8cc;color:#d9480f}
 .tag-ready{background:#d3f9d8;color:#2b8a3e}
 .tag-claim{background:#f3f0ff;color:var(--claim);border:1px solid rgba(121,80,242,0.3)}
-.action-btn{padding:8px 12px;border:0;color:#fff;font-weight:700;border-radius:8px;font-size:13px}
-.sec-hdr{background:rgba(255,107,0,0.08);color:var(--ac);padding:8px 10px;border-radius:8px;font-weight:800;font-size:14px;margin:12px 0 6px}
-.whatsapp-btn{background:#25D366;color:#fff;border:0;padding:12px;font-weight:700;font-size:15px;border-radius:10px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+.action-btn{padding:10px 14px;border:0;color:#fff;font-weight:800;border-radius:10px;font-size:14px}
+.sec-hdr{background:rgba(255,107,0,0.08);color:var(--ac);padding:10px 12px;border-radius:10px;font-weight:800;font-size:14px;margin:14px 0 6px}
+.whatsapp-btn{background:#25D366;color:#fff;border:0;padding:14px;font-weight:800;font-size:15px;border-radius:12px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
 
 /* Customizer Modal */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:999;display:flex;align-items:flex-end;justify-content:center}
-.modal-sheet{background:var(--card);width:100%;max-width:600px;border-radius:20px 20px 0 0;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -5px 25px rgba(0,0,0,0.25)}
-.modal-header{padding:14px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
-.modal-body{padding:14px 18px;overflow-y:auto;flex:1}
-.modal-footer{padding:14px 18px;border-top:1px solid var(--bd);background:var(--card)}
+.modal-sheet{background:var(--card);width:100%;max-width:620px;border-radius:24px 24px 0 0;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -5px 25px rgba(0,0,0,0.25)}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+.modal-body{padding:16px 20px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--bd);background:var(--card)}
 .zus-section{margin-bottom:16px}
-.zus-section-title{font-size:12px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:8px}
-.zus-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px}
-.zus-btn{background:var(--bg);border:1.5px solid var(--bd);padding:12px 6px;border-radius:10px;font-weight:600;font-size:13px;color:var(--tx);text-align:center;user-select:none}
+.zus-section-title{font-size:13px;font-weight:800;color:var(--mu);text-transform:uppercase;margin-bottom:8px}
+.zus-options{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.zus-btn{background:var(--bg);border:1.5px solid var(--bd);padding:12px 8px;border-radius:10px;font-weight:700;font-size:13px;color:var(--tx);text-align:center;user-select:none}
 .zus-btn:active{transform:scale(0.96)}
 .zus-btn.active{border-color:var(--ac);background:rgba(255,107,0,0.15);color:var(--ac);font-weight:800}
-.zus-btn.cheese{border-color:#f59f00}
-.zus-btn.cheese.active{background:#f59f00;color:#fff}
+.zus-btn.addon{border-color:#f59f00}
+.zus-btn.addon.active{background:#f59f00;color:#fff}
 </style></head>
 <body>
 
 <header id="topBar" style="display:none">
   <div class="top-header">
-    <h1 style="margin:0;font-size:18px;color:var(--ac)">🍔 Singgah Cafe</h1>
+    <h1 style="margin:0;font-size:19px;color:var(--ac)">🍔 Singgah Cafe</h1>
     <span id="syncStatus" class="status-pill">Offline</span>
   </div>
   <nav id="nav"></nav>
@@ -69,6 +80,7 @@ input.n{width:85px}.tot{font-size:22px;font-weight:800}.mu{color:var(--mu);font-
 <div id="app"></div>
 <div id="toast"></div>
 <div id="customModal" style="display:none"></div>
+<div id="editLiveModal" style="display:none"></div>
 
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -126,12 +138,15 @@ const DEFAULT_STOCK_STRUCTURE = [
 
 const defaultData = {
   menu: [
-    {id:'m1',name:'Chicken Burger',price:6},
-    {id:'m2',name:'Beef Burger',price:7},
-    {id:'m3',name:'Cheese Burger',price:8},
+    {id:'m1',name:'Burger Ayam',price:6},
+    {id:'m2',name:'Burger Daging',price:7},
+    {id:'m3',name:'Benjo',price:4},
     {id:'m4',name:'Double Burger',price:11},
-    {id:'m5',name:'Fries',price:4},
-    {id:'m6',name:'Drink',price:3}
+    {id:'m5',name:'Oblong Ayam',price:8},
+    {id:'m6',name:'Oblong Daging',price:8},
+    {id:'m7',name:'Oblong Kambing',price:9},
+    {id:'m8',name:'Fries',price:4},
+    {id:'m9',name:'Drink',price:3}
   ],
   orders: [],
   stockClosing: {}, 
@@ -146,6 +161,17 @@ let cart = [];
 let tab = 'order', selDay = null, armed = null;
 let orderCust = '', orderType = 'pickup';
 let customItem = null;
+let selectedCategory = 'all';
+let editingLiveOrder = null;
+
+// Staff Meal Builder State
+let staffClaimState = {
+  staffName: '',
+  burgerId: 'm1',
+  addons: { special: false, patty: false, cheese: false, pattaya: false },
+  selected: { sayur: '', bawang: '', coleslaw: '', sosCili: '', sosBp: '', mayo: '' },
+  customText: ''
+};
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const money = n => 'RM ' + (+n || 0).toFixed(2);
@@ -162,23 +188,51 @@ const $ = id => document.getElementById(id);
 function isDagingItem(name){ return /daging|beef|meat|kambing|lamb/i.test(name || ''); }
 function isAyamOrBenjoItem(name){ return /ayam|chicken|benjo|telur|egg/i.test(name || ''); }
 
-// Total calculation including staff claim
+// Menu categorization
+function getItemCategory(name){
+  if(/oblong/i.test(name)) return 'oblong';
+  if(/benjo|telur/i.test(name)) return 'benjo';
+  if(/fries|kentang|air|drink|milo|teh|kopi|nugget|sosej/i.test(name)) return 'sides';
+  return 'burger';
+}
+
+// Full Sales Breakdown Calculator
 const sum = l => {
-  let cash = 0, qr = 0, claim = 0, itemsSold = 0;
+  let custCash = 0, custQr = 0, bossClaim = 0, staffAddon = 0, itemsSold = 0;
   l.forEach(o => {
-    if(o.pay == 'cash') cash += o.total;
-    else if(o.pay == 'qr') qr += o.total;
-    else if(o.pay == 'claim') claim += o.total;
-    itemsSold += (o.items || []).reduce((acc, it) => acc + (it.q || 0), 0);
+    const isStaffClaim = (o.pay === 'claim' || o.type === 'staff_meal');
+    const orderItemsCount = (o.items || []).reduce((acc, it) => acc + (it.q || 1), 0);
+    itemsSold += orderItemsCount;
+
+    if(isStaffClaim){
+      bossClaim += (o.basicPrice || o.total || 0);
+      staffAddon += (o.staffPay || 0);
+    } else {
+      if(o.pay === 'cash') custCash += o.total;
+      else custQr += o.total;
+    }
   });
-  return { cash, qr, claim, all: cash + qr + claim, n: itemsSold, ordersCount: l.length };
+
+  const custSalesTotal = custCash + custQr;
+  const grandTotal = custSalesTotal + bossClaim + staffAddon;
+
+  return {
+    custCash,
+    custQr,
+    custSalesTotal,
+    bossClaim,
+    staffAddon,
+    grandTotal,
+    n: itemsSold,
+    ordersCount: l.length
+  };
 };
 
 function toast(m){
   const t = $('toast');
   t.textContent = m;
   t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 1400);
+  setTimeout(() => t.style.display = 'none', 1600);
 }
 
 function setStatus(text, bg='#e9ecef', col='#495057'){
@@ -259,7 +313,7 @@ function renderLogin(err=''){
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
       <input id="u_email" type="email" placeholder="Staff Email">
       <input id="u_pass" type="password" placeholder="Password">
-      <button class="big" style="background:var(--ac);padding:12px;margin-top:8px" data-act="dologin">Log In</button>
+      <button class="big" style="background:var(--ac);padding:14px;margin-top:8px" data-act="dologin">Log In</button>
     </div>
   </div>`;
 }
@@ -282,6 +336,8 @@ function openCustomizer(itemId, existingLineId = null){
       itemId: m.id,
       name: m.name,
       basePrice: m.price,
+      unitPrice: m.price,
+      qty: 1,
       cheese: false,
       selected: { sayur: '', bawang: '', coleslaw: '', sosCili: '', sosBp: '', mayo: '' },
       customText: ''
@@ -294,15 +350,15 @@ function renderCustomModal(){
   const modalBox = $('customModal');
   if(!customItem){ modalBox.style.display = 'none'; modalBox.innerHTML = ''; return; }
   
-  const curPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
+  const unitPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
   const name = customItem.name;
 
   const segments = [];
-  segments.push({ key: 'cheese', title: "🧀 Tambahan", special: 'cheese' });
-  segments.push({ key: 'sayur', title: "🥬 Sayur (Pilih 1)", options: ["No Vege", "More Vege"] });
+  segments.push({ key: 'cheese', title: "🧀 Tambahan Cheese", special: 'cheese' });
+  segments.push({ key: 'sayur', title: "🥬 Sayur (Pilih 1 Sahaja)", options: ["No Vege", "More Vege"] });
 
   if(isDagingItem(name)){
-    segments.push({ key: 'bawang', title: "🧅 Bawang (Burger Daging - Pilih 1)", options: ["No Onion", "Less Onion", "More Onion"] });
+    segments.push({ key: 'bawang', title: "🧅 Bawang (Burger Daging Sahaja - Pilih 1)", options: ["No Onion", "Less Onion", "More Onion"] });
   }
   if(isAyamOrBenjoItem(name)){
     segments.push({ key: 'coleslaw', title: "🥗 Coleslaw (Burger Ayam / Benjo - Pilih 1)", options: ["No Coleslaw", "Less Coleslaw", "More Coleslaw"] });
@@ -318,7 +374,7 @@ function renderCustomModal(){
       <div class="modal-header">
         <div>
           <b style="font-size:17px">${esc(customItem.name)}</b>
-          <div class="mu" style="font-size:12px">Pilihan &amp; Remarks</div>
+          <div class="mu" style="font-size:12px">Pilihan &amp; Remarks (1 Pilihan Setiap Bahagian)</div>
         </div>
         <button type="button" class="ghost" data-act="closemodal" style="padding:6px 12px;font-size:18px;font-weight:bold">✕</button>
       </div>
@@ -330,7 +386,7 @@ function renderCustomModal(){
             <div class="zus-section">
               <div class="zus-section-title">${seg.title}</div>
               <div class="zus-options">
-                <button type="button" class="zus-btn cheese ${customItem.cheese ? 'active' : ''}" data-act="zus_cheese">
+                <button type="button" class="zus-btn addon ${customItem.cheese ? 'active' : ''}" data-act="zus_cheese">
                   🧀 Cheese (+RM 2.00)
                 </button>
               </div>
@@ -354,20 +410,19 @@ function renderCustomModal(){
 
         <div class="zus-section">
           <div class="zus-section-title">✏️ Remarks Khas / Catatan Tambahan</div>
-          <input type="text" id="zusCustomText" placeholder="e.g. Masak garing / Bungkus asing" value="${esc(customItem.customText||'')}">
+          <input type="text" id="zusCustomText" placeholder="e.g. Masak garing / Sos asing" value="${esc(customItem.customText||'')}">
         </div>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="big" style="background:var(--ac);width:100%" data-act="zus_confirm">
-          Confirm Order • ${money(curPrice)}
+          Sahkan Item • ${money(unitPrice)}
         </button>
       </div>
     </div>
   </div>`;
   modalBox.style.display = 'block';
 
-  // Prevent Enter key in custom remarks from submitting/refreshing page
   const txt = $('zusCustomText');
   if(txt){
     txt.addEventListener('keydown', e => { if(e.key === 'Enter') e.preventDefault(); });
@@ -375,13 +430,21 @@ function renderCustomModal(){
   }
 }
 
-// ----------------- 1. ORDER VIEW -----------------
+// ----------------- 1. CASHIER ORDER VIEW -----------------
 function vOrder(){
   const m = S.menu;
   let total = 0;
 
-  const lines = cart.map((line, idx) => {
-    total += line.price;
+  // Filter menu items by category
+  const filteredMenu = m.filter(item => {
+    if(selectedCategory === 'all') return true;
+    return getItemCategory(item.name) === selectedCategory;
+  });
+
+  const lines = cart.map(line => {
+    const lineTotal = line.unitPrice * line.qty;
+    total += lineTotal;
+    
     const remarksList = [];
     if(line.cheese) remarksList.push('🧀 Cheese (+RM2)');
     if(line.notes && line.notes.length) remarksList.push(...line.notes);
@@ -390,13 +453,17 @@ function vOrder(){
     return `
     <div style="padding:10px 0;border-bottom:1px solid var(--bd)">
       <div class="row">
-        <div>
+        <div style="flex:1">
           <b>${esc(line.name)}</b>
-          <span class="mu" style="margin-left:6px">${money(line.price)}</span>
+          <span class="mu" style="margin-left:6px">${money(line.unitPrice)} each</span>
+          <b style="color:var(--ac);margin-left:8px">${money(lineTotal)}</b>
         </div>
-        <div style="display:flex;gap:6px;align-items:center">
-          <button class="ghost" style="padding:4px 8px;font-size:12px" data-act="editcart" data-id="${line.lineId}">✏️ Edit</button>
-          <button class="ghost danger" style="padding:4px 8px;font-size:12px" data-act="delcart" data-idx="${idx}">✕</button>
+        <div class="q">
+          <button type="button" class="sm" data-act="cart_dec" data-id="${line.lineId}">−</button>
+          <b style="min-width:24px;text-align:center">${line.qty}</b>
+          <button type="button" class="sm" data-act="cart_inc" data-id="${line.lineId}">+</button>
+          <button type="button" class="ghost" style="padding:6px 10px;font-size:12px" data-act="editcart" data-id="${line.lineId}">✏️</button>
+          <button type="button" class="ghost danger" style="padding:6px 10px;font-size:12px" data-act="delcart" data-id="${line.lineId}">✕</button>
         </div>
       </div>
       <div style="margin-top:4px;font-size:13px;color:var(--ac);font-weight:600">
@@ -406,89 +473,108 @@ function vOrder(){
   }).join('');
 
   return `
+  <!-- Category Selector -->
+  <div class="cat-bar">
+    <button class="cat-btn ${selectedCategory=='all'?'active':''}" data-act="setcat" data-cat="all">Semua</button>
+    <button class="cat-btn ${selectedCategory=='burger'?'active':''}" data-act="setcat" data-cat="burger">🍔 Burgers</button>
+    <button class="cat-btn ${selectedCategory=='oblong'?'active':''}" data-act="setcat" data-cat="oblong">🥖 Oblong</button>
+    <button class="cat-btn ${selectedCategory=='benjo'?'active':''}" data-act="setcat" data-cat="benjo">🍳 Benjo</button>
+    <button class="cat-btn ${selectedCategory=='sides'?'active':''}" data-act="setcat" data-cat="sides">🍟 Sides &amp; Drinks</button>
+  </div>
+
   <h2>Menu Items</h2>
   <div class="grid">
-    ${m.map(x => `
+    ${filteredMenu.map(x => `
       <div class="item" style="cursor:pointer" data-act="openmenu" data-id="${x.id}">
-        <span class="quick-add-btn" data-act="quickadd" data-id="${x.id}">+</span>
+        <span class="quick-add-btn" data-act="quickadd" data-id="${x.id}" title="Quick Add">+</span>
         <b>${esc(x.name)}</b>
         <span>${money(x.price)}</span>
       </div>
-    `).join('') || '<p class="mu">No menu items yet.</p>'}
+    `).join('') || '<p class="mu">Tiada item dalam kategori ini.</p>'}
   </div>
 
   <h2>Current Order</h2>
   <div class="card">
-    <input id="custNameInput" placeholder="Customer / Staff Name (e.g. Azman)" value="${esc(orderCust)}" style="width:100%" data-ch="cust">
+    <input id="custNameInput" placeholder="Nama Pelanggan (e.g. Azman / Meja 3)" value="${esc(orderCust)}" style="width:100%" data-ch="cust">
     <div class="type-toggle">
-      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Walk-in</button>
+      <button class="type-btn ${orderType=='pickup'?'active':''}" data-act="settype" data-type="pickup">🛍️ Walk-in Pickup</button>
       <button class="type-btn ${orderType=='delivery'?'active':''}" data-act="settype" data-type="delivery">🛵 Delivery</button>
     </div>
     
-    <div>${lines || '<p class="mu" style="margin:12px 0">Tap items above to choose options.</p>'}</div>
+    <div>${lines || '<p class="mu" style="margin:12px 0">Tekan item di atas untuk mula pesanan.</p>'}</div>
     
     <div class="row" style="margin-top:12px;padding-top:10px;border-top:2px dashed var(--bd)">
       <span>Total</span>
       <span class="tot">${money(total)}</span>
     </div>
     
-    <div style="display:flex;gap:8px;margin-top:12px">
+    <div style="display:flex;gap:10px;margin-top:14px">
       <button class="big cash" data-act="pay" data-p="cash">💵 Cash</button>
       <button class="big qr" data-act="pay" data-p="qr">📱 QR</button>
-      <button class="big claim" data-act="pay" data-p="claim">🎁 Claim</button>
     </div>
-    <div style="margin-top:8px"><button class="ghost" data-act="clear">Clear order</button></div>
+    <div style="margin-top:10px"><button class="ghost" data-act="clear">Clear order</button></div>
   </div>`;
 }
 
-// ----------------- 2. LIVE KITCHEN -----------------
+// ----------------- 2. LIVE KITCHEN (WITH EDIT ORDER & DELIVERY TAG FIX) -----------------
 function vLive(){
   const todayKey = dkey(Date.now());
   const activeOrders = S.orders.filter(o => dkey(o.t) == todayKey && o.status != 'completed').sort((a,b) => a.t - b.t);
   
   if(!activeOrders.length){
     return `<h2>Live Kitchen &amp; Queue</h2>
-    <div class="card" style="text-align:center;padding:30px">
-      <div style="font-size:32px">✨</div>
-      <p class="mu" style="margin:8px 0 0">All clear! No pending orders.</p>
+    <div class="card" style="text-align:center;padding:32px">
+      <div style="font-size:36px">✨</div>
+      <p class="mu" style="margin:8px 0 0">Semua pesanan selesai! Dapur lapang.</p>
     </div>`;
   }
 
   return `
   <h2>Live Orders (${activeOrders.length})</h2>
   ${activeOrders.map(o => {
+    const isStaffClaim = (o.pay === 'claim' || o.type === 'staff_meal');
+    const isDelivery = (o.type === 'delivery');
     const isOnline = o.cust && o.cust.includes('(');
-    const isClaim = o.pay == 'claim';
     const statusText = o.status == 'cooking' ? '🍳 Cooking' : (o.status == 'ready' ? '✅ Ready' : 'Done');
     const statusClass = o.status == 'cooking' ? 'tag-cooking' : 'tag-ready';
 
+    let typeTag = `<span class="tag tag-pickup">🛍️ Walk-in</span>`;
+    if(isStaffClaim){
+      typeTag = `<span class="tag tag-claim">🎁 Staff Meal</span>`;
+    } else if(isDelivery){
+      typeTag = `<span class="tag tag-delivery">🛵 Delivery</span>`;
+    } else if(isOnline){
+      typeTag = `<span class="tag tag-delivery">🌐 Online (Bilik)</span>`;
+    }
+
     return `
-    <div class="card" style="border-left:5px solid ${isClaim?'var(--claim)':(o.status=='cooking'?'var(--warn)':'var(--ok)')}">
+    <div class="card" style="border-left:6px solid ${isStaffClaim?'var(--claim)':(isDelivery?'var(--warn)':(o.status=='cooking'?'var(--ac)':'var(--ok)'))}">
       <div class="row">
         <div>
-          <b>${esc(o.cust || 'Walk-in')}</b>
-          <div class="mu" style="font-size:12px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · 
-            <span style="font-weight:700;color:${isClaim?'var(--claim)':(o.pay=='cash'?'var(--ok)':'var(--blue)')}">
-              ${isClaim ? '🎁 Staff Claim' : (o.pay=='cash'?'💵 Cash':'📱 QR')}
+          <b style="font-size:16px">${esc(o.cust || 'Walk-in')}</b>
+          <div class="mu" style="font-size:12px;margin-top:2px">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · ${money(o.total)} · 
+            <span style="font-weight:800;color:${isStaffClaim?'var(--claim)':(o.pay=='cash'?'var(--ok)':'var(--blue)')}">
+              ${isStaffClaim ? 'Staff Claim' : (o.pay=='cash'?'Cash':'QR')}
             </span>
           </div>
         </div>
         <div>
-          ${isClaim ? `<span class="tag tag-claim">🎁 Claim</span>` : `<span class="tag ${isOnline?'tag-delivery':'tag-pickup'}">${isOnline?'🌐 Online (Bilik)':'🛍️ Walk-in'}</span>`}
+          ${typeTag}
           <span class="tag ${statusClass}">${statusText}</span>
         </div>
       </div>
       
-      <div style="background:var(--bg);padding:8px 10px;border-radius:8px;margin:8px 0;font-size:14px">
+      <div style="background:var(--bg);padding:10px 12px;border-radius:10px;margin:10px 0;font-size:14px">
         ${(o.items || []).map(i => `
-          <div style="margin-bottom:5px">
-            <b>${i.q}× ${esc(i.n)}</b>
+          <div style="margin-bottom:6px">
+            <b>${i.q || 1}× ${esc(i.n)}</b>
             ${i.note ? `<div style="color:#d9480f;font-weight:700;font-size:13px;margin-left:14px">• ${esc(i.note)}</div>` : ''}
           </div>
         `).join('')}
       </div>
 
-      <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end;align-items:center">
+      <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end;align-items:center;flex-wrap:wrap">
+        <button class="ghost" style="padding:8px 12px;font-size:13px" data-act="open_edit_live" data-id="${o.id}">✏️ Edit Order</button>
         ${delBtn('order', o.id)}
         ${o.status == 'cooking' ? `<button class="action-btn" style="background:var(--ok)" data-act="setstatus" data-id="${o.id}" data-st="ready">🍳 Done Cooking</button>` : ''}
         ${o.status == 'ready' ? `<button class="action-btn" style="background:var(--blue)" data-act="setstatus" data-id="${o.id}" data-st="completed">✅ Collected</button>` : ''}
@@ -497,24 +583,200 @@ function vLive(){
   }).join('')}`;
 }
 
-// ----------------- 3. TODAY SALES & CLAIMS -----------------
+// ----------------- LIVE ORDER EDIT MODAL -----------------
+function renderEditLiveModal(){
+  const modal = $('editLiveModal');
+  if(!editingLiveOrder){ modal.style.display = 'none'; modal.innerHTML = ''; return; }
+
+  const o = editingLiveOrder;
+  modal.innerHTML = `
+  <div class="modal-overlay" id="editLiveOverlay">
+    <div class="modal-sheet" id="editLiveSheet">
+      <div class="modal-header">
+        <div>
+          <b>Edit Order #${o.id.slice(-4)}</b>
+          <div class="mu" style="font-size:12px">Kemaskini pesanan sedang berjalan</div>
+        </div>
+        <button type="button" class="ghost" data-act="close_edit_live">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <label class="mu" style="font-size:12px">Nama Pelanggan:</label>
+        <input id="editLiveCust" value="${esc(o.cust||'')}" style="margin-bottom:10px">
+
+        <label class="mu" style="font-size:12px">Jenis Pesanan:</label>
+        <div class="type-toggle" style="margin-bottom:12px">
+          <button type="button" class="type-btn ${o.type=='pickup'?'active':''}" data-act="set_edittype" data-val="pickup">🛍️ Pickup</button>
+          <button type="button" class="type-btn ${o.type=='delivery'?'active':''}" data-act="set_edittype" data-val="delivery">🛵 Delivery</button>
+        </div>
+
+        <label class="mu" style="font-size:12px">Senarai Item:</label>
+        ${(o.items||[]).map((it, idx) => `
+          <div style="background:var(--bg);padding:8px;border-radius:8px;margin-bottom:6px">
+            <div class="row">
+              <input style="flex:1;font-weight:bold" value="${esc(it.n)}" data-ch="edit_it_name" data-idx="${idx}">
+              <div class="q">
+                <input class="n" type="number" value="${it.q||1}" style="width:60px" data-ch="edit_it_q" data-idx="${idx}">
+                <button type="button" class="ghost danger" style="padding:6px 10px" data-act="edit_it_del" data-idx="${idx}">✕</button>
+              </div>
+            </div>
+            <input placeholder="Remarks (e.g. No vege, add cheese)" value="${esc(it.note||'')}" style="width:100%;margin-top:4px;font-size:13px" data-ch="edit_it_note" data-idx="${idx}">
+          </div>
+        `).join('')}
+
+        <button type="button" class="ghost" style="width:100%;margin-top:6px" data-act="edit_add_item">+ Tambah Burger / Item Lain</button>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="big" style="background:var(--ok);width:100%" data-act="save_edit_live">
+          💾 Simpan Kemaskini
+        </button>
+      </div>
+    </div>
+  </div>`;
+  modal.style.display = 'block';
+}
+
+// ----------------- 3. DEDICATED STAFF MEAL CLAIM SECTION -----------------
+function vStaffClaim(){
+  const baseItems = [
+    { id: 'sb_ayam', name: 'Burger Ayam', basePrice: 6.00 },
+    { id: 'sb_daging', name: 'Burger Daging', basePrice: 7.00 },
+    { id: 'sb_benjo', name: 'Benjo', basePrice: 4.00 }
+  ];
+
+  const curBase = baseItems.find(b => b.id === staffClaimState.burgerId) || baseItems[0];
+  
+  // Calculate add-on cost
+  let staffPay = 0;
+  if(staffClaimState.addons.special) staffPay += 1.00;
+  if(staffClaimState.addons.patty) staffPay += 2.00;
+  if(staffClaimState.addons.cheese) staffPay += 2.00;
+  if(staffClaimState.addons.pattaya) staffPay += 2.50;
+
+  const bossPays = curBase.basePrice;
+  const fullRetailPrice = bossPays + staffPay;
+
+  return `
+  <h2>🎁 Staff Meal Claim</h2>
+  <div class="card" style="border:2px solid var(--claim)">
+    <div style="background:rgba(121,80,242,0.08);padding:10px 12px;border-radius:10px;margin-bottom:12px">
+      <b style="color:var(--claim)">Peraturan Makan Staf:</b>
+      <p style="margin:4px 0 0;font-size:13px;color:var(--tx)">
+        • <b>Burger Asas</b> (Ayam, Daging, Benjo) ditanggung oleh Boss.<br>
+        • <b>Add-ons</b> (Special +RM1, Extra Patty +RM2, Cheese +RM2, Pattaya +RM2.50) dibayar sendiri oleh staf.
+      </p>
+    </div>
+
+    <label style="font-weight:700">Nama Staf (Wajib):</label>
+    <input id="staffNameInput" placeholder="Masukkan nama anda (e.g. Azman / Din)" value="${esc(staffClaimState.staffName)}" style="width:100%;margin:6px 0 14px">
+
+    <label style="font-weight:700">Pilih Burger Asas (Makan Staf):</label>
+    <div class="grid" style="margin:6px 0 14px">
+      ${baseItems.map(b => `
+        <button type="button" class="zus-btn ${staffClaimState.burgerId===b.id?'active':''}" data-act="sc_base" data-id="${b.id}" style="padding:14px 8px;font-size:14px">
+          <b>${b.name}</b><br>
+          <span style="font-size:12px;color:var(--mu)">Boss cover: ${money(b.basePrice)}</span>
+        </button>
+      `).join('')}
+    </div>
+
+    <label style="font-weight:700">Add-ons (Bayar Sendiri):</label>
+    <div class="grid" style="margin:6px 0 14px">
+      <button type="button" class="zus-btn addon ${staffClaimState.addons.special?'active':''}" data-act="sc_addon" data-ad="special">
+        Special (+RM 1.00)
+      </button>
+      <button type="button" class="zus-btn addon ${staffClaimState.addons.patty?'active':''}" data-act="sc_addon" data-ad="patty">
+        Extra Patty (+RM 2.00)
+      </button>
+      <button type="button" class="zus-btn addon ${staffClaimState.addons.cheese?'active':''}" data-act="sc_addon" data-ad="cheese">
+        Cheese (+RM 2.00)
+      </button>
+      <button type="button" class="zus-btn addon ${staffClaimState.addons.pattaya?'active':''}" data-act="sc_addon" data-ad="pattaya">
+        Pattaya (+RM 2.50)
+      </button>
+    </div>
+
+    <label style="font-weight:700">Pilihan Sos &amp; Sayur (Percuma):</label>
+    <div style="margin-top:8px">
+      <div class="zus-section-title">Sayur (Pilih 1)</div>
+      <div class="zus-options" style="margin-bottom:8px">
+        <button type="button" class="zus-btn ${staffClaimState.selected.sayur==='No Vege'?'active':''}" data-act="sc_opt" data-sec="sayur" data-val="No Vege">Taknak Sayur</button>
+        <button type="button" class="zus-btn ${staffClaimState.selected.sayur==='More Vege'?'active':''}" data-act="sc_opt" data-sec="sayur" data-val="More Vege">Lebih Sayur</button>
+      </div>
+
+      ${curBase.id === 'sb_daging' ? `
+        <div class="zus-section-title">Bawang (Burger Daging)</div>
+        <div class="zus-options" style="margin-bottom:8px">
+          <button type="button" class="zus-btn ${staffClaimState.selected.bawang==='No Onion'?'active':''}" data-act="sc_opt" data-sec="bawang" data-val="No Onion">Taknak Bawang</button>
+          <button type="button" class="zus-btn ${staffClaimState.selected.bawang==='Less Onion'?'active':''}" data-act="sc_opt" data-sec="bawang" data-val="Less Onion">Kurang Bawang</button>
+          <button type="button" class="zus-btn ${staffClaimState.selected.bawang==='More Onion'?'active':''}" data-act="sc_opt" data-sec="bawang" data-val="More Onion">Lebih Bawang</button>
+        </div>
+      ` : ''}
+
+      ${curBase.id === 'sb_ayam' || curBase.id === 'sb_benjo' ? `
+        <div class="zus-section-title">Coleslaw (Ayam/Benjo)</div>
+        <div class="zus-options" style="margin-bottom:8px">
+          <button type="button" class="zus-btn ${staffClaimState.selected.coleslaw==='No Coleslaw'?'active':''}" data-act="sc_opt" data-sec="coleslaw" data-val="No Coleslaw">Taknak Coleslaw</button>
+          <button type="button" class="zus-btn ${staffClaimState.selected.coleslaw==='Less Coleslaw'?'active':''}" data-act="sc_opt" data-sec="coleslaw" data-val="Less Coleslaw">Kurang Coleslaw</button>
+          <button type="button" class="zus-btn ${staffClaimState.selected.coleslaw==='More Coleslaw'?'active':''}" data-act="sc_opt" data-sec="coleslaw" data-val="More Coleslaw">Lebih Coleslaw</button>
+        </div>
+      ` : ''}
+
+      <div class="zus-section-title">Sos Cili &amp; Blackpepper &amp; Mayo</div>
+      <div class="zus-options" style="margin-bottom:8px">
+        <button type="button" class="zus-btn ${staffClaimState.selected.sosCili==='No Sos Cili'?'active':''}" data-act="sc_opt" data-sec="sosCili" data-val="No Sos Cili">No Cili</button>
+        <button type="button" class="zus-btn ${staffClaimState.selected.sosBp==='No Blackpepper Sauce'?'active':''}" data-act="sc_opt" data-sec="sosBp" data-val="No Blackpepper Sauce">No BP</button>
+        <button type="button" class="zus-btn ${staffClaimState.selected.mayo==='No Mayo'?'active':''}" data-act="sc_opt" data-sec="mayo" data-val="No Mayo">No Mayo</button>
+      </div>
+
+      <input id="scCustomText" placeholder="Catatan lain (e.g. masak garing)" value="${esc(staffClaimState.customText||'')}" style="width:100%;margin-top:6px">
+    </div>
+
+    <!-- Pricing Summary -->
+    <div style="background:var(--bg);padding:12px;border-radius:12px;margin:16px 0">
+      <div class="row"><span>Burger Ditanggung Boss:</span><b>${money(bossPays)}</b></div>
+      <div class="row" style="font-size:17px;color:${staffPay>0?'#d9480f':'var(--ok)'}">
+        <span><b>Perlu Dibayar Oleh Staf:</b></span>
+        <b>${money(staffPay)} ${staffPay===0?'(PERCUMA)':''}</b>
+      </div>
+      <div class="row" style="font-size:12px;color:var(--mu);padding-top:4px">
+        <span>Nilai Penuh Burger (Termasuk dalam Jualan):</span>
+        <span>${money(fullRetailPrice)}</span>
+      </div>
+    </div>
+
+    <button type="button" class="big" style="background:var(--claim);width:100%" data-act="submit_staff_claim">
+      🚀 Hantar Staff Meal (Staf Bayar: ${money(staffPay)})
+    </button>
+  </div>`;
+}
+
+// ----------------- 4. TODAY SALES & METRICS -----------------
 function vDay(k){
   const l = S.orders.filter(o => dkey(o.t) == k).sort((a,b) => b.t - a.t);
   const s = sum(l);
   const c = {};
-  l.forEach(o => (o.items || []).forEach(i => c[i.n] = (c[i.n] || 0) + i.q));
+  l.forEach(o => (o.items || []).forEach(i => c[i.n] = (c[i.n] || 0) + (i.q || 1)));
 
-  const claimOrders = l.filter(o => o.pay == 'claim');
+  const claimOrders = l.filter(o => o.pay == 'claim' || o.type == 'staff_meal');
 
   return `
   <div class="stats">
-    <div>Total Sales<b>${money(s.all)}</b></div>
-    <div>Items Sold<b>${s.n} pcs</b></div>
-    <div>Cash Sales<b>${money(s.cash)}</b></div>
-    <div>QR Sales<b>${money(s.qr)}</b></div>
+    <div>
+      <span class="mu" style="font-size:12px">💵 Jualan Customer</span>
+      <b>${money(s.custSalesTotal)}</b>
+      <div class="mu" style="font-size:11px">Cash: ${money(s.custCash)} | QR: ${money(s.custQr)}</div>
+    </div>
     <div style="background:rgba(121,80,242,0.08);border-color:var(--claim)">
-      <span style="color:var(--claim);font-weight:700">🎁 Staff Claim</span>
-      <b style="color:var(--claim)">${money(s.claim)}</b>
+      <span style="font-size:12px;color:var(--claim);font-weight:700">🎁 Tuntutan Makan Staf</span>
+      <b style="color:var(--claim)">${money(s.bossClaim)}</b>
+      <div style="font-size:11px;color:var(--claim)">Ditanggung Boss (${claimOrders.length} burger)</div>
+    </div>
+    <div style="background:rgba(32,201,151,0.08);border-color:var(--ok)">
+      <span class="mu" style="font-size:12px">⭐ Grand Total Jualan</span>
+      <b style="color:var(--ok)">${money(s.grandTotal)}</b>
+      <div class="mu" style="font-size:11px">Total ${s.n} pcs terjual</div>
     </div>
   </div>
   
@@ -523,37 +785,40 @@ function vDay(k){
     ${Object.keys(c).sort((a,b)=>c[b]-c[a]).map(n => `<div class="row"><span>${esc(n)}</span><b>${c[n]} sold</b></div>`).join('') || '<span class="mu">Nothing sold yet.</span>'}
   </div>
 
-  <h3>🎁 Staff Claim History Today (${claimOrders.length})</h3>
+  <h3>🎁 Sejarah Makan Staf Hari Ini (${claimOrders.length})</h3>
   <div class="card">
     ${claimOrders.map(o => `
       <div class="row" style="padding:6px 0">
         <div>
-          <b>${esc(o.cust || 'Staff Claim')}</b>
+          <b>${esc(o.cust || 'Staff Meal')}</b>
           <div class="mu" style="font-size:12px">
-            ${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} • ${(o.items||[]).map(i => `${i.q}× ${esc(i.n)} ${i.note ? `(${esc(i.note)})` : ''}`).join(', ')}
+            ${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} • ${(o.items||[]).map(i => `${i.q||1}× ${esc(i.n)} ${i.note ? `(${esc(i.note)})` : ''}`).join(', ')}
           </div>
         </div>
-        <b style="color:var(--claim)">${money(o.total)}</b>
+        <div style="text-align:right">
+          <b style="color:var(--claim)">Boss: ${money(o.basicPrice || o.total)}</b>
+          ${o.staffPay > 0 ? `<div style="font-size:11px;color:#d9480f">Staf Bayar: ${money(o.staffPay)}</div>` : ''}
+        </div>
       </div>
-    `).join('') || '<span class="mu">No staff claims today.</span>'}
+    `).join('') || '<span class="mu">Tiada tuntutan makan staf hari ini.</span>'}
   </div>
   
-  <h3>All Orders Today (${l.length})</h3>
+  <h3>Semua Pesanan Hari Ini (${l.length})</h3>
   ${l.map(o => `
     <div class="card">
       <div class="row">
         <div>
           <b>${esc(o.cust || 'Customer')} · 
-            <span style="color:${o.pay=='claim'?'var(--claim)':(o.pay=='cash'?'var(--ok)':'var(--blue)')}">
-              ${o.pay=='claim'?'🎁 Staff Claim':(o.pay=='cash'?'💵 Cash':'📱 QR')}
+            <span style="color:${(o.pay=='claim'||o.type=='staff_meal')?'var(--claim)':(o.pay=='cash'?'var(--ok)':'var(--blue)')}">
+              ${(o.pay=='claim'||o.type=='staff_meal')?'🎁 Staff Meal':(o.pay=='cash'?'💵 Cash':'📱 QR')}
             </span>
           </b>
-          <div class="mu">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · <span class="tag ${o.type=='delivery'?'tag-delivery':'tag-pickup'}">${o.type=='delivery'?'Online':'Walk-in'}</span></div>
+          <div class="mu">${new Date(o.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} · <span class="tag ${o.type=='delivery'?'tag-delivery':'tag-pickup'}">${o.type=='delivery'?'Delivery':'Walk-in'}</span></div>
         </div>
         <b>${money(o.total)}</b>
       </div>
       <div class="mu" style="margin-top:6px">
-        ${(o.items || []).map(i => `${i.q}× ${esc(i.n)}${i.note ? ` (${esc(i.note)})` : ''}`).join(', ')}
+        ${(o.items || []).map(i => `${i.q||1}× ${esc(i.n)}${i.note ? ` (${esc(i.note)})` : ''}`).join(', ')}
       </div>
       <div style="margin-top:6px">${delBtn('order', o.id)}</div>
     </div>
@@ -562,30 +827,52 @@ function vDay(k){
 
 function vToday(){ const k = dkey(Date.now()); return `<h2>Today <span class="mu">${k}</span></h2>` + vDay(k); }
 
-// ----------------- 4. HISTORY -----------------
+// ----------------- 5. HISTORY (SEPARATED SALES METRICS) -----------------
 function vHist(){
   if(selDay) return `<button class="ghost" data-act="back" style="margin-top:12px">← Back to history</button><h2>${selDay}</h2>` + vDay(selDay);
   const months = {}; S.orders.forEach(o => { const d = dkey(o.t); (months[d.slice(0,7)] = months[d.slice(0,7)] || {})[d] = 1; });
   const yrs = {}; Object.keys(months).forEach(m => yrs[m.slice(0,4)] = 1);
-  let h = '<h2>Sales &amp; Items History</h2>';
+  let h = '<h2>Sales &amp; Claims History</h2>';
   if(!S.orders.length) return h + '<p class="mu">No sales recorded yet.</p>';
 
   Object.keys(yrs).sort().reverse().forEach(y => {
     const ys = sum(S.orders.filter(o => dkey(o.t).slice(0,4) == y));
-    h += `<div class="card"><b>Year ${y}</b><div class="mu">${ys.n} items sold (${ys.ordersCount} orders) • Cash ${money(ys.cash)} • QR ${money(ys.qr)} • Claim ${money(ys.claim)}</div><div class="tot">${money(ys.all)}</div></div>`;
+    h += `
+    <div class="card" style="border:2px solid var(--bd)">
+      <b style="font-size:18px">Tahun ${y}</b>
+      <div class="row" style="margin-top:6px">
+        <span>💵 Jualan Customer:</span><b>${money(ys.custSalesTotal)}</b>
+      </div>
+      <div class="row" style="color:var(--claim)">
+        <span>🎁 Tuntutan Makan Staf (Boss):</span><b>${money(ys.bossClaim)}</b>
+      </div>
+      <div class="row" style="font-size:18px;font-weight:800;border-top:1.5px dashed var(--bd);padding-top:6px;color:var(--ok)">
+        <span>⭐ Grand Total Keseluruhan:</span><span>${money(ys.grandTotal)}</span>
+      </div>
+      <div class="mu" style="margin-top:4px">${ys.n} burger/item terjual • ${ys.ordersCount} pesanan</div>
+    </div>`;
+
     Object.keys(months).filter(m => m.startsWith(y)).sort().reverse().forEach(m => {
       const ms = sum(S.orders.filter(o => dkey(o.t).slice(0,7) == m));
-      h += `<details><summary>${m} — ${money(ms.all)} <span class="mu">(${ms.n} items sold)</span></summary><div class="mu" style="margin:4px 0 8px">${ms.n} items sold • Cash ${money(ms.cash)} • QR ${money(ms.qr)} • Claim ${money(ms.claim)}</div>` +
-      Object.keys(months[m]).sort().reverse().map(d => {
-        const ds = sum(S.orders.filter(o => dkey(o.t) == d));
-        return `<div class="row"><button class="ghost" data-act="day" data-id="${d}">${d}</button><span>${ds.n} items • <b>${money(ds.all)}</b></span></div>`;
-      }).join('') + '</details>';
+      h += `
+      <details>
+        <summary><b>${m}</b> — Customer: ${money(ms.custSalesTotal)} | Staf: ${money(ms.bossClaim)} | <b>Total: ${money(ms.grandTotal)}</b></summary>
+        <div class="mu" style="margin:4px 0 8px">${ms.n} items • Customer Cash: ${money(ms.custCash)} • QR: ${money(ms.custQr)}</div>
+        ${Object.keys(months[m]).sort().reverse().map(d => {
+          const ds = sum(S.orders.filter(o => dkey(o.t) == d));
+          return `
+          <div class="row">
+            <button class="ghost" data-act="day" data-id="${d}">${d}</button>
+            <span>Customer: ${money(ds.custSalesTotal)} | Staf: ${money(ds.bossClaim)} | <b>${money(ds.grandTotal)}</b></span>
+          </div>`;
+        }).join('')}
+      </details>`;
     });
   });
   return h;
 }
 
-// ----------------- 5. STOK HARIAN -----------------
+// ----------------- 6. STOK HARIAN -----------------
 let curStockDate = dkey(Date.now());
 function getStockForDate(targetDate){
   S.stockClosing = S.stockClosing || {};
@@ -633,15 +920,18 @@ function vStock(){
   <button class="whatsapp-btn" data-act="copystockwa" style="margin-top:12px">📱 Copy WhatsApp Laporan Stok</button>`;
 }
 
-// ----------------- 6. CASH CLOSING REPORT -----------------
+// ----------------- 7. CASH CLOSING REPORT (AUTO NEXT-DAY OPENING & CLEAN WA) -----------------
 let curCashDate = dkey(Date.now());
+
+// Finds previous selling day closing to automatically use as opening
 function getPreviousClosing(targetDate){
   S.cashReports = S.cashReports || {};
-  const pastDates = Object.keys(S.cashReports).filter(d => d < targetDate).sort();
+  const pastDates = Object.keys(S.cashReports)
+    .filter(d => d < targetDate && S.cashReports[d] && S.cashReports[d].closing !== '' && S.cashReports[d].closing !== undefined)
+    .sort();
   if(!pastDates.length) return null;
-  const lastRep = S.cashReports[pastDates[pastDates.length - 1]];
-  if(lastRep && lastRep.closing !== '' && lastRep.closing !== undefined) return parseFloat(lastRep.closing);
-  return null;
+  const lastDate = pastDates[pastDates.length - 1];
+  return parseFloat(S.cashReports[lastDate].closing) || 0;
 }
 
 function vCash(){
@@ -649,6 +939,7 @@ function vCash(){
   S.cashReports = S.cashReports || {};
   const cr = S.cashReports[curCashDate] || { opening: '', closing: '', paidOut: '', paidIn: '' };
   
+  // Auto-fill opening from previous closing if not explicitly entered
   if(cr.opening === '' || cr.opening === undefined){
     const prevClosing = getPreviousClosing(curCashDate);
     if(prevClosing !== null) cr.opening = prevClosing.toFixed(2);
@@ -660,8 +951,8 @@ function vCash(){
   const pi = parseFloat(cr.paidIn) || 0;
   const po = parseFloat(cr.paidOut) || 0;
   
-  // Cash drawer only counts real cash sales (Claim is not cash)
-  const expectedClosing = (op + pi + s.cash - po);
+  // Only actual cash sales go into the drawer
+  const expectedClosing = (op + pi + s.custCash - po);
   const displayedClosing = (cr.closing !== '' && cr.closing !== undefined) ? cr.closing : (expectedClosing > 0 ? expectedClosing.toFixed(2) : '');
 
   return `
@@ -675,25 +966,24 @@ function vCash(){
       <b style="font-size:16px">🍔 SINGGAH CAFE</b><br><span class="mu">LAPORAN OPENING &amp; CLOSING CASH</span><br><b>Tarikh: ${formatDMY(curCashDate)}</b>
     </div>
     <div class="sec-hdr" style="margin-top:0">📊 RINGKASAN JUALAN &amp; TUNAI</div>
-    <div class="row"><span>Cash Opening: RM</span><input class="n" type="number" step="0.1" value="${cr.opening}" data-ch="cashfield" data-f="opening"></div>
+    <div class="row"><span>Cash Opening (Auto Duit Semalam): RM</span><input class="n" type="number" step="0.1" value="${cr.opening}" data-ch="cashfield" data-f="opening"></div>
     <div class="row"><span>Paid In: RM</span><input class="n" type="number" step="0.1" value="${cr.paidIn}" data-ch="cashfield" data-f="paidIn"></div>
     <div class="row"><span>Paid Out: RM</span><input class="n" type="number" step="0.1" value="${cr.paidOut}" data-ch="cashfield" data-f="paidOut"></div>
-    <div class="row" style="background:rgba(255,107,0,0.06);padding:8px;border-radius:8px;margin:6px 0"><span><b>💵 Jualan Cash:</b></span><b>RM ${(s.cash).toFixed(2)}</b></div>
+    <div class="row" style="background:rgba(255,107,0,0.06);padding:8px;border-radius:8px;margin:6px 0"><span><b>💵 Jualan Cash (Auto):</b></span><b>RM ${(s.custCash).toFixed(2)}</b></div>
     <div class="row"><span><b>Cash Closing: RM</b></span><input class="n" type="number" step="0.1" placeholder="${expectedClosing.toFixed(2)}" value="${displayedClosing}" data-ch="cashfield" data-f="closing"></div>
     <div style="margin-top:14px;border-top:1px dashed var(--bd);padding-top:10px">
-      <div class="row"><span>💵 Jualan Cash:</span><b>RM ${(s.cash).toFixed(2)}</b></div>
-      <div class="row"><span>📱 Jualan QR:</span><b>RM ${(s.qr).toFixed(2)}</b></div>
-      <div class="row"><span>🎁 Staff Claim:</span><b style="color:var(--claim)">RM ${(s.claim).toFixed(2)}</b></div>
-      <div class="row" style="font-size:17px;font-weight:800;color:var(--ok);border-top:1.5px solid var(--bd);padding-top:8px"><span>✅ TOTAL JUALAN:</span><span>RM ${(s.all).toFixed(2)}</span></div>
+      <div class="row"><span>💵 Jualan Cash:</span><b>RM ${(s.custCash).toFixed(2)}</b></div>
+      <div class="row"><span>📱 Jualan QR:</span><b>RM ${(s.custQr).toFixed(2)}</b></div>
+      <div class="row" style="font-size:18px;font-weight:800;color:var(--ok);border-top:1.5px solid var(--bd);padding-top:8px"><span>✅ TOTAL JUALAN:</span><span>RM ${(s.custSalesTotal).toFixed(2)}</span></div>
     </div>
   </div>
   <button class="whatsapp-btn" data-act="copycashwa" style="margin-top:10px">📱 Copy WhatsApp Laporan Cash</button>`;
 }
 
-// ----------------- 7. SETTINGS -----------------
+// ----------------- 8. SETTINGS -----------------
 function vSet(){
   return `
-  <h2>Customer Link (Untuk Pelanggan Pesan Dari Bilik)</h2>
+  <h2>Customer Link (Pesan Dari Bilik)</h2>
   <div class="card">
     <p class="mu" style="margin-top:0">Kongsikan link ini kepada pelanggan anda:</p>
     <input value="https://singgah-cafe.web.app/order.html" readonly style="font-weight:bold;color:var(--ac)">
@@ -728,29 +1018,23 @@ function render(){
   const T = [
     ['order', '🍔 Order'],
     ['live', `🍳 Live ${activeOrdersCount > 0 ? `<span class="badge-count">${activeOrdersCount}</span>` : ''}`],
+    ['claim', '🎁 Staff Meal'],
     ['today', '📊 Today'],
     ['hist', '📅 History'],
-    ['stock', '📦 Stok Harian'],
-    ['cash', '💵 Cash Report'],
+    ['stock', '📦 Stok'],
+    ['cash', '💵 Cash'],
     ['set', '⚙️ Settings']
   ];
   $('nav').innerHTML = T.map(t => `<button class="${tab==t[0]?'on':''}" data-act="tab" data-t="${t[0]}">${t[1]}</button>`).join('');
-  $('app').innerHTML = { order:vOrder, live:vLive, today:vToday, hist:vHist, stock:vStock, cash:vCash, set:vSet }[tab]();
+  $('app').innerHTML = { order:vOrder, live:vLive, claim:vStaffClaim, today:vToday, hist:vHist, stock:vStock, cash:vCash, set:vSet }[tab]();
 }
 
 // ----------------- GLOBAL CLICK LISTENER -----------------
 document.addEventListener('click', async e => {
-  // If tapped directly on dark overlay outside modal sheet, close modal
-  if(e.target.id === 'staffModalOverlay'){
-    customItem = null;
-    renderCustomModal();
-    return;
-  }
-
-  // If clicked inside modal sheet on text, labels, or inputs WITHOUT a data-act, DO NOTHING (don't exit!)
-  if(e.target.closest('#staffModalSheet') && !e.target.closest('[data-act]')){
-    return;
-  }
+  if(e.target.id === 'staffModalOverlay'){ customItem = null; renderCustomModal(); return; }
+  if(e.target.id === 'editLiveOverlay'){ editingLiveOrder = null; renderEditLiveModal(); return; }
+  if(e.target.closest('#staffModalSheet') && !e.target.closest('[data-act]')){ return; }
+  if(e.target.closest('#editLiveSheet') && !e.target.closest('[data-act]')){ return; }
 
   const b = e.target.closest('[data-act]'); if(!b) return;
   const a = b.dataset.act, id = b.dataset.id;
@@ -764,17 +1048,33 @@ document.addEventListener('click', async e => {
   if(a=='logout'){ await auth.signOut(); return; }
   if(a=='tab'){ tab = b.dataset.t; selDay = null; armed = null; }
   else if(a=='settype'){ orderType = b.dataset.type; }
+  else if(a=='setcat'){ selectedCategory = b.dataset.cat; render(); }
   else if(a=='openmenu'){ openCustomizer(id); }
   else if(a=='quickadd'){
     e.stopPropagation();
     const m = S.menu.find(x => x.id == id);
     if(m){
-      cart.push({ lineId: uid(), itemId: m.id, name: m.name, basePrice: m.price, price: m.price, cheese: false, notes: [], customText: '' });
+      cart.push({ lineId: uid(), itemId: m.id, name: m.name, basePrice: m.price, unitPrice: m.price, qty: 1, cheese: false, notes: [], customText: '' });
       render(); toast(`Added 1× ${m.name}`);
     }
   }
-  else if(a=='editcart'){ const itemInCart = cart.find(c => c.lineId == id); if(itemInCart) openCustomizer(itemInCart.itemId, id); }
-  else if(a=='delcart'){ cart.splice(+b.dataset.idx, 1); render(); }
+  else if(a=='cart_inc'){
+    const item = cart.find(c => c.lineId == id);
+    if(item){ item.qty = (item.qty || 1) + 1; render(); }
+  }
+  else if(a=='cart_dec'){
+    const item = cart.find(c => c.lineId == id);
+    // Ignore if already 1 (Does NOT delete)
+    if(item && item.qty > 1){ item.qty--; render(); }
+  }
+  else if(a=='delcart'){
+    cart = cart.filter(c => c.lineId != id);
+    render();
+  }
+  else if(a=='editcart'){
+    const itemInCart = cart.find(c => c.lineId == id);
+    if(itemInCart) openCustomizer(itemInCart.itemId, id);
+  }
   else if(a=='closemodal'){ customItem = null; renderCustomModal(); }
   else if(a=='zus_cheese'){
     if(customItem){
@@ -789,7 +1089,7 @@ document.addEventListener('click', async e => {
       const sec = b.dataset.sec;
       const val = b.dataset.val;
 
-      // 1 option per section rule
+      // 1 option per section
       if(customItem.selected[sec] === val){
         customItem.selected[sec] = '';
       } else {
@@ -801,7 +1101,7 @@ document.addEventListener('click', async e => {
   else if(a=='zus_confirm'){
     if(customItem){
       const txt = $('zusCustomText'); if(txt) customItem.customText = txt.value.trim();
-      const finalPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
+      const unitPrice = customItem.basePrice + (customItem.cheese ? 2 : 0);
       
       const finalNotes = [];
       Object.keys(customItem.selected).forEach(k => {
@@ -813,7 +1113,8 @@ document.addEventListener('click', async e => {
         itemId: customItem.itemId,
         name: customItem.name,
         basePrice: customItem.basePrice,
-        price: finalPrice,
+        unitPrice: unitPrice,
+        qty: customItem.qty || 1,
         cheese: customItem.cheese,
         notes: finalNotes,
         customText: customItem.customText || ''
@@ -831,33 +1132,35 @@ document.addEventListener('click', async e => {
   else if(a=='pay'){
     if(!cart.length){ toast('Add items first'); return; }
     
-    const payMethod = b.dataset.p; // 'cash', 'qr', or 'claim'
+    const payMethod = b.dataset.p; // 'cash' or 'qr'
     const items = cart.map(c => {
       const notes = [];
       if(c.cheese) notes.push('Cheese (+RM2)');
       if(c.notes && c.notes.length) notes.push(...c.notes);
       if(c.customText) notes.push(c.customText);
-      return { id: c.itemId, n: c.name, p: c.price, q: 1, note: notes.join(', ') };
+      return { id: c.itemId, n: c.name, p: c.unitPrice, q: c.qty || 1, note: notes.join(', ') };
     });
 
-    const custNameDisplay = (orderCust.trim()) || (payMethod === 'claim' ? 'Staff Claim' : 'Walk-in');
+    const custNameDisplay = (orderCust.trim()) || 'Walk-in';
 
     const newOrder = {
       id: uid(),
       t: Date.now(),
       cust: custNameDisplay,
-      type: orderType,
+      type: orderType, // 'pickup' or 'delivery'
       status: 'cooking',
       items,
-      total: items.reduce((s,i) => s + i.p*i.q, 0),
+      total: items.reduce((s,i) => s + i.p * (i.q || 1), 0),
       pay: payMethod
     };
 
     S.orders.push(newOrder);
     cart = []; orderCust = '';
     save();
-    toast(payMethod === 'claim' ? '🎁 Staff Claim Saved!' : 'Order saved!');
+    toast('Order sent to kitchen!');
   }
+
+  // Live Order Actions & Edit
   else if(a=='setstatus'){
     const ord = S.orders.find(o => o.id == id);
     if(ord){
@@ -866,6 +1169,131 @@ document.addEventListener('click', async e => {
       db.collection('orders').doc(id).update({ status: b.dataset.st }).catch(()=>{});
     }
   }
+  else if(a=='open_edit_live'){
+    const ord = S.orders.find(o => o.id == id);
+    if(ord){
+      editingLiveOrder = JSON.parse(JSON.stringify(ord));
+      renderEditLiveModal();
+    }
+  }
+  else if(a=='close_edit_live'){
+    editingLiveOrder = null;
+    renderEditLiveModal();
+  }
+  else if(a=='set_edittype'){
+    if(editingLiveOrder){ editingLiveOrder.type = b.dataset.val; renderEditLiveModal(); }
+  }
+  else if(a=='edit_it_del'){
+    if(editingLiveOrder && editingLiveOrder.items){
+      editingLiveOrder.items.splice(+b.dataset.idx, 1);
+      renderEditLiveModal();
+    }
+  }
+  else if(a=='edit_add_item'){
+    if(editingLiveOrder){
+      editingLiveOrder.items = editingLiveOrder.items || [];
+      editingLiveOrder.items.push({ n: 'Burger Ayam', q: 1, p: 6, note: '' });
+      renderEditLiveModal();
+    }
+  }
+  else if(a=='save_edit_live'){
+    if(editingLiveOrder){
+      const custInput = $('editLiveCust');
+      if(custInput) editingLiveOrder.cust = custInput.value.trim() || 'Walk-in';
+      
+      const idx = S.orders.findIndex(o => o.id == editingLiveOrder.id);
+      if(idx > -1){
+        S.orders[idx] = editingLiveOrder;
+        save();
+        db.collection('orders').doc(editingLiveOrder.id).set(editingLiveOrder).catch(()=>{});
+        toast('Order updated!');
+      }
+      editingLiveOrder = null;
+      renderEditLiveModal();
+      render();
+    }
+  }
+
+  // Staff Meal Builder Actions
+  else if(a=='sc_base'){
+    staffClaimState.burgerId = b.dataset.id;
+    render();
+  }
+  else if(a=='sc_addon'){
+    const ad = b.dataset.ad;
+    staffClaimState.addons[ad] = !staffClaimState.addons[ad];
+    render();
+  }
+  else if(a=='sc_opt'){
+    const sec = b.dataset.sec;
+    const val = b.dataset.val;
+    if(staffClaimState.selected[sec] === val) staffClaimState.selected[sec] = '';
+    else staffClaimState.selected[sec] = val;
+    render();
+  }
+  else if(a=='submit_staff_claim'){
+    const nameInput = $('staffNameInput');
+    const name = (nameInput ? nameInput.value : staffClaimState.staffName).trim();
+    if(!name){ alert('Sila masukkan nama staf anda!'); return; }
+    staffClaimState.staffName = name;
+
+    const baseItems = [
+      { id: 'sb_ayam', name: 'Burger Ayam', basePrice: 6.00 },
+      { id: 'sb_daging', name: 'Burger Daging', basePrice: 7.00 },
+      { id: 'sb_benjo', name: 'Benjo', basePrice: 4.00 }
+    ];
+    const curBase = baseItems.find(b => b.id === staffClaimState.burgerId) || baseItems[0];
+
+    let staffPay = 0;
+    const notes = [];
+    if(staffClaimState.addons.special){ staffPay += 1.00; notes.push('Special (+RM1)'); }
+    if(staffClaimState.addons.patty){ staffPay += 2.00; notes.push('Extra Patty (+RM2)'); }
+    if(staffClaimState.addons.cheese){ staffPay += 2.00; notes.push('Cheese (+RM2)'); }
+    if(staffClaimState.addons.pattaya){ staffPay += 2.50; notes.push('Pattaya (+RM2.50)'); }
+
+    Object.keys(staffClaimState.selected).forEach(k => {
+      if(staffClaimState.selected[k]) notes.push(staffClaimState.selected[k]);
+    });
+
+    const customTxtInput = $('scCustomText');
+    const customTxt = customTxtInput ? customTxtInput.value.trim() : staffClaimState.customText;
+    if(customTxt) notes.push(customTxt);
+
+    const basicPrice = curBase.basePrice;
+    const fullTotal = basicPrice + staffPay;
+
+    const newOrder = {
+      id: uid(),
+      t: Date.now(),
+      cust: `Staff: ${name}`,
+      type: 'staff_meal',
+      status: 'cooking',
+      pay: 'claim',
+      staffName: name,
+      basicPrice: basicPrice,
+      staffPay: staffPay,
+      total: fullTotal,
+      items: [{
+        n: curBase.name,
+        p: fullTotal,
+        q: 1,
+        note: notes.join(', ')
+      }]
+    };
+
+    S.orders.push(newOrder);
+    save();
+    toast(`Staff Meal dihantar! (Staf Bayar: ${money(staffPay)})`);
+    
+    // Reset staff builder
+    staffClaimState.addons = { special: false, patty: false, cheese: false, pattaya: false };
+    staffClaimState.selected = { sayur: '', bawang: '', coleslaw: '', sosCili: '', sosBp: '', mayo: '' };
+    staffClaimState.customText = '';
+    tab = 'live';
+    render();
+  }
+
+  // Deletions & Misc
   else if(a=='day') selDay = id;
   else if(a=='back') selDay = null;
   else if(a=='del'){
@@ -899,17 +1327,22 @@ document.addEventListener('click', async e => {
     const s = sum(dayOrders);
     const opVal = cr.opening !== '' ? cr.opening : (getPreviousClosing(curCashDate) !== null ? getPreviousClosing(curCashDate).toFixed(2) : '');
     const op = parseFloat(opVal) || 0, pi = parseFloat(cr.paidIn) || 0, po = parseFloat(cr.paidOut) || 0;
-    const expClosing = (op + pi + s.cash - po).toFixed(2);
+    const expClosing = (op + pi + s.custCash - po).toFixed(2);
     const clVal = cr.closing !== '' ? cr.closing : expClosing;
-    const msg = `🍔 SINGGAH CAFE\n📋 LAPORAN OPENING & CLOSING CASH\n\n📅 Tarikh: ${formatDMY(curCashDate)}\n\n━━━━━━━━━━━━━━━━\n📊 RINGKASAN JUALAN\n━━━━━━━━━━━━━━━━\n\nCash Opening: RM${opVal}\nCash Closing: RM ${clVal}\nPaid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}\nPaid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}\n\n💵 Jualan Cash: RM${(s.cash).toFixed(1)}\n📱 Jualan QR: RM${(s.qr).toFixed(1)}\n🎁 Staff Claim: RM${(s.claim).toFixed(1)}\n\n✅ TOTAL JUALAN: RM${(s.all).toFixed(1)}\n\n━━━━━━━━━━━━━━━━`;
+    
+    // Clean WhatsApp template with NO staff claims
+    const msg = `🍔 SINGGAH CAFE\n📋 LAPORAN OPENING & CLOSING CASH\n\n📅 Tarikh: ${formatDMY(curCashDate)}\n\n━━━━━━━━━━━━━━━━\n📊 RINGKASAN JUALAN\n━━━━━━━━━━━━━━━━\n\nCash Opening: RM${opVal}\nCash Closing: RM ${clVal}\nPaid Out: RM${cr.paidOut ? ' ' + cr.paidOut : ''}\nPaid In: RM${cr.paidIn ? ' ' + cr.paidIn : ''}\n\n💵 Jualan Cash: RM${(s.custCash).toFixed(1)}\n📱 Jualan QR: RM${(s.custQr).toFixed(1)}\n\n✅ TOTAL JUALAN: RM${(s.custSalesTotal).toFixed(1)}\n\n━━━━━━━━━━━━━━━━`;
     navigator.clipboard.writeText(msg).then(() => toast('✅ Laporan Cash disalin untuk WhatsApp!'));
   }
   render();
 });
 
 document.addEventListener('input', e => {
-  const t = e.target, c = t.dataset.ch;
+  const t = e.target, c = t.dataset.ch, idx = t.dataset.idx;
   if(c=='cust') orderCust = t.value;
+  if(c=='edit_it_name' && editingLiveOrder && editingLiveOrder.items[idx]) editingLiveOrder.items[idx].n = t.value;
+  if(c=='edit_it_q' && editingLiveOrder && editingLiveOrder.items[idx]) editingLiveOrder.items[idx].q = +t.value || 1;
+  if(c=='edit_it_note' && editingLiveOrder && editingLiveOrder.items[idx]) editingLiveOrder.items[idx].note = t.value;
 });
 
 document.addEventListener('change', e => {
